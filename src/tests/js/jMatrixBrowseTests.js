@@ -2,50 +2,49 @@
  * jMatrix Browse Tests
  */
 (function ($) {
-	$(document).ready(function () {
-		var jMatrixBrowseTests = new jqUnit.TestCase("jMatrixBrowse Tests");
+  $(document).ready( function () {
+    var jMatrixBrowseTests = new jqUnit.TestCase("jMatrixBrowse Tests");
 
-		var jMatrixBrowse;
+    var jMatrixBrowse;
 
-		// 1
-		jMatrixBrowseTests.test("Initialization", function () {
+    // 1
+    jMatrixBrowseTests.test("Initialization", function () {
 
-			//create a new jMatrixBrowse 
-			//var jMatrixBrowse = $.jMatrixBrowse();
+      //create a new jMatrixBrowse
+      var jMatrixBrowse = $('#my_browser').jMatrixBrowse();
 
-			console.log(new MockApi().getResponse({
-				x1: 0,
-				x2: 2,
-				y1: 0,
-				y2: 2
-			}));
-			
-			jqUnit.isVisible("jMatrixBrowse is initially visible", "#my_browser");
-			jqUnit.isVisible("jMatrixBrowse container is visible", ".jmb-matrix-container");
+      console.log(new MockApi().getResponse({
+        x1: 0,
+        x2: 2,
+        y1: 0,
+        y2: 2
+      }));
 
-			var initialCenter = jMatrixBrowse.getCenter();
-			jqUnit.assertEquals("jMatrixBrowse centered at correct position", "20,20", initialCenter.x + ',' + initialCenter.y);
+      jqUnit.isVisible("jMatrixBrowse is initially visible", "#my_browser");
+      jqUnit.isVisible("jMatrixBrowse container is visible", ".jmb-matrix-container");
 
-			var initialWindowSize = jMatrixBrowse.getWindowSize();
-			jqUnit.assertEquals("jMatrixBrowse rendered with correct dimensions", "5,10", initialWindowSize.x + ',' + initialWindowSize.y);
+      var initialCenter = jMatrixBrowse.getCenter();
+      jqUnit.assertEquals("jMatrixBrowse centered at correct position", "20,20", initialCenter.x + ',' + initialCenter.y);
 
-		});
-		
-		// 2
-		jMatrixBrowseTests.test("Basic jMatrixBrowse Dragging Tests", function () {
+      var initialWindowSize = jMatrixBrowse.getWindowSize();
+      jqUnit.assertEquals("jMatrixBrowse rendered with correct dimensions", "5,10", initialWindowSize.x + ',' + initialWindowSize.y);
 
-			//create a new jMatrixBrowse 
-			var jMatrixBrowse = $.jMatrixBrowse();
+    });
+    // 2
+    jMatrixBrowseTests.test("Basic jMatrixBrowse Dragging Tests", function () {
 
-			// Drag jMatrixBrowse to 0,0
-			jMatrixBrowse.dragTo({
-				x: 0,
-				y: 0
-			});
+      //create a new jMatrixBrowse
+      var jMatrixBrowse = $.jMatrixBrowse();
 
-			var initialCenter = jMatrixBrowse.getCenter();
-			jqUnit.assertEquals("jMatrixBrowse centered at correct position after dragging to 0,0", "0,0", jMatrixBrowseCenter.x + ',' + jMatrixBrowseCenter.y);
-			
-		});
-	});
+      // Drag jMatrixBrowse to 0,0
+      jMatrixBrowse.dragTo({
+        x: 0,
+        y: 0
+      });
+
+      var initialCenter = jMatrixBrowse.getCenter();
+      jqUnit.assertEquals("jMatrixBrowse centered at correct position after dragging to 0,0", "0,0", jMatrixBrowseCenter.x + ',' + jMatrixBrowseCenter.y);
+
+    });
+  });
 })(jQuery);
