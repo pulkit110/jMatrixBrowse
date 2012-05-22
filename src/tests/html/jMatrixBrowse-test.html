@@ -1,36 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Basic jMatrixBrowse Tests</title>
-    
-    <!--  This is the QUnit test css file -->
-    <link rel="stylesheet" media="screen" href="../lib/qunit/css/qunit.css" />
-    
-    <script type="text/javascript" src="../../lib/jquery/core/js/jquery.js"></script>
-	<script type="text/javascript" src="../../lib/jquery/ui/js/jquery.ui.core.js"></script>
-    
-    <!--  These are the jqUnit test js files -->
-    <script type="text/javascript" src="../lib/qunit/js/qunit.js"></script>
-    <script type="text/javascript" src="../test-core/jqUnit/js/jqUnit.js"></script>
-    <script type="text/javascript" src="../js/jMatrixBrowseTests.js"></script>
-</head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Basic jMatrixBrowse Tests</title>
+		<!--  This is the QUnit test css file -->
+		<link rel="stylesheet" media="screen" href="../lib/qunit/css/qunit.css" />
 
-<body id="body">
-    <h1 id="qunit-header">jMatrixBrowse Basic Tests</h1>
-    <h2 id="qunit-banner"></h2>
-    <div id="qunit-testrunner-toolbar"></div>
-    <h2 id="qunit-userAgent"></h2>
-    <ol id="qunit-tests"></ol>
- 
-     <!-- Test HTML --> 
-    <div id="main">
-        <div id="my_browser" 
-    		 data-jmatrix_browser=true 
-    		 data-api="http://foo.org/path/to/api"
-    		 data-initial-window-position="20,30"
-    		 data-initial-window-size="5,10">
+		<script type="text/javascript" src="../../lib/jquery/core/js/jquery.js"></script>
+		<script type="text/javascript" src="../../lib/jquery/ui/js/jquery.ui.core.js"></script>
+		
+		<!--  These are the jqUnit test js files -->
+		<script type="text/javascript" src="../lib/qunit/js/qunit.js"></script>
+		<script type="text/javascript" src="../test-core/jqUnit/js/jqUnit.js"></script>
+		
+		<!--  Test Matrix generator files -->
+		<script type="text/javascript" src="../js/MatrixGenerator.js"></script>
+		<script type="text/javascript" src="../js/MockApi.js"></script>
+		
+		<!--  Main jMatrixBrowse Tests-->
+		<script type="text/javascript" src="../js/jMatrixBrowseTests.js"></script>
+	</head>
+	<body id="body">
+		<h1 id="qunit-header">jMatrixBrowse Basic Tests</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar">
 		</div>
-	</div>
-</body>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests">
+		</ol>
+		<!-- Test HTML -->
+		<div id="main">
+			<div id="my_browser"
+			data-jmatrix_browser=true
+			data-api="http://foo.org/path/to/api"
+			data-initial-window-position="20,30"
+			data-initial-window-size="5,10">
+			</div>
+		</div>
+	</body>
 </html>
