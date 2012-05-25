@@ -31,6 +31,32 @@
       }, options);
     }
     
+    function generateMatrixZynga(content) {
+      
+      // Settings
+      var contentWidth = 2000;
+      var contentHeight = 2000;
+      var cellWidth = 100;
+      var cellHeight = 100;
+
+      // Generate content
+      var size = 100;
+      var frag = document.createDocumentFragment();
+      for (var row=0, rl=contentHeight/size; row<rl; row++) {
+        for (var col=0, cl=contentWidth/size; col<cl; col++) {
+          elem = document.createElement("div");
+          elem.style.backgroundColor = row%2 + col%2 > 0 ? "#ddd" : "";
+          elem.style.width = cellWidth + "px";
+          elem.style.height = cellHeight + "px";
+          elem.style.display = "inline-block";
+          elem.style.textIndent = "6px";
+          elem.innerHTML = row + "," + col;
+          frag.appendChild(elem);
+        }
+      }
+      content.append(frag);
+    }
+    
     function init(elem) {
       // Get user options
       var options = getUserOptions(elem);
@@ -39,6 +65,11 @@
       var settings = extendDefaults(options);
       setSettings(settings);
       
+      // Generate matrix using Zynga Scroller
+      generateMatrixZynga(elem);
+      
+      // Attach EasyScroller to elem
+      var scroller = new EasyScroller(elem[0]);  
     }
     
     // Main plugin code
