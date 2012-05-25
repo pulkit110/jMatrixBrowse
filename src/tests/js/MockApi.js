@@ -1,6 +1,6 @@
-function MockApi() {
+function MockApi(height, width) {
   var matrixGenerator = new MatrixGenerator();
-  matrixGenerator.init(100,100);
+  matrixGenerator.init((height==undefined)?100:height, (width==undefined)?100:width);
   this.getResponse = function(request) {
     var mat_testMatrix = matrixGenerator.test_getMatrix();
     var arr_rowLabels = matrixGenerator.test_getMatrixRowLabels();
