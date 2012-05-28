@@ -2,7 +2,9 @@
   $.fn.jMatrixBrowse = function() {
 
     var _settings;
-    var _api = null;
+    var _api;
+    var _container;
+    var _content;
 
     /**
      * Initialize the API
@@ -74,7 +76,14 @@
       }, options);
     }
 
-    function generateMatrixInDom(content) {
+    function generateClassNameForCell(row, col) {
+      return "j-matrix-browse-cell-" + "row" + row + "col" + col;
+    }
+    
+    /**
+     * Creates an empty matrix with size obtained from API and appends to content.
+     */
+    function generateMatrixInDom(content, container) {
 
       var size = getMatrixSize();
       if (size == undefined) {
@@ -88,9 +97,11 @@
         return;
       }
       
-      // Define cell width and height according to window size and content width and height
-      var cellWidth = content.width()/windowSize.width;
-      var cellHeight = content.height()/windowSize.height;
+      var cellWidth = Math.round(container.width()/windowSize.width);
+      var cellHeight = Math.round(container.height()/windowSize.height);
+      
+      content.width(cellWidth*size.width);
+      content.height(cellHeight*size.height);
       
       // TODO: Remove hardcoded variables
       // Generate matrix content
@@ -104,6 +115,7 @@
           elem.style.display = "inline-block";
           elem.style.textIndent = "6px";
           elem.innerHTML = row + "," + col;
+          elem.className += " " + generateClassNameForCell(row, col);
           frag.appendChild(elem);
         }
       }
@@ -121,14 +133,17 @@
       // Initialize mock api
       initApi('test');
 
+      _container = elem;
+      _content = $(document.createElement('div'));
+      _container.append(_content);
+      
       // Generate matrix content and add to DOM
-      generateMatrixInDom(elem);
+      generateMatrixInDom(_content, _container);
 
       // TODO: Use matrix data instead of indices generated in previous step.
-      // TODO: Idea: Create empty cells for other windows and when scroller is dragged there, load data into those empty cells
 
       // Attach EasyScroller to elem
-      var scroller = new EasyScroller(elem[0]);
+      var scroller = new EasyScroller(_content[0]);
     }
 
     // Main plugin code

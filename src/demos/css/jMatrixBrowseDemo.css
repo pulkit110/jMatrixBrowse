@@ -1,6 +1,9 @@
 #my_browser {
-	height: 2000px;
-	width: 2000px;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	bottom: 20px;
+	right: 240px;
 }
 #main {
 	position: absolute;
