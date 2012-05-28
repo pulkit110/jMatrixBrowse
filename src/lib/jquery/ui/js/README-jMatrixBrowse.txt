@@ -1,0 +1,1 @@
+This directory contains jQuery-ui 1.8.2 downloaded on 21 May, 2012.

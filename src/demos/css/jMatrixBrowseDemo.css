@@ -1,0 +1,17 @@
+#my_browser {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	bottom: 20px;
+	right: 240px;
+}
+#main {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	bottom: 20px;
+	right: 240px;
+	border: 5px solid black;
+	cursor: default;
+	overflow: hidden;
+}
