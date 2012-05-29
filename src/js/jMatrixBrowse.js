@@ -1,10 +1,15 @@
 (function( $ ) {
   $.fn.jMatrixBrowse = function() {
 
-    var _settings;
-    var _api;
-    var _container;
-    var _content;
+    var _self = this;
+    
+    var _settings;     // user Settings
+    var _api;          // API object
+    var _container;    // container for jMatrixBrowse
+    var _content;      // content of jMatrixBrowse
+    var _scroller;     // scroller object used for browsing
+    var _cellPosition; // cell position for the component
+    var _currentCell;  // currently shown cell (TODO: for now this cell is on left corner of matrix)
 
     /**
      * Initialize the API
@@ -38,13 +43,29 @@
      */
     function getWindowSize() {
       if (_settings && _settings.str_initialWindowSize) {
-        var arr_size = _settings.str_initialWindowSize.split(',');
-        if (arr_size.length == 2) {
-          return {
-            height: parseInt(arr_size[0]),
-            width: parseInt(arr_size[1])
-          };
-        }
+        var  position = parsePosition(_settings.str_initialWindowSize);
+        return {
+          height: position.row,
+          width: position.col
+        };
+      }
+    }
+    
+    function getWindowPosition() {
+      if (_settings && _settings.str_initialWindowPosition) {
+        var  position = parsePosition(_settings.str_initialWindowPosition);
+        return position;
+      }
+    }
+    
+    // Utils
+    function parsePosition(str_position) {
+      var arr_position = str_position.split(',');
+      if (arr_position.length == 2) {
+        return {
+          row: parseInt(arr_position[0]),
+          col: parseInt(arr_position[1])
+        };
       }
     }
     
@@ -80,6 +101,27 @@
       return "j-matrix-browse-cell-" + "row" + row + "col" + col;
     }
     
+    function getCellWindow(position) {
+      var size = getMatrixSize();
+      if (size == undefined) {
+        console.error("Unable to get matrix size");
+        return;
+      }
+      
+      var windowSize = getWindowSize();
+      if (windowSize == undefined) {
+        console.error("Unable to get window size");
+        return;
+      }
+      
+      return obj_cellWindow = {
+        x1: position.row,
+        y1: position.col,
+        x2: Math.min(position.row + windowSize.height, size.height),
+        y2: Math.min(position.col + windowSize.width, size.width) 
+      };
+    }
+    
     /**
      * Creates an empty matrix with size obtained from API and appends to content.
      */
@@ -97,6 +139,8 @@
         return;
       }
       
+      var w = container.width();
+      var h = container.height();
       var cellWidth = Math.round(container.width()/windowSize.width);
       var cellHeight = Math.round(container.height()/windowSize.height);
       
@@ -140,12 +184,55 @@
       // Generate matrix content and add to DOM
       generateMatrixInDom(_content, _container);
 
-      // TODO: Use matrix data instead of indices generated in previous step.
-
       // Attach EasyScroller to elem
-      var scroller = new EasyScroller(_content[0]);
+      _scroller = new EasyScroller(_content[0]);
+      
+      // TODO: Use matrix data instead of indices generated in previous step.
+      
+      // Scroll to the initial position
+      var windowPosition = getWindowPosition();
+      _self.scrollTo(windowPosition.row, windowPosition.col);
+
+      // Load data
+      _self.reloadData();
     }
 
+    //Public API
+    
+    //TODO: Might not work when more than one jMatrixBrowse on the same page. 
+    this.getCellPosition = function (row, col) {
+      return $('.' + generateClassNameForCell(row,col)).position();
+    };
+    
+    this.scrollTo = function (row, col) {
+      _cellPosition = _self.getCellPosition(row, col);
+      _currentCell = {
+        row: row,
+        col: col
+      };
+      _scroller.scroller.scrollTo(_cellPosition.left, _cellPosition.top);
+    };
+    
+    this.reloadData = function() {
+      var cellWindow = getCellWindow(_currentCell);
+      if (cellWindow == undefined) {
+        console.error('Unable to get cell window.');
+        return;
+      }
+      var response = _api.getResponse(cellWindow);
+      
+      if (response && response.data) {
+        for (var i = 0; i < response.data.length; ++i) {
+          for (var j = 0; j < response.data[i].length; ++j) {
+            var cellData = response.data[i][j]; // TODO: If we support named methods, the data should be extracted for the named method corresponding to current layer.
+            var row = cellWindow.x1 + i;
+            var col = cellWindow.y1 + j;
+            $('.' + generateClassNameForCell(row, col)).html(cellData);  
+          }
+        }
+      }
+    }
+    
     // Main plugin code
     $('[data-jmatrix_browser=true]').each( function() {
       init($(this));
