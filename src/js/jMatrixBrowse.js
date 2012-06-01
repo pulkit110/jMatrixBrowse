@@ -29,10 +29,10 @@
      */
     function getMatrixSize() {
       var response = _api.getResponse({
-        'x1': 0,
-        'y1': 0,
-        'x2': 0,
-        'y2': 0
+        'row1': 0,
+        'col1': 0,
+        'row2': 0,
+        'col2': 0
       });
       if (response)
         return response.matrix;
@@ -115,10 +115,10 @@
       }
       
       return obj_cellWindow = {
-        x1: position.row,
-        y1: position.col,
-        x2: Math.min(position.row + windowSize.height, size.height),
-        y2: Math.min(position.col + windowSize.width, size.width) 
+        row1: position.row,
+        col1: position.col,
+        row2: Math.min(position.row + windowSize.height, size.height),
+        col2: Math.min(position.col + windowSize.width, size.width) 
       };
     }
     
@@ -225,8 +225,8 @@
         for (var i = 0; i < response.data.length; ++i) {
           for (var j = 0; j < response.data[i].length; ++j) {
             var cellData = response.data[i][j]; // TODO: If we support named methods, the data should be extracted for the named method corresponding to current layer.
-            var row = cellWindow.x1 + i;
-            var col = cellWindow.y1 + j;
+            var row = cellWindow.row1 + i;
+            var col = cellWindow.col1 + j;
             $('.' + generateClassNameForCell(row, col)).html(cellData);  
           }
         }

@@ -7,10 +7,10 @@ function MockApi(height, width) {
     var arr_colLabels = matrixGenerator.test_getMatrixColumnLabels();
 
     // TODO: Check for undefined variables
-    var x1 = request.x1;
-    var x2 = request.x2;
-    var y1 = request.y1;
-    var y2 = request.y2;
+    var row1 = request.row1;
+    var row2 = request.row2;
+    var col1 = request.col1;
+    var col2 = request.col2;
 
     var obj_response = {
       "matrix" : {
@@ -24,17 +24,17 @@ function MockApi(height, width) {
         "labels" : []
       },
       "data" : [
-      ]
+    ]
     };
 
-    for (var i=x1; i <= x2; ++i) {
+    for (var i=row1; i <= row2; ++i) {
       obj_response.row.labels.push(arr_rowLabels[i]);
       obj_response.data.push([]);
-      for (var j=y1; j <= y2; ++j) {
-        if (i === x1) {
+      for (var j=col1; j <= col2; ++j) {
+        if (i === row1) {
           obj_response.column.labels.push(arr_colLabels[j]);
         }
-        obj_response.data[i-x1].push(mat_testMatrix[i][j]);
+        obj_response.data[i-row1].push(mat_testMatrix[i][j]);
       };
     };
 
