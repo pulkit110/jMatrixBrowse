@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
+    <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Basic jMatrixBrowse Demo</title>
+
+            <!--  jQuery includes -->
+            <script type="text/javascript" src="../../lib/jquery/core/js/jquery.js"></script>
+            <script type="text/javascript" src="../../lib/jquery/ui/js/jquery-ui-all.js"></script>
+
+            <!--  Zynga Scroller includes -->
+            <script type="text/javascript" src="../../lib/zyngascroller/src/Raf.js"></script>
+            <script type="text/javascript" src="../../lib/zyngascroller/src/Animate.js"></script>
+            <script type="text/javascript" src="../../lib/zyngascroller/src/Scroller.js"></script>
+            <script type="text/javascript" src="../../lib/zyngascroller/src/EasyScroller.js"></script>
+
+            <!--  jMatrixBrowse includes-->
+            <script type="text/javascript" src="../../src/js/jMatrixBrowse.js"></script>
+
+            <!--  Test Matrix generator files -->
+            <script type="text/javascript" src="../../test/js/MatrixGenerator.js"></script>
+            <script type="text/javascript" src="../../test/js/MockApi.js"></script>
+
+            <!--  Main jMatrixBrowse Demo-->
+            <link rel="stylesheet" href="../css/jMatrixBrowseDemo.css" />
+            <script type="text/javascript" src="../js/jMatrixBrowseDemo.js"></script>
+
+    </head>
+    <body>
+	<!-- Demo HTML -->
+	<div id="main">
+		<div id="my_browser"
+		data-jmatrix_browser=true
+		data-api="http://foo.org/path/to/api"
+		data-initial-window-position="20,30"
+		data-initial-window-size="5,10">
+		</div>
+	</div>
+    </body>
+</html>
