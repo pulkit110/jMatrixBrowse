@@ -1,8 +1,11 @@
 /**
- * jMatrix Browse Tests
- */
-(function ($) {
-  $(document).ready( function () {
+ * @fileOverview Contains the unit tests for jMatrixBrowse.
+ * @version 0.1
+ * @author Pulkit Goyal <pulkit110@gmail.com> 
+*/
+
+(function (jQuery) {
+  jQuery(document).ready( function () {
     var jMatrixBrowseTests = new jqUnit.TestCase("jMatrixBrowse Tests");
 
     var jMatrixBrowse;
@@ -11,7 +14,7 @@
     jMatrixBrowseTests.test("Initialization", function () {
 
       //create a new jMatrixBrowse
-      var jMatrixBrowse = $('#my_browser').jMatrixBrowse();
+      var jMatrixBrowse = jQuery('#my_browser').jMatrixBrowse();
 
       console.log(new MockApi().getResponse({
         x1: 0,
@@ -34,7 +37,7 @@
     jMatrixBrowseTests.test("Basic jMatrixBrowse Dragging Tests", function () {
 
       //create a new jMatrixBrowse
-      var jMatrixBrowse = $.jMatrixBrowse();
+      var jMatrixBrowse = jQuery.jMatrixBrowse();
 
       // Drag jMatrixBrowse to 0,0
       jMatrixBrowse.dragTo({

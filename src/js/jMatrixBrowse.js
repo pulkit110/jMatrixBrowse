@@ -1,5 +1,34 @@
-(function( $ ) {
-  $.fn.jMatrixBrowse = function() {
+/**
+ * @fileOverview Contains the jMatrixBrowse plug-in code.
+ * @version 0.1
+ * @author Pulkit Goyal <pulkit110@gmail.com> 
+*/
+
+/**
+ * See (http://jquery.com/).
+ * @name jQuery
+ * @class 
+ * See the jQuery Library  (http://jquery.com/) for full details.  This just
+ * documents the function and classes that are added to jQuery by this plug-in.
+ */
+
+/**
+ * See (http://jquery.com/)
+ * @name fn
+ * @class 
+ * See the jQuery Library  (http://jquery.com/) for full details.  This just
+ * documents the function and classes that are added to jQuery by this plug-in.
+ * @memberOf jQuery
+ */
+(function( jQuery ) {
+  /**
+   * jMatrixBrowse - a jQuery plugin to create large draggable(like Google Maps)
+   * matrices. 
+   *
+   * @class jMatrixBrowse
+   * @memberOf jQuery.fn
+   */
+  jQuery.fn.jMatrixBrowse = function() {
 
     var _self = this;
     
@@ -13,7 +42,7 @@
 
     /**
      * Initialize the API
-     * @param type type of api: 'test' initializes the mockAPI
+     * @param {String} type type of api: 'test' initializes the mockAPI
      */
     function initApi(type) {
       if (type === 'test') {
@@ -25,7 +54,9 @@
 
     /**
      * Get matrix size from api. 
-     * @return size of the matrix
+     * @returns {Object} size - size of the matrix. 
+     * @returns {Number} size.width - width of the matrix. 
+     * @returns {Number} size.height - height of the matrix.
      */
     function getMatrixSize() {
       var response = _api.getResponse({
@@ -40,6 +71,9 @@
 
     /** 
      * Get window size from settings. 
+     * @returns {Object} size - size of the window. 
+     * @returns {Number} size.width - width of the window. 
+     * @returns {Number} size.height - height of the window.
      */
     function getWindowSize() {
       if (_settings && _settings.str_initialWindowSize) {
@@ -51,6 +85,12 @@
       }
     }
     
+    /** 
+     * Get position of window. 
+     * @returns {Object} position - position of the top-left corner of window. 
+     * @returns {Number} position.row - row index of the position.
+     * @returns {Number} position.col - column index of the position.
+     */
     function getWindowPosition() {
       if (_settings && _settings.str_initialWindowPosition) {
         var  position = parsePosition(_settings.str_initialWindowPosition);
@@ -58,7 +98,12 @@
       }
     }
     
-    // Utils
+    /** 
+     * Utility function that parses a position (row,col).
+     * @returns {Object} position - Object representing the position denoted by the string. 
+     * @returns {Number} position.row - row index of the position.
+     * @returns {Number} position.col - column index of the position.
+     */
     function parsePosition(str_position) {
       var arr_position = str_position.split(',');
       if (arr_position.length == 2) {
@@ -70,7 +115,13 @@
     }
     
     /**
-     * Get user defined options from data-* elements
+     * Get user defined options from data-* elements.
+     * @param {jQuery object} elem - the element to retrieve the user options from. 
+     * @returns {Object} options - User's options for the plugin. 
+     * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
+     * @returns {string} options.str_api - URI for the API.
+     * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
+     * @returns {string} options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).
      */
     function getUserOptions(elem) {
       var options = {
@@ -82,25 +133,57 @@
       return options;
     }
 
+    /**
+     * Set the settings object.
+     * @param {Object} settings
+     */
     function setSettings(settings) {
       _settings = settings;
     }
 
+    /**
+     * Get settings object.
+     */
     function getSettings() {
       return _settings;
     }
 
+    /**
+     * Extend the user's settings with defaults.
+     * @returns {Object} options - User's options for the plugin. 
+     * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
+     * @returns {string} options.str_api - URI for the API.
+     * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
+     * @returns {string} options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).
+     */
     function extendDefaults(options) {
-      return $.extend({
+      return jQuery.extend({
         str_initialWindowPosition: '0,0',
         str_initialWindowSize: '10,10'
       }, options);
     }
 
+    /**
+     * Generate class name for given cell position.
+     * @param {Number} row - zero indexed row of the element.
+     * @param {Number} col - zero indexed column of the element.
+     * @returns {string} className - class name for the cell element.
+     */
     function generateClassNameForCell(row, col) {
       return "j-matrix-browse-cell-" + "row" + row + "col" + col;
     }
     
+    /**
+     * Get the window end points which has given point at its top left corner. 
+     * @param {Object} position - position of the cell.
+     * @param {Number} position.row - row of the cell.
+     * @param {Number} position.col - column of the cell.
+     * @returns {Object} window - Object representing the window coordinates. 
+     * @returns {Number} window.row1 - row index of the top left corner.
+     * @returns {Number} window.col1 - column index of the top left corner.
+     * @returns {Number} window.row2 - row index of the bottom right corner.
+     * @returns {Number} window.col2 - column index of the bottom right corner.
+     */
     function getCellWindow(position) {
       var size = getMatrixSize();
       if (size == undefined) {
@@ -124,6 +207,8 @@
     
     /**
      * Creates an empty matrix with size obtained from API and appends to content.
+     * @param {jQuery object} content - The element that acts as the matrix content.
+     * @param {jQuery object} container - The element that acts as the matrix container (parent of content).
      */
     function generateMatrixInDom(content, container) {
 
@@ -147,11 +232,17 @@
       content.width(cellWidth*size.width);
       content.height(cellHeight*size.height);
       
+      var windowPosition = getWindowPosition();
+      
+      // TODO: Idea: Generate only the visible part of matrix. 
+      // Still set the content height and width of content so 
+      // that Zynga scroller scrolls the other parts 
+      
       // TODO: Remove hardcoded variables
       // Generate matrix content
       var frag = document.createDocumentFragment();
-      for (var row=0; row < size.height; row++) {
-        for (var col=0; col < size.width; col++) {
+      for (var row=windowPosition.row; row <= windowPosition.row+windowSize.height; row++) {
+        for (var col=windowPosition.col; col <= windowPosition.col + windowSize.width; col++) {
           elem = document.createElement("div");
           elem.style.backgroundColor = row%2 + col%2 > 0 ? "#ddd" : "";
           elem.style.width = cellWidth + "px";
@@ -162,10 +253,16 @@
           elem.className += " " + generateClassNameForCell(row, col);
           frag.appendChild(elem);
         }
+        elem = document.createElement("br");
+        frag.appendChild(elem);
       }
       content.append(frag);
     }
 
+    /**
+     * Initialize the jMatrixBrowse.
+     * @param {jQuery object} elem - the element to which to attach the jMatrixBrowse.
+     */
     function init(elem) {
       // Get user options
       var options = getUserOptions(elem);
@@ -178,7 +275,7 @@
       initApi('test');
 
       _container = elem;
-      _content = $(document.createElement('div'));
+      _content = jQuery(document.createElement('div'));
       _container.append(_content);
       
       // Generate matrix content and add to DOM
@@ -200,10 +297,23 @@
     //Public API
     
     //TODO: Might not work when more than one jMatrixBrowse on the same page. 
+    /**
+     * Get the cell position for cell at (row,col).
+     * @param {Number} row - row index of the cell.
+     * @param {Number} col - column index of the cell.
+     * @returns {Object} position - position of the cell. 
+     * @returns {Number} position.top - top coordinate of the cell. 
+     * @returns {Number} position.left - left coordinate of the cell. 
+     */
     this.getCellPosition = function (row, col) {
-      return $('.' + generateClassNameForCell(row,col)).position();
+      return jQuery('.' + generateClassNameForCell(row,col)).position();
     };
     
+    /**
+     * Scroll to given position. 
+     * @param {Number} row - row index of the cell.
+     * @param {Number} col - column index of the cell.
+     */
     this.scrollTo = function (row, col) {
       _cellPosition = _self.getCellPosition(row, col);
       _currentCell = {
@@ -213,6 +323,9 @@
       _scroller.scroller.scrollTo(_cellPosition.left, _cellPosition.top);
     };
     
+    /**
+     * Reload data in the matrix for the visible window. 
+     */
     this.reloadData = function() {
       var cellWindow = getCellWindow(_currentCell);
       if (cellWindow == undefined) {
@@ -227,15 +340,17 @@
             var cellData = response.data[i][j]; // TODO: If we support named methods, the data should be extracted for the named method corresponding to current layer.
             var row = cellWindow.row1 + i;
             var col = cellWindow.col1 + j;
-            $('.' + generateClassNameForCell(row, col)).html(cellData);  
+            jQuery('.' + generateClassNameForCell(row, col)).html(cellData);  
           }
         }
       }
     }
     
-    // Main plugin code
-    $('[data-jmatrix_browser=true]').each( function() {
-      init($(this));
+    /**
+     * Main plugin function
+     */
+    jQuery('[data-jmatrix_browser=true]').each( function() {
+      init(jQuery(this));
     });
   };
 })( jQuery );

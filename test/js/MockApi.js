@@ -1,6 +1,28 @@
+/**
+ * @fileOverview Contains the code for mock api that responds to a request.
+ * @version 0.1
+ * @author Pulkit Goyal <pulkit110@gmail.com> 
+*/
+
+/**
+ * Mimics the API and gives response for requests. 
+ * 
+ * @class MatrixGenerator
+ * See API Details (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+ * for more details.
+ * 
+ * @param {Number} [height] - height of the matrix to answer requests for. optional. default = 100.
+ * @param {Number} [width] - width of the matrix to answer requests for. optional. default = 100.
+ */
 function MockApi(height, width) {
   var matrixGenerator = new MatrixGenerator();
   matrixGenerator.init((height==undefined)?100:height, (width==undefined)?100:width);
+  
+  /**
+   * Get a response for given request.
+   * @param {Object} request - the request.
+   * @returns {Object} response - the response to the request.
+   */
   this.getResponse = function(request) {
     var mat_testMatrix = matrixGenerator.test_getMatrix();
     var arr_rowLabels = matrixGenerator.test_getMatrixRowLabels();
