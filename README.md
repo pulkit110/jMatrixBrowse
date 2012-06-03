@@ -35,6 +35,9 @@ data-initial-window-position="x,y"      -  Define the x,y position of the window
 data-jmatrix-browser-css                 - URL/URI
 ```
 
+API Details
+===========
+
 The API should be able to answer requests of the following form.
 
 **Request:** http://foo.org/path/to/api_action?row1=1&col1=1&row2=100&col2=50
