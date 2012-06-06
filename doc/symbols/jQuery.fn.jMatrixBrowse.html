@@ -270,6 +270,60 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-checkAndRepositionCellCol">checkAndRepositionCellCol</a></b>(cellElements, container, col, overflow)
+								</div>
+								<div class="description">Checks if the given column is overflowing and repositions if necessary.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-checkAndRepositionCellRow">checkAndRepositionCellRow</a></b>(cellElements, container, row, overflow)
+								</div>
+								<div class="description">Checks if the given row is overflowing and repositions if necessary.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-checkAndRepositionCells">checkAndRepositionCells</a></b>(event, ui)
+								</div>
+								<div class="description">Check and resposition cells that are overflowing.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-createContentDiv">createContentDiv</a></b>(container)
+								</div>
+								<div class="description">Create the content div and append to container.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-createDragContainer">createDragContainer</a></b>(container)
+								</div>
+								<div class="description">Create the drag container and make it draggable.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-dragHandler">dragHandler</a></b>(event, ui)
+								</div>
+								<div class="description">Function that handles the drag event on dragContainer.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-extendDefaults">extendDefaults</a></b>(options)
 								</div>
 								<div class="description">Extend the user's settings with defaults.</div>
@@ -288,7 +342,7 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateMatrixInDom">generateMatrixInDom</a></b>(content, container)
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateInitialMatrixContent">generateInitialMatrixContent</a></b>(container)
 								</div>
 								<div class="description">Creates an empty matrix with size obtained from API and appends to content.</div>
 							</td>
@@ -378,6 +432,15 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-isOverflowing">isOverflowing</a></b>(element, container, overflow)
+								</div>
+								<div class="description">Check if the given cell is overflowing the container dimensions.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-parsePosition">parsePosition</a></b>(str_position)
 								</div>
 								<div class="description">Utility function that parses a position (row,col).</div>
@@ -459,6 +522,284 @@ matrices.
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="-checkAndRepositionCellCol"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>checkAndRepositionCellCol</b>(cellElements, container, col, overflow)
+					
+					</div>
+					<div class="description">
+						Checks if the given column is overflowing and repositions if necessary.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{matrix}</span> <b>cellElements</b>
+									
+								</dt>
+								<dd>- The matrix of DOM objects representing cells.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- The container against which to check the overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>col</b>
+									
+								</dt>
+								<dd>- Index of column to check the overflow for.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>overflow</b>
+									
+								</dt>
+								<dd>- Type of the overflow to check for.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-checkAndRepositionCellRow"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>checkAndRepositionCellRow</b>(cellElements, container, row, overflow)
+					
+					</div>
+					<div class="description">
+						Checks if the given row is overflowing and repositions if necessary.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{matrix}</span> <b>cellElements</b>
+									
+								</dt>
+								<dd>- The matrix of DOM objects representing cells.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- The container against which to check the overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>row</b>
+									
+								</dt>
+								<dd>- Index of row to check the overflow for.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>overflow</b>
+									
+								</dt>
+								<dd>- Type of the overflow to check for.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-checkAndRepositionCells"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>checkAndRepositionCells</b>(event, ui)
+					
+					</div>
+					<div class="description">
+						Check and resposition cells that are overflowing.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>event</b>
+									
+								</dt>
+								<dd>- Drag event.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>ui</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-createContentDiv"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span>
+					<b>createContentDiv</b>(container)
+					
+					</div>
+					<div class="description">
+						Create the content div and append to container.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- container to attacht the content to.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> content</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-createDragContainer"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span>
+					<b>createDragContainer</b>(container)
+					
+					</div>
+					<div class="description">
+						Create the drag container and make it draggable.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- container to attacht the content to.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> dragContainer</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-dragHandler"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>dragHandler</b>(event, ui)
+					
+					</div>
+					<div class="description">
+						Function that handles the drag event on dragContainer.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>event</b>
+									
+								</dt>
+								<dd>- Drag event.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>ui</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
 				
 					<a name="-extendDefaults"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
@@ -560,11 +901,11 @@ matrices.
 
 					<hr />
 				
-					<a name="-generateMatrixInDom"> </a>
+					<a name="-generateInitialMatrixContent"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
-					<b>generateMatrixInDom</b>(content, container)
+					<span class="light">{<a href="../symbols/jQuery.html">jQuery</a> object}</span>
+					<b>generateInitialMatrixContent</b>(container)
 					
 					</div>
 					<div class="description">
@@ -580,22 +921,23 @@ matrices.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>content</b>
-									
-								</dt>
-								<dd>- The element that acts as the matrix content.</dd>
-							
-								<dt>
 									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>container</b>
 									
 								</dt>
-								<dd>- The element that acts as the matrix container (parent of content).</dd>
+								<dd>- The element that acts as the matrix container (element that invoked jMatrixBrowse).</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> content where matrix is generated.</dd>
+							
+							</dl>
 						
 						
 						
@@ -974,6 +1316,61 @@ matrices.
 
 					<hr />
 				
+					<a name="-isOverflowing"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>isOverflowing</b>(element, container, overflow)
+					
+					</div>
+					<div class="description">
+						Check if the given cell is overflowing the container dimensions.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>element</b>
+									
+								</dt>
+								<dd>- jQuery object for the element to be checked for overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- The container against which to check the overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>overflow</b>
+									
+								</dt>
+								<dd>- Type of oevrflow to check.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>true if there is an overflow. false otherwise.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="-parsePosition"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -1136,7 +1533,7 @@ matrices.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jun 04 2012 00:57:25 GMT+0200 (CEST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Jun 07 2012 00:57:12 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
