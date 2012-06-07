@@ -76,3 +76,11 @@ The API should be able to answer requests of the following form.
   ]
 }
 ```
+
+Documentation
+=============
+Updated documentation can be found in `doc/` directory in the repository. Documentation can also be found online [here](http://pulkitgoyal.in/Demo/jMatrixBrowse/doc/). 
+
+Demo
+====
+An online demo is deployed [here](http://pulkitgoyal.in/Demo/jMatrixBrowse/).
