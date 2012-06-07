@@ -280,6 +280,59 @@
     }
     
     /**
+     * Computes the new cell coordinates when a drag results in overflow.
+     * @param {Number} overflow - Type of the overflow.
+     */
+    function computeNewCellCoordinates(overflow) {
+      switch(overflow) {
+        case OVERFLOW_TOP:
+          ++_currentCell.row;
+          break;
+          
+        case OVERFLOW_BOTTOM:
+          --_currentCell.row;
+          break;
+          
+        case OVERFLOW_LEFT:
+          ++_currentCell.col;
+          break;
+          
+        case OVERFLOW_RIGHT:
+          --_currentCell.col;
+          break;
+      }
+    }
+    
+    /**
+     * Check if the drag is valid.
+     * @param {Number} overflow - Type of the overflow to check for.
+     * @returns {boolean} true if the drag is valid.
+     */
+    function isValidDrag(overflow) {
+      switch(overflow) {
+        case OVERFLOW_TOP:
+          if (_currentCell.row >= getMatrixSize().height-1)
+            return false;
+          return true;
+          
+        case OVERFLOW_BOTTOM:
+          if (_currentCell.row <= 0) 
+            return false;
+          return true;
+          
+        case OVERFLOW_LEFT:
+          if (_currentCell.col >= getMatrixSize().width-1) 
+            return false;
+          return true;
+          
+        case OVERFLOW_RIGHT:
+          if (_currentCell.col <= 0) 
+            return false;
+          return true;
+      }
+    }
+    
+    /**
      * Check and resposition cells that are overflowing.
      * @param {Object} event - Drag event.
      * @param {Object} ui
@@ -305,7 +358,9 @@
      * @param {Number} overflow - Type of the overflow to check for.
      */
     function checkAndRepositionCellRow(cellElements, container, row, overflow) {
-      if (cellElements[row].length > 0 && isOverflowing(jQuery(cellElements[row][0]), container, overflow)) {
+      if (cellElements[row].length > 0 && isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
+        // There is an overflow.
+        computeNewCellCoordinates(overflow);
         
         var cellRow;
         switch (overflow) {
@@ -364,8 +419,10 @@
      * @param {Number} overflow - Type of the overflow to check for.
      */
     function checkAndRepositionCellCol(cellElements, container, col, overflow) {
-      if (isOverflowing(jQuery(cellElements[0][col]), container, overflow)) {
-        // TODO: Do error checks.
+      if (isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
+        // There is an overflow.
+        computeNewCellCoordinates(overflow);
+        
         switch (overflow) {
           case OVERFLOW_LEFT:
             // The row is overflowing from left. Move it to right. 
@@ -430,13 +487,13 @@
       var height = element.height();
 
       switch (overflow) {
-        case OVERFLOW_LEFT: 
+        case OVERFLOW_LEFT:
           return (left+width < 0);
-        case OVERFLOW_RIGHT: 
+        case OVERFLOW_RIGHT:
           return (left > container.width());
-        case OVERFLOW_TOP: 
+        case OVERFLOW_TOP:
           return (top+height < 0);
-        case OVERFLOW_BOTTOM: 
+        case OVERFLOW_BOTTOM:
           return (top > container.height());
       }
       return false;
