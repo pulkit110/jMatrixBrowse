@@ -284,6 +284,8 @@
      * @param {Number} overflow - Type of the overflow.
      */
     function computeNewCellCoordinates(overflow) {
+      var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
+      
       switch(overflow) {
         case OVERFLOW_TOP:
           ++_currentCell.row;
@@ -301,6 +303,13 @@
           --_currentCell.col;
           break;
       }
+      
+      // Trigger event for change
+      _container.trigger({
+        type: 'jMatrixBrowseChange',
+        previousCell: previousCell,
+        currentCell: _currentCell
+      });
     }
     
     /**
@@ -508,13 +517,13 @@
       var size = getMatrixSize();
       if (size == undefined) {
         console.error("Unable to get matrix size");
-        return;
+        return null;
       }
       
       var windowSize = getWindowSize();
       if (windowSize == undefined) {
         console.error("Unable to get window size");
-        return;
+        return null;
       }
       
       var content = createContentDiv(container);
@@ -583,6 +592,12 @@
       
       // Load data
       _self.reloadData();
+      
+      // Test
+      _container.bind('jMatrixBrowseChange', function (event) {
+        console.log('jMatrixBrowseChange'); 
+        console.log(event);
+      });
     }
 
     //Public API
