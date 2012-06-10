@@ -35,11 +35,13 @@
     var _settings;      // user Settings
     var _api;           // API object
     var _container;     // container for jMatrixBrowse
+    var _elem;          // container that initiated jMatrixBrowse
     var _content;       // content of jMatrixBrowse
     var _cellPosition;  // cell position for the component
     var _currentCell;   // currently shown cell (TODO: for now this cell is on left corner of matrix)
     var _dragContainer; // Drag container that allows dragging using jQuery UI
     var _cellElements;  // Array of array of cell elements.
+    var _headers;       // row and column headers.
 
     // TODO: Move to separate class.
     // Constants
@@ -244,19 +246,68 @@
     }
     
     /**
+     * Create the row and column header containers. 
+     * @param {jQuery Object} container - container to attach the content to.
+     * @returns {Object} headersContainer - hash containing column and row containers.
+     * @returns {jQuery Object} headersContainer.row - row container.
+     * @returns {jQuery Object} headersContainer.col - column container.
+     */
+    function createRowColumnHeaderContainer(container) {
+      var rowHeaderContainer = jQuery(document.createElement('div'));
+      rowHeaderContainer.css({
+        width: '100%',
+        height: '10%',
+        top: '0',
+        left: '0',
+        'background-color': 'red'
+      });
+      container.append(rowHeaderContainer);
+      
+      var colHeaderContainer = jQuery(document.createElement('div'));
+      colHeaderContainer.css({
+        width: '10%',
+        height: '100%',
+        'background-color': 'green',
+        'float': 'left'
+      });
+      container.append(colHeaderContainer);
+      
+      return {
+        row: rowHeaderContainer,
+        col: colHeaderContainer
+      };
+    }
+    
+    /**
      * Create the drag container and make it draggable.
-     * @param {jQuery Object} container - container to attacht the content to.
-     * @returns {jQuery Object} dragContainer 
+     * @param {jQuery Object} container - container to attach the content to.
+     * @returns {Object} coantiners
+     * @returns {jQuery Object} coantiners.conatiner coantiner containing matrix content
+     * @returns {jQuery Object} coantiners.dragConatiner dragCoantiner containing matrix content
      */
     function createDragContainer(container) {
+      var dragContainerContainer = jQuery(document.createElement('div'));
+      dragContainerContainer.css({
+        'float': 'left',
+        width: '90%',
+        height: '100%'
+      }); 
+      dragContainerContainer.addClass(_classBase+'-drag-container-container');
+      container.append(dragContainerContainer);
+      
       var dragContainer = jQuery(document.createElement('div'));
       dragContainer.draggable({
         drag: function (event, ui) {
           dragHandler(event, ui);
         }
       });
-      container.append(dragContainer);
-      return dragContainer;
+      dragContainer.addClass(_classBase+'-drag-container');
+      dragContainerContainer.append(dragContainer);
+      
+      return {
+        dragContainer: dragContainer,
+        container: dragContainerContainer
+      };
     }
     
     /**
@@ -305,7 +356,7 @@
       }
       
       // Trigger event for change
-      _container.trigger({
+      _elem.trigger({
         type: 'jMatrixBrowseChange',
         previousCell: previousCell,
         currentCell: _currentCell
@@ -578,10 +629,14 @@
       // Initialize mock api
       initApi('test');
 
-      _container = elem;
+      _elem = elem;
       
+      // Create row and column headers.
+      _headers = createRowColumnHeaderContainer(_elem);
       // Create draggable area and add matrix to it.
-      _dragContainer = createDragContainer(_container);
+      var containers = createDragContainer(_elem);
+      _dragContainer = containers.dragContainer;
+      _container = containers.container;
       
       // Generate initial content
       _content = generateInitialMatrixContent(_dragContainer);
@@ -594,7 +649,7 @@
       _self.reloadData();
       
       // Test
-      _container.bind('jMatrixBrowseChange', function (event) {
+      _elem.bind('jMatrixBrowseChange', function (event) {
         console.log('jMatrixBrowseChange'); 
         console.log(event);
       });
