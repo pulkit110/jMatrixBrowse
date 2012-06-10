@@ -50,6 +50,7 @@
     var OVERFLOW_TOP = 3;
     var OVERFLOW_BOTTOM = 4;
     var OVERFLOW_NONE = -1;
+    var CLASS_BASE = 'jmatrixbrowse';
     
     /**
      * Initialize the API
@@ -253,24 +254,29 @@
      * @returns {jQuery Object} headersContainer.col - column container.
      */
     function createRowColumnHeaderContainer(container) {
-      var rowHeaderContainer = jQuery(document.createElement('div'));
-      rowHeaderContainer.css({
-        width: '100%',
-        height: '10%',
-        top: '0',
-        left: '0',
-        'background-color': 'red'
-      });
-      container.append(rowHeaderContainer);
-      
       var colHeaderContainer = jQuery(document.createElement('div'));
       colHeaderContainer.css({
-        width: '10%',
-        height: '100%',
-        'background-color': 'green',
-        'float': 'left'
+        width: '90%',
+        height: '10%',
+        top: '0px',
+        right: '0px',
+        'background-color': 'red',
+        position: 'absolute'
       });
+      colHeaderContainer.addClass(CLASS_BASE + '-col-header');
       container.append(colHeaderContainer);
+      
+      var rowHeaderContainer = jQuery(document.createElement('div'));
+      rowHeaderContainer.css({
+        width: '10%',
+        height: '90%',
+        bottom: '0px',
+        'background-color': 'green',
+        'float': 'left',
+        position: 'absolute'
+      });
+      rowHeaderContainer.addClass(CLASS_BASE + '-row-header');
+      container.append(rowHeaderContainer);
       
       return {
         row: rowHeaderContainer,
@@ -290,9 +296,13 @@
       dragContainerContainer.css({
         'float': 'left',
         width: '90%',
-        height: '100%'
+        height: '90%',
+        bottom: '0px',
+        right: '0px',
+        position: 'absolute',
+        'overflow': 'hidden'
       }); 
-      dragContainerContainer.addClass(_classBase+'-drag-container-container');
+      dragContainerContainer.addClass(CLASS_BASE+'-drag-container-container');
       container.append(dragContainerContainer);
       
       var dragContainer = jQuery(document.createElement('div'));
@@ -301,7 +311,7 @@
           dragHandler(event, ui);
         }
       });
-      dragContainer.addClass(_classBase+'-drag-container');
+      dragContainer.addClass(CLASS_BASE+'-drag-container');
       dragContainerContainer.append(dragContainer);
       
       return {
@@ -596,7 +606,7 @@
         _cellElements.push([]);
         for (var col=windowPosition.col; col < windowPosition.col + windowSize.width; col++) {
           var elem = document.createElement("div");
-          elem.style.backgroundColor = row%2 + col%2 > 0 ? "#ddd" : "";
+          elem.style.backgroundColor = row%2 + col%2 > 0 ? "#ddd" : "whitesmoke";
           elem.style.width = cellWidth + "px";
           elem.style.height = cellHeight + "px";
           elem.style.position = "absolute";
@@ -612,6 +622,64 @@
       }
       content.append(frag);
       return content;
+    }
+    
+    /**
+     * Creates an empty matrix with size obtained from API and appends to content.
+     * @param {jQuery object} container - The element that acts as the matrix container (element that invoked jMatrixBrowse).
+     * @returns {jQuery object} content where matrix is generated.
+     */
+    function generateRowColumnHeaders(headers) {
+      generateRowHeaders(headers.row);
+      generateColHeaders(headers.col);
+    }
+    
+    function generateRowHeaders(header) {
+      
+      var rowHeaders = [];
+      var frag = document.createDocumentFragment();
+      for (var row = 0, nRows = _cellElements.length; row < nRows; ++row) {
+        var cellElement = jQuery(_cellElements[row][0]);
+        var elem = jQuery(document.createElement("div"));
+        elem.addClass(CLASS_BASE+'-row-header-cell');
+        var css = {
+          width: '100%',
+          height: cellElement.height(),
+          top: cellElement.position().top,
+          left: 0,
+          position: 'absolute'
+        };
+        elem.css(css);
+        elem.html('row: ' + row);
+        frag.appendChild(elem[0]);
+        rowHeaders.push(elem);
+      }
+      header.append(frag);
+      return rowHeaders;
+    }
+    
+    function generateColHeaders(header) {
+      
+      var colHeaders = [];
+      var frag = document.createDocumentFragment();
+      for (var col = 0, nCols = _cellElements[0].length; col < nCols; ++col) {
+        var cellElement = jQuery(_cellElements[0][col]);
+        var elem = jQuery(document.createElement("div"));
+        elem.addClass(CLASS_BASE+'-col-header-cell');
+        var css = {
+          width: cellElement.width(),
+          height: '100%',
+          left: cellElement.position().left,
+          top: 0,
+          position: 'absolute'
+        };
+        elem.css(css);
+        elem.html('col: ' + col);
+        frag.appendChild(elem[0]);
+        colHeaders.push(elem);
+      }
+      header.append(frag);
+      return colHeaders;
     }
     
     /**
@@ -633,6 +701,7 @@
       
       // Create row and column headers.
       _headers = createRowColumnHeaderContainer(_elem);
+      
       // Create draggable area and add matrix to it.
       var containers = createDragContainer(_elem);
       _dragContainer = containers.dragContainer;
@@ -640,6 +709,9 @@
       
       // Generate initial content
       _content = generateInitialMatrixContent(_dragContainer);
+      
+      // Generate row and column header content
+      generateRowColumnHeaders(_headers);
       
       // Scroll to the initial position
       var windowPosition = getWindowPosition();
