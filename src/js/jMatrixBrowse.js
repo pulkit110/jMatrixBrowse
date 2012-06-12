@@ -309,6 +309,12 @@
       dragContainer.draggable({
         drag: function (event, ui) {
           dragHandler(event, ui);
+        }, 
+        dragStart: function (event, ui) {
+          dragStartHandler(event, ui);
+        }, 
+        dragStop: function (event, ui) {
+          dragStopHandler(event, ui);
         }
       });
       dragContainer.addClass(CLASS_BASE+'-drag-container');
@@ -337,7 +343,28 @@
      * @param {Object} ui
      */
     function dragHandler (event, ui) {
-      checkAndRepositionCells(event, ui);
+      event.type = 'jMatrixBrowseDrag';
+      _elem.trigger(event);
+    }
+    
+    /**
+     * Function that handles the drag start event on dragContainer.
+     * @param {Object} event - Drag event.
+     * @param {Object} ui
+     */
+    function dragStartHandler (event, ui) {
+      event.type = 'jMatrixBrowseDragStart';
+      _elem.trigger(event);
+    }
+    
+    /**
+     * Function that handles the drag stop event on dragContainer.
+     * @param {Object} event - Drag event.
+     * @param {Object} ui
+     */
+    function dragStopHandler (event, ui) {
+      event.type = 'jMatrixBrowseDragStop';
+      _elem.trigger(event);
     }
     
     /**
@@ -404,8 +431,6 @@
     
     /**
      * Check and resposition cells that are overflowing.
-     * @param {Object} event - Drag event.
-     * @param {Object} ui
      */
     function checkAndRepositionCells() {
       // TODO: We might need to check more elements in case of a quick drag.
@@ -418,6 +443,45 @@
       checkAndRepositionCellCol(_cellElements, _container, 0, OVERFLOW_LEFT);
       // Column on right might overflow from the right.
       checkAndRepositionCellCol(_cellElements, _container, _cellElements[0].length-1, OVERFLOW_RIGHT);
+    }
+    
+    /**
+     * Check and resposition headers according to cell positions.
+     */
+    function checkAndRepositionHeaders() {
+      checkAndRepositionRowHeader(_headers.row);
+      checkAndRepositionColumnHeader(_headers.col);
+    }
+    
+    /**
+     * Check and resposition headers according to cell positions.
+     * @param header - row header container
+     */
+    function checkAndRepositionRowHeader(header) {
+      header.children().each(function(index, element) {
+        var containerOffset = _container.offset();
+        var elementOffset = jQuery(_cellElements[index][0]).offset();
+        var top = elementOffset.top - containerOffset.top;
+        
+        jQuery(element).css({
+          top: top
+        });
+      });
+    }
+    
+    /**
+     * Check and resposition headers according to cell positions.
+     * @param header - column header container
+     */
+    function checkAndRepositionColumnHeader(header) {
+      header.children().each(function(index, element) {
+        var containerOffset = _container.offset();
+        var elementOffset = jQuery(_cellElements[0][index]).offset();
+        var left = elementOffset.left - containerOffset.left;
+        jQuery(element).css({
+          left: left
+        });
+      });
     }
     
     /**
@@ -626,16 +690,18 @@
     
     /**
      * Creates an empty matrix with size obtained from API and appends to content.
-     * @param {jQuery object} container - The element that acts as the matrix container (element that invoked jMatrixBrowse).
-     * @returns {jQuery object} content where matrix is generated.
+     * @param {jQuery object} headers - header containers.
      */
     function generateRowColumnHeaders(headers) {
       generateRowHeaders(headers.row);
       generateColHeaders(headers.col);
     }
     
-    function generateRowHeaders(header) {
-      
+    /**
+     * Generates elements and appends them to row header container. 
+     * @param header - row header container.
+     */
+    function generateRowHeaders(header) {  
       var rowHeaders = [];
       var frag = document.createDocumentFragment();
       for (var row = 0, nRows = _cellElements.length; row < nRows; ++row) {
@@ -658,6 +724,10 @@
       return rowHeaders;
     }
     
+    /**
+     * Generates elements and appends them to column header container. 
+     * @param header - column header container.
+     */
     function generateColHeaders(header) {
       
       var colHeaders = [];
@@ -719,6 +789,15 @@
       
       // Load data
       _self.reloadData();
+      
+      // Listen to events to implement reloading of data and headers
+      _elem.bind('jMatrixBrowseDrag', function (event) {
+        // Reposition matrix cells
+        checkAndRepositionCells();
+        
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
       
       // Test
       _elem.bind('jMatrixBrowseChange', function (event) {
