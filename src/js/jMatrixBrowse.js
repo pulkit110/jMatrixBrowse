@@ -54,7 +54,7 @@
     
     /**
      * Initialize the API
-     * @param {String} type type of api: 'test' initializes the mockAPI
+     * @param {string} type type of api: 'test' initializes the mockAPI
      */
     function initApi(type) {
       if (type === 'test') {
@@ -127,6 +127,12 @@
       }
     }
 
+    /**
+     * Check overflow for an element inside the container.
+     * @param {jQuery object} element - element to be checked for.
+     * @param {jQuery object} container - container to be checked against.
+     * @returns {Number} type - type of the overflow.
+     */
     function checkOverflow(element, container) {
       var containerOffset = container.offset();
       var elementOffset = element.offset();
@@ -373,22 +379,26 @@
      */
     function computeNewCellCoordinates(overflow) {
       var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
-      
+      var direction;
       switch(overflow) {
         case OVERFLOW_TOP:
           ++_currentCell.row;
+          direction = 'top';
           break;
           
         case OVERFLOW_BOTTOM:
           --_currentCell.row;
+          direction = 'bottom';
           break;
           
         case OVERFLOW_LEFT:
           ++_currentCell.col;
+          direction = 'left';
           break;
           
         case OVERFLOW_RIGHT:
           --_currentCell.col;
+          direction = 'right';
           break;
       }
       
@@ -396,7 +406,8 @@
       _elem.trigger({
         type: 'jMatrixBrowseChange',
         previousCell: previousCell,
-        currentCell: _currentCell
+        currentCell: _currentCell,
+        direction: direction
       });
     }
     
@@ -699,12 +710,12 @@
     
     /**
      * Generates elements and appends them to row header container. 
-     * @param header - row header container.
+     * @param {jQuery object} header - row header container.
      */
     function generateRowHeaders(header) {  
-      var rowHeaders = [];
+      var rowHeaders = getRowHeadersFromTopRow(_currentCell.row);
       var frag = document.createDocumentFragment();
-      for (var row = 0, nRows = _cellElements.length; row < nRows; ++row) {
+      for (var row = 0, nRows = rowHeaders.length; row < nRows; ++row) {
         var cellElement = jQuery(_cellElements[row][0]);
         var elem = jQuery(document.createElement("div"));
         elem.addClass(CLASS_BASE+'-row-header-cell');
@@ -716,23 +727,20 @@
           position: 'absolute'
         };
         elem.css(css);
-        elem.html('row: ' + row);
+        elem.html(rowHeaders[row]);
         frag.appendChild(elem[0]);
-        rowHeaders.push(elem);
       }
       header.append(frag);
-      return rowHeaders;
     }
     
     /**
      * Generates elements and appends them to column header container. 
-     * @param header - column header container.
+     * @param {jQuery object} header - column header container.
      */
     function generateColHeaders(header) {
-      
-      var colHeaders = [];
+      var colHeaders = getColHeadersFromLeftCol(_currentCell.col);
       var frag = document.createDocumentFragment();
-      for (var col = 0, nCols = _cellElements[0].length; col < nCols; ++col) {
+      for (var col = 0, nCols = colHeaders.length; col < nCols; ++col) {
         var cellElement = jQuery(_cellElements[0][col]);
         var elem = jQuery(document.createElement("div"));
         elem.addClass(CLASS_BASE+'-col-header-cell');
@@ -744,12 +752,94 @@
           position: 'absolute'
         };
         elem.css(css);
-        elem.html('col: ' + col);
+        elem.html(colHeaders[col]);
         frag.appendChild(elem[0]);
-        colHeaders.push(elem);
       }
       header.append(frag);
+    }
+    
+    /**
+     * Get the row headers for the current window from top row index. 
+     * @param {Number} topRowIndex - index of the top row
+     * @returns {Array} rowHeaders - Array of row headers
+     */
+    function getRowHeadersFromTopRow(topRowIndex) {
+      var height = getWindowSize().height;
+      var rowHeaders = [];
+      // TODO: Load from API
+      for (var i = 0; i < height; ++i) {
+        rowHeaders.push('row: ' + (topRowIndex+i));
+      }
+      return rowHeaders;
+    }
+    
+    /**
+     * Get the column headers for the current window from left column index. 
+     * @param {Number} leftColIndex - index of the left column
+     * @returns {Array} colHeaders - Array of column headers
+     */
+    function getColHeadersFromLeftCol(leftColIndex) {
+      var width = getWindowSize().width;
+      var colHeaders = [];
+      // TODO: Load from API
+      for (var i = 0; i < width; ++i) {
+        colHeaders.push('col: ' + (leftColIndex+i));
+      }
       return colHeaders;
+    }
+    
+    /**
+     * Reload column headers on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadRowHeaders(event) {
+      var rowHeaders = getRowHeadersFromTopRow(event.currentCell.row);
+      _headers.row.children().each(function (index, element) {
+        if (index < rowHeaders.length) {
+          jQuery(element).html(rowHeaders[index]);
+        }
+      });
+    }
+    
+    /**
+     * Reload row headers on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadColHeaders(event) {
+      var colHeaders = getColHeadersFromLeftCol(event.currentCell.col);
+      _headers.col.children().each(function (index, element) {
+        if (index < colHeaders.length) {
+          jQuery(element).html(colHeaders[index]);
+        }
+      });
+    }
+    
+    /**
+     * Reload row and column headers on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadHeaders(event) {
+      if (event.direction === 'top' || event.direction === 'bottom') {
+        reloadRowHeaders(event);
+      } else {
+        reloadColHeaders(event);
+      }
+    }
+    
+    /**
+     * Reload data on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadData(event) {
+      reloadHeaders(event);
     }
     
     /**
@@ -776,31 +866,38 @@
       var containers = createDragContainer(_elem);
       _dragContainer = containers.dragContainer;
       _container = containers.container;
+
+      // Scroll to the initial position
+      var windowPosition = getWindowPosition();
+      _self.scrollTo(windowPosition.row, windowPosition.col);
       
       // Generate initial content
       _content = generateInitialMatrixContent(_dragContainer);
       
       // Generate row and column header content
       generateRowColumnHeaders(_headers);
-      
-      // Scroll to the initial position
-      var windowPosition = getWindowPosition();
-      _self.scrollTo(windowPosition.row, windowPosition.col);
-      
+
       // Load data
       _self.reloadData();
       
       // Listen to events to implement reloading of data and headers
+      
+      // Listen for drag and reposition cells
       _elem.bind('jMatrixBrowseDrag', function (event) {
         // Reposition matrix cells
-        checkAndRepositionCells();
-        
+        checkAndRepositionCells();  
         // Reposition headers
         checkAndRepositionHeaders();
       });
       
-      // Test
+      // Listen for change and reload new data
       _elem.bind('jMatrixBrowseChange', function (event) {
+        reloadData({
+          currentCell: event.currentCell,
+          previousCell: event.previousCell,
+          direction: event.direction
+        });
+        
         console.log('jMatrixBrowseChange'); 
         console.log(event);
       });
