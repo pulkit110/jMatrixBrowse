@@ -1,17 +1,23 @@
 #my_browser {
-	position: absolute;
-	left: 20px;
-	top: 20px;
-	bottom: 20px;
-	right: 20px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  bottom: 20px;
+  right: 20px;
 }
 #main {
-	position: absolute;
-	left: 20px;
-	top: 20px;
-	height: 650px;
-	right: 240px;
-	border: 5px solid black;
-	cursor: default;
-	overflow: hidden;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  height: 650px;
+  right: 240px;
+  border: 5px solid black;
+  cursor: default;
+  overflow: hidden;
+}
+
+.jMatrixBrowse-cell {
+  border-color: #ff9900;
+  border-width: thin;
+  border-style: solid;
 }

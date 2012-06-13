@@ -267,7 +267,8 @@
         top: '0px',
         right: '0px',
         'background-color': 'red',
-        position: 'absolute'
+        position: 'absolute',
+        overflow: 'hidden'
       });
       colHeaderContainer.addClass(CLASS_BASE + '-col-header');
       container.append(colHeaderContainer);
@@ -279,7 +280,8 @@
         bottom: '0px',
         'background-color': 'green',
         'float': 'left',
-        position: 'absolute'
+        position: 'absolute',
+        overflow: 'hidden'
       });
       rowHeaderContainer.addClass(CLASS_BASE + '-row-header');
       container.append(rowHeaderContainer);
@@ -378,37 +380,24 @@
      * @param {Number} overflow - Type of the overflow.
      */
     function computeNewCellCoordinates(overflow) {
-      var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
-      var direction;
+
       switch(overflow) {
         case OVERFLOW_TOP:
           ++_currentCell.row;
-          direction = 'top';
           break;
           
         case OVERFLOW_BOTTOM:
           --_currentCell.row;
-          direction = 'bottom';
           break;
           
         case OVERFLOW_LEFT:
           ++_currentCell.col;
-          direction = 'left';
           break;
           
         case OVERFLOW_RIGHT:
           --_currentCell.col;
-          direction = 'right';
           break;
       }
-      
-      // Trigger event for change
-      _elem.trigger({
-        type: 'jMatrixBrowseChange',
-        previousCell: previousCell,
-        currentCell: _currentCell,
-        direction: direction
-      });
     }
     
     /**
@@ -504,12 +493,19 @@
      */
     function checkAndRepositionCellRow(cellElements, container, row, overflow) {
       if (cellElements[row].length > 0 && isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
+        
+        var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
+        
         // There is an overflow.
         computeNewCellCoordinates(overflow);
         
         var cellRow;
+        var direction;
+        
         switch (overflow) {
           case OVERFLOW_TOP:
+            direction = 'top';
+            
             // The row is overflowing from top. Move it to bottom. 
             var height = cellElements.length;
             var lastCell = (cellElements[height-1].length > 0) ? jQuery(cellElements[height-1][0]) : undefined;
@@ -533,6 +529,8 @@
             break;
 
           case OVERFLOW_BOTTOM:
+            direction = 'bottom';
+            
             // The row is overflowing from bottom. Move it to top.
             var firstCell = (cellElements.length > 0 && cellElements[0].length > 0)?jQuery(cellElements[0][0]):undefined;
             if (firstCell === undefined) {
@@ -553,6 +551,14 @@
             
             break;
         }
+        // Trigger event for change
+        _elem.trigger({
+          type: 'jMatrixBrowseChange',
+          previousCell: previousCell,
+          currentCell: _currentCell,
+          direction: direction
+        });
+      
       }
     }
     
@@ -565,11 +571,17 @@
      */
     function checkAndRepositionCellCol(cellElements, container, col, overflow) {
       if (isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
+        
+        var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
+        
         // There is an overflow.
         computeNewCellCoordinates(overflow);
         
+        var direction;
         switch (overflow) {
           case OVERFLOW_LEFT:
+            direction = 'left';
+            
             // The row is overflowing from left. Move it to right. 
             if (cellElements.length <= 0 || cellElements[0].length <= 0) {
               console.error('Unable to resposition col ' + col + ' overflowing from left.');
@@ -592,6 +604,8 @@
             break;
 
           case OVERFLOW_RIGHT:
+            direction = 'right';
+            
             // The row is overflowing from right. Move it to left. 
             if (cellElements.length <= 0 || cellElements[0].length <= 0) {
               console.error('Unable to resposition col ' + col + ' overflowing from left.');
@@ -612,6 +626,13 @@
             }
             break;
         }
+        // Trigger event for change
+        _elem.trigger({
+          type: 'jMatrixBrowseChange',
+          previousCell: previousCell,
+          currentCell: _currentCell,
+          direction: direction
+        });
       }
     }
     
@@ -759,6 +780,50 @@
     }
     
     /**
+     * Get the row data for the row index for current window. 
+     * @param {Object} cell - row and column index of cell
+     * @returns {Array} rowData - Array of row data
+     */
+    function getRowDataForCell(cell) {
+      var rowData = [];
+      var response = _api.getResponse({
+        row1: cell.row,
+        col1: cell.col,
+        row2: cell.row,
+        col2: cell.col + getWindowSize().width
+      });
+      if (response && response.data && response.data.length == 1) {
+        for (var j = 0; j < response.data[0].length; ++j) {
+          var cellData = response.data[0][j]; 
+          rowData.push(cellData);
+        }
+      }
+      return rowData;
+    }
+    
+    /**
+     * Get the col data for the col index for current window. 
+     * @param {Object} cell - row and column index of cell.
+     * @returns {Array} colData - Array of col data.
+     */
+    function getColDataForCell(cell) {
+      var colData = [];
+      var response = _api.getResponse({
+        row1: cell.row,
+        col1: cell.col,
+        row2: cell.row + getWindowSize().height,
+        col2: cell.col
+      });
+      if (response && response.data) {
+        for (var i = 0; i < response.data.length; ++i) {
+          var cellData = response.data[i][0]; 
+          colData.push(cellData);
+        }
+      }
+      return colData;
+    }
+    
+    /**
      * Get the row headers for the current window from top row index. 
      * @param {Number} topRowIndex - index of the top row
      * @returns {Array} rowHeaders - Array of row headers
@@ -819,6 +884,60 @@
     }
     
     /**
+     * Reload row data on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadRowData(event) {
+      var rowData;
+      var rowToBeReplaced;
+      if (event.direction === 'top') {
+        // If overflow from top, bottom row will have to be fetched. 
+        rowData = getRowDataForCell({
+         row: event.currentCell.row + getWindowSize().height,
+         col: event.currentCell.col
+        });
+        rowToBeReplaced = _cellElements[_cellElements.length-1];
+      } else {
+        // If overflow from bottom, top row will have to be fetched.
+        rowData = getRowDataForCell(event.currentCell);
+        rowToBeReplaced = _cellElements[0];
+      }
+      
+      jQuery.each(rowToBeReplaced, function(index, cell) {
+        jQuery(cell).html(rowData[index]);
+      });
+    }
+    
+    /**
+     * Reload column data on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadColData(event) {
+      var colData;
+      var colToBeReplacedIndex;
+      if (event.direction === 'left') {
+        // If overflow from left, right column will have to be fetched. 
+        colData = getColDataForCell({
+         row: event.currentCell.row,
+         col: event.currentCell.col + getWindowSize().width
+        });
+        colToBeReplacedIndex = _cellElements[0].length-1;
+      } else {
+        // If overflow from right, left column will have to be fetched.
+        colData = getColDataForCell(event.currentCell);
+        colToBeReplacedIndex = 0;
+      }
+      
+      for (var i = 0; i < _cellElements.length; ++i) {
+        jQuery(_cellElements[i][colToBeReplacedIndex]).html(colData[i]);
+      }
+    }
+    
+    /**
      * Reload row and column headers on change of matrix.
      * @param {Number} event.currentCell - currentCell at the top left
      * @param {Number} event.previousCell - previousCell at the top left
@@ -833,6 +952,22 @@
     }
     
     /**
+     * Reload row and column data on change of matrix.
+     * @param {Number} event.currentCell - currentCell at the top left
+     * @param {Number} event.previousCell - previousCell at the top left
+     * @param {string} event.direction - direction of drag that triggered the change
+     */
+    function reloadMatrixData(event) {
+      // TODO: Only the last/first row/column will have changed based on the direction of drag
+      // e.g. for overflow from top, only bottom row needs to be reloaded.
+      if (event.direction === 'top' || event.direction === 'bottom') {
+        reloadRowData(event);
+      } else {
+        reloadColData(event);
+      }
+    }
+    
+    /**
      * Reload data on change of matrix.
      * @param {Number} event.currentCell - currentCell at the top left
      * @param {Number} event.previousCell - previousCell at the top left
@@ -840,6 +975,7 @@
      */
     function reloadData(event) {
       reloadHeaders(event);
+      reloadMatrixData(event);
     }
     
     /**
