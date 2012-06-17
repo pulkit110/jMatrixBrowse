@@ -15,7 +15,7 @@
  * @param {Number} [width] - width of the matrix to answer requests for. optional. default = 100.
  */
 function MockApi(height, width) {
-  var matrixGenerator = new MatrixGenerator();
+  var matrixGenerator = new MatrixGenerator('sequential');
   matrixGenerator.init((height==undefined)?100:height, (width==undefined)?100:width);
   
   /**

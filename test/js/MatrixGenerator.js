@@ -8,9 +8,16 @@
  * 
  * @class MatrixGenerator
  */
-function MatrixGenerator() {
+function MatrixGenerator(type) {
   var that = this;
 
+  var STR_TYPE_RANDOM = 'random';
+  var STR_TYPE_SEQUENTIAL = 'sequential';
+  
+  if (type == undefined) {
+    type = 'random';
+  }
+  
   var INT_MAX_LABEL_LENGTH = 10;
   var FLO_NUM_PROBABILITY = 0.1;
 
@@ -44,12 +51,24 @@ function MatrixGenerator() {
     arr_colLabels = [];
 
     for (var i = 0; i < int_height; ++i) {
-      arr_rowLabels.push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
+      if (type == STR_TYPE_RANDOM) {
+        arr_rowLabels.push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
+      } else {
+        arr_rowLabels.push('row ' + i);
+      }
+      
       mat_testMatrix.push([]);
       for (var j = 0; j < int_width; ++j) {
-        if (i == 0)
-          arr_colLabels.push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
-        mat_testMatrix[i].push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
+        if (type == STR_TYPE_RANDOM) {
+            if (i == 0)
+              arr_colLabels.push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
+          mat_testMatrix[i].push(getRandomString(Math.random()*INT_MAX_LABEL_LENGTH));
+        } else {
+            if (i == 0)
+              arr_colLabels.push('col ' + j);
+          mat_testMatrix[i].push(i + ', ' + j);
+        }
+        
       }
     }
   };
