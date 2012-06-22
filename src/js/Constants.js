@@ -3,12 +3,16 @@
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com> 
 */
+
+var jMatrixBrowseNs = jMatrixBrowseNs || {};
+
 /**
  * Constants for jMatrixBrowse.
  * 
  * @class Constants
+ * @memberOf jMatrixBrowseNs
  */
-Constants = {
+jMatrixBrowseNs.Constants = {
   OVERFLOW_LEFT : 1,
   OVERFLOW_RIGHT : 2,
   OVERFLOW_TOP : 3,

@@ -20,7 +20,15 @@
  * documents the function and classes that are added to jQuery by this plug-in.
  * @memberOf jQuery
  */
-(function( jQuery ) {
+
+/**
+  * jMatrixBrowseNS - Namespace encapsulating jMatrixBrowse.
+  *
+  * @namespace jMatrixBrowseNS
+  */
+var jMatrixBrowseNs = jMatrixBrowseNs || {};
+
+(function(jQuery, jMatrixBrowseNs) {
   /**
    * jMatrixBrowse - a jQuery plugin to create large draggable(like Google Maps)
    * matrices. 
@@ -31,6 +39,9 @@
   jQuery.fn.jMatrixBrowse = function() {
 
     var _self = this;
+    var _renderer;      // jMatrixBrowse renderer
+    var _configuration; // jMatrixBrowse configuration manager.
+    var _api;           // API handler
     
     /**
      * Computes the new cell coordinates when a drag results in overflow.
@@ -39,20 +50,20 @@
     function computeNewCellCoordinates(overflow) {
 
       switch(overflow) {
-        case Constants.OVERFLOW_TOP:
-          ++_currentCell.row;
+        case jMatrixBrowseNs.Constants.OVERFLOW_TOP:
+          ++_renderer.currentCell.row;
           break;
           
-        case Constants.OVERFLOW_BOTTOM:
-          --_currentCell.row;
+        case jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM:
+          --_renderer.currentCell.row;
           break;
           
-        case Constants.OVERFLOW_LEFT:
-          ++_currentCell.col;
+        case jMatrixBrowseNs.Constants.OVERFLOW_LEFT:
+          ++_renderer.currentCell.col;
           break;
           
-        case Constants.OVERFLOW_RIGHT:
-          --_currentCell.col;
+        case jMatrixBrowseNs.Constants.OVERFLOW_RIGHT:
+          --_renderer.currentCell.col;
           break;
       }
     }
@@ -64,23 +75,23 @@
      */
     function isValidDrag(overflow) {
       switch(overflow) {
-        case Constants.OVERFLOW_TOP:
-          if (_currentCell.row >= getMatrixSize().height-1)
+        case jMatrixBrowseNs.Constants.OVERFLOW_TOP:
+          if (_renderer.currentCell.row >= _api.getMatrixSize().height-1)
             return false;
           return true;
           
-        case Constants.OVERFLOW_BOTTOM:
-          if (_currentCell.row <= 0) 
+        case jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM:
+          if (_renderer.currentCell.row <= 0) 
             return false;
           return true;
           
-        case Constants.OVERFLOW_LEFT:
-          if (_currentCell.col >= getMatrixSize().width-1) 
+        case jMatrixBrowseNs.Constants.OVERFLOW_LEFT:
+          if (_renderer.currentCell.col >= _api.getMatrixSize().width-1) 
             return false;
           return true;
           
-        case Constants.OVERFLOW_RIGHT:
-          if (_currentCell.col <= 0) 
+        case jMatrixBrowseNs.Constants.OVERFLOW_RIGHT:
+          if (_renderer.currentCell.col <= 0) 
             return false;
           return true;
       }
@@ -93,21 +104,21 @@
       // TODO: We might need to check more elements in case of a quick drag. 
       
       // Row on top might overflow from the top.
-      checkAndRepositionCellRow(_cellElements, _container, 1, Constants.OVERFLOW_TOP);
+      checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_TOP);
       // Row on bottom might overflow from the bottom.
-      checkAndRepositionCellRow(_cellElements, _container, _cellElements.length-2, Constants.OVERFLOW_BOTTOM);
+      checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements().length-2, jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM);
       // Column on left might overflow from the left.
-      checkAndRepositionCellCol(_cellElements, _container, 1, Constants.OVERFLOW_LEFT);
+      checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_LEFT);
       // Column on right might overflow from the right.
-      checkAndRepositionCellCol(_cellElements, _container, _cellElements[0].length-2, Constants.OVERFLOW_RIGHT);
+      checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements()[0].length-2, jMatrixBrowseNs.Constants.OVERFLOW_RIGHT);
     }
     
     /**
      * Check and resposition headers according to cell positions.
      */
     function checkAndRepositionHeaders() {
-      checkAndRepositionRowHeader(_headers.row);
-      checkAndRepositionColumnHeader(_headers.col);
+      checkAndRepositionRowHeader(_renderer.getHeaders().row);
+      checkAndRepositionColumnHeader(_renderer.getHeaders().col);
     }
     
     /**
@@ -116,8 +127,8 @@
      */
     function checkAndRepositionRowHeader(header) {
       header.children().each(function(index, element) {
-        var containerOffset = _container.offset();
-        var elementOffset = jQuery(_cellElements[index][0]).offset();
+        var containerOffset = _renderer.getContainer().offset();
+        var elementOffset = jQuery(_renderer.getCellElements()[index][0]).offset();
         var top = elementOffset.top - containerOffset.top;
         
         jQuery(element).css({
@@ -132,8 +143,8 @@
      */
     function checkAndRepositionColumnHeader(header) {
       header.children().each(function(index, element) {
-        var containerOffset = _container.offset();
-        var elementOffset = jQuery(_cellElements[0][index]).offset();
+        var containerOffset = _renderer.getContainer().offset();
+        var elementOffset = jQuery(_renderer.getCellElements()[0][index]).offset();
         var left = elementOffset.left - containerOffset.left;
         jQuery(element).css({
           left: left
@@ -149,9 +160,9 @@
      * @param {Number} overflow - Type of the overflow to check for.
      */
     function checkAndRepositionCellRow(cellElements, container, row, overflow) {
-      if (cellElements[row].length > 0 && Utils.isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
+      if (cellElements[row].length > 0 && jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
         
-        var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
+        var previousCell = jQuery.extend({}, _renderer.currentCell); // Clone currentCell
         
         // There is an overflow.
         computeNewCellCoordinates(overflow);
@@ -160,7 +171,7 @@
         var direction;
         
         switch (overflow) {
-          case Constants.OVERFLOW_TOP:
+          case jMatrixBrowseNs.Constants.OVERFLOW_TOP:
             direction = 'top';
             
             // The row is overflowing from top. Move it to bottom. 
@@ -188,7 +199,7 @@
             
             break;
 
-          case Constants.OVERFLOW_BOTTOM:
+          case jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM:
             direction = 'bottom';
             
             // The row is overflowing from bottom. Move it to top.
@@ -218,7 +229,7 @@
         _elem.trigger({
           type: 'jMatrixBrowseChange',
           previousCell: previousCell,
-          currentCell: _currentCell,
+          currentCell: _renderer.currentCell,
           direction: direction
         });
       
@@ -233,16 +244,16 @@
      * @param {Number} overflow - Type of the overflow to check for.
      */
     function checkAndRepositionCellCol(cellElements, container, col, overflow) {
-      if (Utils.isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
+      if (jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
         
-        var previousCell = jQuery.extend({}, _currentCell); // Clone currentCell
+        var previousCell = jQuery.extend({}, _renderer.currentCell); // Clone currentCell
         
         // There is an overflow.
         computeNewCellCoordinates(overflow);
         
         var direction;
         switch (overflow) {
-          case Constants.OVERFLOW_LEFT:
+          case jMatrixBrowseNs.Constants.OVERFLOW_LEFT:
             direction = 'left';
             
             // The row is overflowing from left. Move it to right. 
@@ -269,7 +280,7 @@
             }
             break;
 
-          case Constants.OVERFLOW_RIGHT:
+          case jMatrixBrowseNs.Constants.OVERFLOW_RIGHT:
             direction = 'right';
             
             // The row is overflowing from right. Move it to left. 
@@ -299,7 +310,7 @@
         _elem.trigger({
           type: 'jMatrixBrowseChange',
           previousCell: previousCell,
-          currentCell: _currentCell,
+          currentCell: _renderer.currentCell,
           direction: direction
         });
       }
@@ -313,8 +324,8 @@
      */
     function reloadRowHeaders(event) {
       var nBackgroundCells = 1; // TODO
-      var rowHeaders = getRowHeadersFromTopRow(event.currentCell.row-nBackgroundCells);
-      _headers.row.children().each(function (index, element) {
+      var rowHeaders = _api.getRowHeadersFromTopRow(event.currentCell.row-nBackgroundCells);
+      _renderer.getHeaders().row.children().each(function (index, element) {
         if (index < rowHeaders.length) {
           jQuery(element).html(rowHeaders[index]);
         }
@@ -329,8 +340,8 @@
      */
     function reloadColHeaders(event) {
       var nBackgroundCells = 1; // TODO
-      var colHeaders = getColHeadersFromLeftCol(event.currentCell.col-nBackgroundCells);
-      _headers.col.children().each(function (index, element) {
+      var colHeaders = _api.getColHeadersFromLeftCol(event.currentCell.col-nBackgroundCells);
+      _renderer.getHeaders().col.children().each(function (index, element) {
         if (index < colHeaders.length) {
           jQuery(element).html(colHeaders[index]);
         }
@@ -349,15 +360,15 @@
       var nBackgroundCells = 1; // TODO:
       if (event.direction === 'top') {
         // If overflow from top, bottom row will have to be fetched.
-        rowData = getRowDataForCell({
-         row: event.currentCell.row - nBackgroundCells + _cellElements.length - 1,
+        rowData = _api.getRowDataForCell({
+         row: event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1,
          col: event.currentCell.col
         });
-        rowToBeReplaced = _cellElements[_cellElements.length-1];
+        rowToBeReplaced = _renderer.getCellElements()[_renderer.getCellElements().length-1];
       } else {
         // If overflow from bottom, top row will have to be fetched.
-        rowData = getRowDataForCell(event.currentCell - nBackgroundCells);
-        rowToBeReplaced = _cellElements[0];
+        rowData = _api.getRowDataForCell(event.currentCell - nBackgroundCells);
+        rowToBeReplaced = _renderer.getCellElements()[0];
       }
       
       jQuery.each(rowToBeReplaced, function(index, cell) {
@@ -377,19 +388,19 @@
       var nBackgroundCells = 1; // TODO:
       if (event.direction === 'left') {
         // If overflow from left, right column will have to be fetched. 
-        colData = getColDataForCell({
+        colData = _api.getColDataForCell({
          row: event.currentCell.row,
-         col: event.currentCell.col - nBackgroundCells + _cellElements[0].length - 1 
+         col: event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 
         });
-        colToBeReplacedIndex = _cellElements[0].length-1;
+        colToBeReplacedIndex = _renderer.getCellElements()[0].length-1;
       } else {
         // If overflow from right, left column will have to be fetched.
-        colData = getColDataForCell(event.currentCell - nBackgroundCells);
+        colData = _api.getColDataForCell(event.currentCell - nBackgroundCells);
         colToBeReplacedIndex = 0;
       }
       
-      for (var i = 0; i < _cellElements.length; ++i) {
-        jQuery(_cellElements[i][colToBeReplacedIndex]).html(colData[i]);
+      for (var i = 0; i < _renderer.getCellElements().length; ++i) {
+        jQuery(_renderer.getCellElements()[i][colToBeReplacedIndex]).html(colData[i]);
       }
     }
     
@@ -440,38 +451,20 @@
      * @param {jQuery object} elem - the element to which to attach the jMatrixBrowse.
      */
     function init(elem) {
-      // Get user options
-      var options = getUserOptions(elem);
-
-      // Extending user options with application defaults
-      var settings = extendDefaults(options);
-      setSettings(settings);
-
-      // Initialize mock api
-      initApi('test');
-
+      
       _elem = elem;
       
-      // Create row and column headers.
-      _headers = createRowColumnHeaderContainer(_elem);
+      // Initialize mock api
+      _api = jMatrixBrowseNs.APIHandler('test');
       
-      // Create draggable area and add matrix to it.
-      var containers = createDragContainer(_elem);
-      _dragContainer = containers.dragContainer;
-      _container = containers.container;
-
-      // Scroll to the initial position
-      var windowPosition = getWindowPosition();
-      _self.scrollTo(windowPosition.row, windowPosition.col);
+      // Initialize configuration, get user options and extend with default.
+      _configuration = jMatrixBrowseNs.Configuration(elem, _api);
       
-      // Generate initial content
-      _content = generateInitialMatrixContent(_dragContainer);
-      
-      // Generate row and column header content
-      generateRowColumnHeaders(_headers);
+      // Initialize the jMatrixBrowseRenderer
+      _renderer = jMatrixBrowseNs.jMatrixBrowseRenderer(elem, _configuration, _api);
 
       // Load data
-      _self.reloadData();
+      //_self.reloadData();
       
       // Listen to events to implement reloading of data and headers
       
@@ -497,38 +490,12 @@
     }
 
     //Public API
-    
-    //TODO: Might not work when more than one jMatrixBrowse on the same page. 
-    /**
-     * Get the cell position for cell at (row,col).
-     * @param {Number} row - row index of the cell.
-     * @param {Number} col - column index of the cell.
-     * @returns {Object} position - position of the cell. 
-     * @returns {Number} position.top - top coordinate of the cell. 
-     * @returns {Number} position.left - left coordinate of the cell. 
-     */
-    this.getCellPosition = function (row, col) {
-      return jQuery('.' + generateClassNameForCell(row,col)).position();
-    };
-    
-    /**
-     * Scroll to given position. 
-     * @param {Number} row - row index of the cell.
-     * @param {Number} col - column index of the cell.
-     */
-    this.scrollTo = function (row, col) {
-      _cellPosition = _self.getCellPosition(row, col);
-      _currentCell = {
-        row: row,
-        col: col
-      };
-    };
-    
+
     /**
      * Reload data in the matrix for the visible window. 
      */
     this.reloadData = function() {
-      var cellWindow = getCellWindow(_currentCell);
+      var cellWindow = _configuration.getCellWindow(_renderer.currentCell);
       if (cellWindow == undefined) {
         console.error('Unable to get cell window.');
         return;
@@ -555,4 +522,4 @@
       init(jQuery(this));
     });
   };
-})( jQuery );
+})(jQuery, jMatrixBrowseNs);
