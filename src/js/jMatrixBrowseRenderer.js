@@ -35,6 +35,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   var _configuration; // configuration for the current instance of jMatrixBrowse
   var _api;           // api manager
   var _self;          // reference to self
+  var _dragActive = false;  // boolean to indicate if drag is active
 
   /**
    * Create the content div and append to container.
@@ -123,10 +124,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       drag: function (event, ui) {
         dragHandler(event, ui);
       }, 
-      dragStart: function (event, ui) {
+      start: function (event, ui) {
+        _dragActive = true;
         dragStartHandler(event, ui);
       }, 
-      dragStop: function (event, ui) {
+      stop: function (event, ui) {
         dragStopHandler(event, ui);
       }
     });
@@ -139,6 +141,19 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     };
   }
 
+  /**
+   * Function that handles the click event on cell elements.
+   * @param {jQuery Object} elem - Element that triggered the click event
+   * @param {Object} event - Click event.
+   */
+  function cellClickHandler(elem, event) {
+    event.type = 'jMatrixBrowseClick';
+    event.row = elem.attr('data-row');
+    event.col = elem.attr('data-col');
+    console.log(event);
+    _elem.trigger(event);
+  }
+  
   /**
    * Function that handles the drag event on dragContainer.
    * @param {Object} event - Drag event.
@@ -211,6 +226,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     for (var row= rowBegin; row < rowBegin + height; row++) {
       _cellElements.push([]);
       for (var col = colBegin; col < colBegin + width; col++) {
+        // Create cell and set style
         var elem = document.createElement("div");
         elem.style.backgroundColor = row%2 + col%2 > 0 ? "#ddd" : "whitesmoke";
         elem.style.width = cellWidth + "px";
@@ -222,14 +238,32 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         elem.style.textIndent = "6px";
         elem.innerHTML = row + "," + col;
         elem.className += " jMatrixBrowse-cell " + generateClassNameForCell(row, col);
+        
+        // Add data-row and data-col to cell
+        jQuery(elem).attr('data-row', row);
+        jQuery(elem).attr('data-col', col);
+        
+        // Append cell to fragment
         frag.appendChild(elem);
         _cellElements[row-rowBegin].push(elem);
       }
-    }
+    }    
     content.append(frag);
+    
+    // Associate click handler with cell
+    jQuery('.jMatrixBrowse-cell').click(function(event) {
+      // Trigger click only when click is not for drag
+      if (!_dragActive) {
+        cellClickHandler(jQuery(this), event);
+      } else {
+        // Click was triggered due to drag. 
+        _dragActive = false;
+      }
+    });
+    
     return content;
   }
-    
+
   /**
    * Creates an empty matrix with size obtained from API and appends to content.
    * @param {jQuery object} headers - header containers.

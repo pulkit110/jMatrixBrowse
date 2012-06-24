@@ -358,21 +358,29 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var rowData;
       var rowToBeReplaced;
       var nBackgroundCells = 1; // TODO:
+      var rowIndex;
       if (event.direction === 'top') {
         // If overflow from top, bottom row will have to be fetched.
         rowData = _api.getRowDataForCell({
          row: event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1,
          col: event.currentCell.col
         });
+        rowIndex = event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1;
         rowToBeReplaced = _renderer.getCellElements()[_renderer.getCellElements().length-1];
       } else {
         // If overflow from bottom, top row will have to be fetched.
-        rowData = _api.getRowDataForCell(event.currentCell - nBackgroundCells);
+        rowData = _api.getRowDataForCell({
+         row: event.currentCell.row - nBackgroundCells,
+         col: event.currentCell.col
+        });
+        rowIndex = event.currentCell.row - nBackgroundCells;
         rowToBeReplaced = _renderer.getCellElements()[0];
       }
       
       jQuery.each(rowToBeReplaced, function(index, cell) {
         jQuery(cell).html(rowData[index]);
+        jQuery(cell).attr('data-row', rowIndex);
+        jQuery(cell).attr('data-col', event.currentCell.col - nBackgroundCells + index);
       });
     }
     
@@ -386,21 +394,30 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var colData;
       var colToBeReplacedIndex;
       var nBackgroundCells = 1; // TODO:
+      var colIndex;
       if (event.direction === 'left') {
         // If overflow from left, right column will have to be fetched. 
         colData = _api.getColDataForCell({
          row: event.currentCell.row,
          col: event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 
         });
+        colIndex = event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1;
         colToBeReplacedIndex = _renderer.getCellElements()[0].length-1;
       } else {
         // If overflow from right, left column will have to be fetched.
-        colData = _api.getColDataForCell(event.currentCell - nBackgroundCells);
+        colData = _api.getColDataForCell({
+         row: event.currentCell.row,
+         col: event.currentCell.col - nBackgroundCells
+        });
+        colIndex = event.currentCell.col - nBackgroundCells;
         colToBeReplacedIndex = 0;
       }
       
       for (var i = 0; i < _renderer.getCellElements().length; ++i) {
-        jQuery(_renderer.getCellElements()[i][colToBeReplacedIndex]).html(colData[i]);
+        var cell = _renderer.getCellElements()[i][colToBeReplacedIndex];
+        jQuery(cell).html(colData[i]);
+        jQuery(cell).attr('data-row', event.currentCell.row - nBackgroundCells + i);
+        jQuery(cell).attr('data-col', colIndex);
       }
     }
     
@@ -486,6 +503,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         
         console.log('jMatrixBrowseChange'); 
         console.log(event);
+      });
+      
+      // Listen for click event
+      _elem.bind('jMatrixBrowseClick', function (event) {
+        console.log('click: ' + event.row + ', ' + event.col);
       });
     }
 
