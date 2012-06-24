@@ -537,11 +537,17 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
     }
     
+    this.getPosition = function() {
+      return _renderer.currentCell;
+    };
+    
     /**
      * Main plugin function
      */
     jQuery('[data-jmatrix_browser=true]').each( function() {
       init(jQuery(this));
     });
+    
+    return this;
   };
 })(jQuery, jMatrixBrowseNs);

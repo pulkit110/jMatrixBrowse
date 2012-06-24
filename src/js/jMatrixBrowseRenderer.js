@@ -369,6 +369,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     _configuration = configuration;
     _api = api;
     
+    // Add class for jMatrixBrowse container
+    elem.addClass('jmb-matrix-container');
+    
     /**
      * Gets the cell elements.
      * @returns {Array of Array of DOM elements} Elements in the cell.

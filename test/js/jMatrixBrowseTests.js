@@ -19,11 +19,11 @@
       jqUnit.isVisible("jMatrixBrowse is initially visible", "#my_browser");
       jqUnit.isVisible("jMatrixBrowse container is visible", ".jmb-matrix-container");
 
-      var initialCenter = jMatrixBrowse.getCenter();
-      jqUnit.assertEquals("jMatrixBrowse centered at correct position", "20,20", initialCenter.x + ',' + initialCenter.y);
+      jqUnit.isVisible("jMatrixBrowse row headers are visible", ".jmatrixbrowse-row-header");
+      jqUnit.isVisible("jMatrixBrowse col headers are visible", ".jmatrixbrowse-col-header");
 
-      var initialWindowSize = jMatrixBrowse.getWindowSize();
-      jqUnit.assertEquals("jMatrixBrowse rendered with correct dimensions", "5,10", initialWindowSize.x + ',' + initialWindowSize.y);
+      jqUnit.assertEquals("jMatrixBrowse positioned at correct row", 20, jMatrixBrowse.getPosition().row);
+      jqUnit.assertEquals("jMatrixBrowse positioned at correct col", 20, jMatrixBrowse.getPosition().col);
 
     });
     // 2
