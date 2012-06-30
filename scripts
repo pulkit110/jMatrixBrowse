@@ -1,0 +1,3 @@
+#To generate documentation:
+jsdoc ./src/ ./test/ -d=doc -r
+
