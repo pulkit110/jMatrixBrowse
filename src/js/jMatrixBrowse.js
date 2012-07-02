@@ -101,16 +101,22 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Check and resposition cells that are overflowing.
      */
     function checkAndRepositionCells() {
-      // TODO: We might need to check more elements in case of a quick drag. 
+      var cellsRepositioned = false;
       
       // Row on top might overflow from the top.
-      checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_TOP);
+      cellsRepositioned = checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_TOP) || cellsRepositioned;
       // Row on bottom might overflow from the bottom.
-      checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements().length-2, jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM);
+      cellsRepositioned = checkAndRepositionCellRow(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements().length-2, jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM) || cellsRepositioned;
       // Column on left might overflow from the left.
-      checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_LEFT);
+      cellsRepositioned = checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), 1, jMatrixBrowseNs.Constants.OVERFLOW_LEFT) || cellsRepositioned;
       // Column on right might overflow from the right.
-      checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements()[0].length-2, jMatrixBrowseNs.Constants.OVERFLOW_RIGHT);
+      cellsRepositioned = checkAndRepositionCellCol(_renderer.getCellElements(), _renderer.getContainer(), _renderer.getCellElements()[0].length-2, jMatrixBrowseNs.Constants.OVERFLOW_RIGHT) || cellsRepositioned;
+      
+      // For handling quick drags, check for positioning again.
+      if (cellsRepositioned) {
+          checkAndRepositionCells();
+          checkAndRepositionHeaders();
+      }
     }
     
     /**
@@ -158,6 +164,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {jQuery Object} container - The container against which to check the overflow.
      * @param {Number} row - Index of row to check the overflow for.
      * @param {Number} overflow - Type of the overflow to check for.
+     * @retuns {boolean} true if any cells were repositioned. false otherwise.
      */
     function checkAndRepositionCellRow(cellElements, container, row, overflow) {
       if (cellElements[row].length > 0 && jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
@@ -179,7 +186,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             var lastCell = (cellElements[height-1].length > 0) ? jQuery(cellElements[height-1][0]) : undefined;
             if (lastCell === undefined) {
               console.error('Unable to resposition row ' + row + ' overflowing from top.')
-              return;
+              return false;
             }
             
             var backgroundTopRow = 0; // TODO: get background top row
@@ -206,7 +213,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             var firstCell = (cellElements.length > 0 && cellElements[0].length > 0)?jQuery(cellElements[0][0]):undefined;
             if (firstCell === undefined) {
               console.error('Unable to resposition row ' + row + ' overflowing from bottom.')
-              return;
+              return false;
             }
             
             var backgroundBottomRow = cellElements.length-1; // TODO: get background bottom row
@@ -232,8 +239,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           currentCell: _renderer.currentCell,
           direction: direction
         });
-      
+        return true;
       }
+      return false;
     }
     
     /**
@@ -242,6 +250,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {jQuery Object} container - The container against which to check the overflow.
      * @param {Number} col - Index of column to check the overflow for.
      * @param {Number} overflow - Type of the overflow to check for.
+     * @retuns {boolean} true if any cells were repositioned. false otherwise.
      */
     function checkAndRepositionCellCol(cellElements, container, col, overflow) {
       if (jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
@@ -259,7 +268,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             // The row is overflowing from left. Move it to right. 
             if (cellElements.length <= 0 || cellElements[0].length <= 0) {
               console.error('Unable to resposition col ' + col + ' overflowing from left.');
-              return;
+              return false;
             }
             
             var backgroundLeftCol = 0; // TODO: Get position of background left col.
@@ -286,7 +295,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             // The row is overflowing from right. Move it to left. 
             if (cellElements.length <= 0 || cellElements[0].length <= 0) {
               console.error('Unable to resposition col ' + col + ' overflowing from left.');
-              return;
+              return false;
             }
             
             var backgroundRightCol = cellElements[0].length-1; // TODO: Get position of background left col.
@@ -313,7 +322,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           currentCell: _renderer.currentCell,
           direction: direction
         });
+        return true;
       }
+      return false;
     }
 
     /**
@@ -487,6 +498,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       
       // Listen for drag and reposition cells
       _elem.bind('jMatrixBrowseDrag', function (event) {
+        // Reposition matrix cells
+        checkAndRepositionCells();  
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
+      
+      // Listen for drag stop and reposition cells, needed when there is a quick drag.
+      _elem.bind('jMatrixBrowseDragStop', function (event) {
         // Reposition matrix cells
         checkAndRepositionCells();  
         // Reposition headers
