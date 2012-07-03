@@ -398,6 +398,119 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _container;
     };
     
+    /**
+     * Moves the row to bottom. 
+     * @param {Number} row - index of the row to be moved.
+     * @returns {boolean} true if the operation was successful. false otherwise.
+     */
+    that.moveRowToEnd = function(row) {
+        // Get index of last cell
+        var height = _cellElements.length;
+        var lastCell = (_cellElements[height-1].length > 0) ? jQuery(_cellElements[height-1][0]) : undefined;
+        if (lastCell === undefined) {
+            console.error('Unable to move row ' + row + ' to the end.')
+            return false;
+        }
+
+        // Change the position of all elements in the row.
+        var newTop = lastCell.position().top + lastCell.height();
+        for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
+            jQuery(_cellElements[row][i]).css({
+            top: newTop
+            });
+        }
+
+        // Move row in matrix to end
+        var cellRow = _cellElements.splice(row,1); // Remove row at [backgroundTopRow]
+        if (cellRow.length > 0)
+            _cellElements.push(cellRow[0]);  // Insert row at the end.
+        
+        return true;
+    };
+    
+    /**
+     * Moves the row to top. 
+     * @param {Number} row - index of the row to be moved.
+     * @returns {boolean} true if the operation was successful. false otherwise.
+     */
+    that.moveRowToTop = function(row) {
+        // Get index of first cell
+        var firstCell = (_cellElements.length > 0 && _cellElements[0].length > 0)?jQuery(_cellElements[0][0]):undefined;
+        if (firstCell === undefined) {
+            console.error('Unable to move row ' + row + ' to top.')
+            return false;
+        }
+
+        // Change the position of all elements in the row.
+        var newBottom = firstCell.position().top;
+        for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
+            jQuery(_cellElements[row][i]).css({
+            top: newBottom - jQuery(_cellElements[row][i]).height()
+            });
+        }
+        // Move row in matrix to first
+        var cellRow = _cellElements.splice(row,1);  // Remove row at [backgroundBottomRow]
+        if (cellRow.length > 0)
+            _cellElements.splice(0,0,cellRow[0]);  // Insert row at the beginning.
+        
+        return true;
+    };
+    
+    /**
+     * Moves a column to right. 
+     * @param {Number} col - index of the column to be moved.
+     * @returns {boolean} true if the operation was successful. false otherwise.
+     */
+    that.moveColToRight = function(col) {
+        if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
+            console.error('Unable to move col ' + col + ' to right.');
+            return false;
+        }
+
+        // Change the position of all elements in the column.
+        var w = _cellElements[0].length;
+        var lastCell = jQuery(_cellElements[0][w-1]);
+        var newLeft = lastCell.position().left + lastCell.width();
+        for (var i = 0, h = _cellElements.length; i < h; ++i) {
+            jQuery(_cellElements[i][col]).css({
+            left: newLeft
+            });
+        }
+        // Move col to end in matrix.
+        for (var i = 0, h = _cellElements.length; i < h; ++i) {
+            var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
+            _cellElements[i].push(cell[0]); // Insert element at end of row i
+        }
+        return true;
+    };
+    
+    /**
+     * Moves a column to left. 
+     * @param {Number} col - index of the column to be moved.
+     * @returns {boolean} true if the operation was successful. false otherwise.
+     */
+    that.moveColToLeft = function(col) {
+        if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
+            console.error('Unable to move col ' + col + ' to left.');
+            return false;
+        }
+
+        var firstCell = jQuery(_cellElements[0][0]);
+        // Change the position of all elements in the column.
+        var newRight = firstCell.position().left;
+        for (var i = 0, h = _cellElements.length; i < h; ++i) {
+            jQuery(_cellElements[i][col]).css({
+            left: newRight - jQuery(_cellElements[i][col]).width()
+            });
+        }
+        // Move col to first in matrix.
+        for (var i = 0, h = _cellElements.length; i < h; ++i) {
+            var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
+            _cellElements[i].splice(0,0,cell[0]); // Insert element to [i][0]
+        }
+        return true;
+    };
+    
     // TODO: This is a hack
     _api.setRenderer(that);
       

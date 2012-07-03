@@ -164,7 +164,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {jQuery Object} container - The container against which to check the overflow.
      * @param {Number} row - Index of row to check the overflow for.
      * @param {Number} overflow - Type of the overflow to check for.
-     * @retuns {boolean} true if any cells were repositioned. false otherwise.
+     * @returns {boolean} true if any cells were repositioned. false otherwise.
      */
     function checkAndRepositionCellRow(cellElements, container, row, overflow) {
       if (cellElements[row].length > 0 && jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[row][0]), container, overflow) && isValidDrag(overflow)) {
@@ -180,56 +180,20 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         switch (overflow) {
           case jMatrixBrowseNs.Constants.OVERFLOW_TOP:
             direction = 'top';
-            
             // The row is overflowing from top. Move it to bottom. 
-            var height = cellElements.length;
-            var lastCell = (cellElements[height-1].length > 0) ? jQuery(cellElements[height-1][0]) : undefined;
-            if (lastCell === undefined) {
-              console.error('Unable to resposition row ' + row + ' overflowing from top.')
-              return false;
-            }
-            
-            var backgroundTopRow = 0; // TODO: get background top row
-            
-            // Change the position of all elements in the row.
-            var newTop = lastCell.position().top + lastCell.height();
-            for (var i = 0, w = cellElements[backgroundTopRow].length; i < w; ++i) {
-              jQuery(cellElements[backgroundTopRow][i]).css({
-                top: newTop
-              });
-            }
-            
-            // Move row in matrix to end
-            cellRow = cellElements.splice(backgroundTopRow,1); // Remove row at [backgroundTopRow]
-            if (cellRow.length > 0)
-              cellElements.push(cellRow[0]);  // Insert row at the end.
-            
+            var backgroundTopRow = 0; // TODO: get background top row            
+            if (_renderer.moveRowToEnd(backgroundTopRow) === false) {
+                return false;
+            }            
             break;
 
           case jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM:
             direction = 'bottom';
-            
             // The row is overflowing from bottom. Move it to top.
-            var firstCell = (cellElements.length > 0 && cellElements[0].length > 0)?jQuery(cellElements[0][0]):undefined;
-            if (firstCell === undefined) {
-              console.error('Unable to resposition row ' + row + ' overflowing from bottom.')
-              return false;
-            }
-            
             var backgroundBottomRow = cellElements.length-1; // TODO: get background bottom row
-            
-            // Change the position of all elements in the row.
-            var newBottom = firstCell.position().top;
-            for (var i = 0, w = cellElements[backgroundBottomRow].length; i < w; ++i) {
-              jQuery(cellElements[backgroundBottomRow][i]).css({
-                top: newBottom - jQuery(cellElements[backgroundBottomRow][i]).height()
-              });
+            if (_renderer.moveRowToTop(backgroundBottomRow) === false) {
+                return false;
             }
-            // Move row in matrix to first
-            cellRow = cellElements.splice(backgroundBottomRow,1);  // Remove row at [backgroundBottomRow]
-            if (cellRow.length > 0)
-              cellElements.splice(0,0,cellRow[0]);  // Insert row at the beginning.
-            
             break;
         }
         // Trigger event for change
@@ -250,7 +214,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {jQuery Object} container - The container against which to check the overflow.
      * @param {Number} col - Index of column to check the overflow for.
      * @param {Number} overflow - Type of the overflow to check for.
-     * @retuns {boolean} true if any cells were repositioned. false otherwise.
+     * @returns {boolean} true if any cells were repositioned. false otherwise.
      */
     function checkAndRepositionCellCol(cellElements, container, col, overflow) {
       if (jMatrixBrowseNs.Utils.isOverflowing(jQuery(cellElements[0][col]), container, overflow) &&  isValidDrag(overflow)) {
@@ -264,54 +228,19 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         switch (overflow) {
           case jMatrixBrowseNs.Constants.OVERFLOW_LEFT:
             direction = 'left';
-            
             // The row is overflowing from left. Move it to right. 
-            if (cellElements.length <= 0 || cellElements[0].length <= 0) {
-              console.error('Unable to resposition col ' + col + ' overflowing from left.');
-              return false;
-            }
-            
             var backgroundLeftCol = 0; // TODO: Get position of background left col.
-            
-            // Change the position of all elements in the column.
-            var w = cellElements[0].length;
-            var lastCell = jQuery(cellElements[0][w-1]);
-            var newLeft = lastCell.position().left + lastCell.width();
-            for (var i = 0, h = cellElements.length; i < h; ++i) {
-              jQuery(cellElements[i][backgroundLeftCol]).css({
-                left: newLeft
-              });
-            }
-            // Move col to end in matrix.
-            for (var i = 0, h = cellElements.length; i < h; ++i) {
-              var cell = cellElements[i].splice(backgroundLeftCol, 1); // Remove element at [i][col]
-              cellElements[i].push(cell[0]); // Insert element at end of row i
+            if (_renderer.moveColToRight(backgroundLeftCol) === false) {
+                return false;
             }
             break;
 
           case jMatrixBrowseNs.Constants.OVERFLOW_RIGHT:
             direction = 'right';
-            
             // The row is overflowing from right. Move it to left. 
-            if (cellElements.length <= 0 || cellElements[0].length <= 0) {
-              console.error('Unable to resposition col ' + col + ' overflowing from left.');
-              return false;
-            }
-            
             var backgroundRightCol = cellElements[0].length-1; // TODO: Get position of background left col.
-            
-            var firstCell = jQuery(cellElements[0][0]);
-            // Change the position of all elements in the column.
-            var newRight = firstCell.position().left;
-            for (var i = 0, h = cellElements.length; i < h; ++i) {
-              jQuery(cellElements[i][backgroundRightCol]).css({
-                left: newRight - jQuery(cellElements[i][backgroundRightCol]).width()
-              });
-            }
-            // Move col to first in matrix.
-            for (var i = 0, h = cellElements.length; i < h; ++i) {
-              var cell = cellElements[i].splice(backgroundRightCol, 1); // Remove element at [i][col]
-              cellElements[i].splice(0,0,cell[0]); // Insert element to [i][0]
+            if (_renderer.moveColToLeft(backgroundRightCol) === false) {
+                return false;
             }
             break;
         }
