@@ -74,24 +74,25 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {boolean} true if the drag is valid.
      */
     function isValidDrag(overflow) {
+      var nBackgroundCells = 1;
       switch(overflow) {
         case jMatrixBrowseNs.Constants.OVERFLOW_TOP:
-          if (_renderer.currentCell.row >= _api.getMatrixSize().height-1)
+          if (_renderer.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1 >= _api.getMatrixSize().height-1)
             return false;
           return true;
           
         case jMatrixBrowseNs.Constants.OVERFLOW_BOTTOM:
-          if (_renderer.currentCell.row <= 0) 
+          if (_renderer.currentCell.row <= 0 + nBackgroundCells) 
             return false;
           return true;
           
         case jMatrixBrowseNs.Constants.OVERFLOW_LEFT:
-          if (_renderer.currentCell.col >= _api.getMatrixSize().width-1) 
+          if (_renderer.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 >= _api.getMatrixSize().width-1) 
             return false;
           return true;
           
         case jMatrixBrowseNs.Constants.OVERFLOW_RIGHT:
-          if (_renderer.currentCell.col <= 0) 
+          if (_renderer.currentCell.col <= 0 + nBackgroundCells) 
             return false;
           return true;
       }
@@ -301,6 +302,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var rowIndex;
       if (event.direction === 'top') {
         // If overflow from top, bottom row will have to be fetched.
+        // First check if the row is within matrix bounds
+        if (event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1 >= _api.getMatrixSize().height)
+          return;
         rowData = _api.getRowDataForCell({
          row: event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1,
          col: event.currentCell.col
@@ -309,6 +313,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         rowToBeReplaced = _renderer.getCellElements()[_renderer.getCellElements().length-1];
       } else {
         // If overflow from bottom, top row will have to be fetched.
+        // First check if the row is within matrix bounds
+        if (event.currentCell.row - nBackgroundCells < 0)
+          return;
         rowData = _api.getRowDataForCell({
          row: event.currentCell.row - nBackgroundCells,
          col: event.currentCell.col
@@ -337,6 +344,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var colIndex;
       if (event.direction === 'left') {
         // If overflow from left, right column will have to be fetched. 
+        // First check if the row is within matrix bounds
+        var temp = event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1;
+        if (event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 >= _api.getMatrixSize().width)
+          return;
         colData = _api.getColDataForCell({
          row: event.currentCell.row,
          col: event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 
@@ -345,6 +356,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         colToBeReplacedIndex = _renderer.getCellElements()[0].length-1;
       } else {
         // If overflow from right, left column will have to be fetched.
+        // First check if the col is within matrix bounds
+        if (event.currentCell.col - nBackgroundCells < 0)
+          return;
         colData = _api.getColDataForCell({
          row: event.currentCell.row,
          col: event.currentCell.col - nBackgroundCells
@@ -456,6 +470,22 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       // Listen for click event
       _elem.bind('jMatrixBrowseClick', function (event) {
         console.log('click: ' + event.row + ', ' + event.col);
+      });
+      
+      jQuery(document).bind('keydown', 'right', function() {
+          _renderer.scrollRight();
+      });
+      
+      jQuery(document).bind('keydown', 'left', function() {
+          _renderer.scrollLeft();
+      });
+      
+      jQuery(document).bind('keydown', 'up', function() {
+          _renderer.scrollUp();
+      });
+      
+      jQuery(document).bind('keydown', 'down', function() {
+          _renderer.scrollDown();
       });
     }
 

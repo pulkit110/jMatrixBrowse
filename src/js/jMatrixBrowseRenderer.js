@@ -352,6 +352,29 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   };
   
   /**
+   * Checks if the bounds for scrolling matrix are valid.
+   * @param  {string} direction direction of scroll
+   * @return {boolean} true if the bounds are valid. false otherwise.
+   */
+  function checkScrollBounds(direction) {
+    var nBackgroundCells = 1;
+    var size = _api.getMatrixSize();
+    if (direction === 'up' && _self.currentCell.row <= 0) {
+      return false;
+    }
+    if (direction === 'down' && _self.currentCell.row + _cellElements.length - 2*nBackgroundCells > size.height - 1) {
+      return false;
+    }
+    if (direction === 'right' && _self.currentCell.col + _cellElements[0].length - 2*nBackgroundCells > size.width - 1) {
+      return false;
+    }
+    if (direction === 'left' && _self.currentCell.col <= 0) {
+      return false;
+    }
+    return true;
+  }
+  
+  /**
    * jMatrixBrowse Renderer manages the rendering of elements as well as row and 
    * column headers.
    * 
@@ -404,28 +427,28 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
     that.moveRowToEnd = function(row) {
-        // Get index of last cell
-        var height = _cellElements.length;
-        var lastCell = (_cellElements[height-1].length > 0) ? jQuery(_cellElements[height-1][0]) : undefined;
-        if (lastCell === undefined) {
-            console.error('Unable to move row ' + row + ' to the end.')
-            return false;
-        }
+      // Get index of last cell
+      var height = _cellElements.length;
+      var lastCell = (_cellElements[height-1].length > 0) ? jQuery(_cellElements[height-1][0]) : undefined;
+      if (lastCell === undefined) {
+        console.error('Unable to move row ' + row + ' to the end.')
+        return false;
+      }
 
-        // Change the position of all elements in the row.
-        var newTop = lastCell.position().top + lastCell.height();
-        for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
-            jQuery(_cellElements[row][i]).css({
-            top: newTop
-            });
-        }
+      // Change the position of all elements in the row.
+      var newTop = lastCell.position().top + lastCell.height();
+      for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
+        jQuery(_cellElements[row][i]).css({
+          top: newTop
+        });
+      }
 
-        // Move row in matrix to end
-        var cellRow = _cellElements.splice(row,1); // Remove row at [backgroundTopRow]
-        if (cellRow.length > 0)
-            _cellElements.push(cellRow[0]);  // Insert row at the end.
+      // Move row in matrix to end
+      var cellRow = _cellElements.splice(row,1); // Remove row at [backgroundTopRow]
+      if (cellRow.length > 0)
+        _cellElements.push(cellRow[0]);  // Insert row at the end.
         
-        return true;
+      return true;
     };
     
     /**
@@ -434,26 +457,26 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
     that.moveRowToTop = function(row) {
-        // Get index of first cell
-        var firstCell = (_cellElements.length > 0 && _cellElements[0].length > 0)?jQuery(_cellElements[0][0]):undefined;
-        if (firstCell === undefined) {
-            console.error('Unable to move row ' + row + ' to top.')
-            return false;
-        }
+      // Get index of first cell
+      var firstCell = (_cellElements.length > 0 && _cellElements[0].length > 0)?jQuery(_cellElements[0][0]):undefined;
+      if (firstCell === undefined) {
+        console.error('Unable to move row ' + row + ' to top.')
+        return false;
+      }
 
-        // Change the position of all elements in the row.
-        var newBottom = firstCell.position().top;
-        for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
-            jQuery(_cellElements[row][i]).css({
-            top: newBottom - jQuery(_cellElements[row][i]).height()
-            });
-        }
-        // Move row in matrix to first
-        var cellRow = _cellElements.splice(row,1);  // Remove row at [backgroundBottomRow]
-        if (cellRow.length > 0)
-            _cellElements.splice(0,0,cellRow[0]);  // Insert row at the beginning.
+      // Change the position of all elements in the row.
+      var newBottom = firstCell.position().top;
+      for (var i = 0, w = _cellElements[row].length; i < w; ++i) {
+        jQuery(_cellElements[row][i]).css({
+          top: newBottom - jQuery(_cellElements[row][i]).height()
+        });
+      }
+      // Move row in matrix to first
+      var cellRow = _cellElements.splice(row,1);  // Remove row at [backgroundBottomRow]
+      if (cellRow.length > 0)
+        _cellElements.splice(0,0,cellRow[0]);  // Insert row at the beginning.
         
-        return true;
+      return true;
     };
     
     /**
@@ -462,26 +485,26 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
     that.moveColToRight = function(col) {
-        if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
-            console.error('Unable to move col ' + col + ' to right.');
-            return false;
-        }
+      if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
+        console.error('Unable to move col ' + col + ' to right.');
+        return false;
+      }
 
-        // Change the position of all elements in the column.
-        var w = _cellElements[0].length;
-        var lastCell = jQuery(_cellElements[0][w-1]);
-        var newLeft = lastCell.position().left + lastCell.width();
-        for (var i = 0, h = _cellElements.length; i < h; ++i) {
-            jQuery(_cellElements[i][col]).css({
-            left: newLeft
-            });
-        }
-        // Move col to end in matrix.
-        for (var i = 0, h = _cellElements.length; i < h; ++i) {
-            var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
-            _cellElements[i].push(cell[0]); // Insert element at end of row i
-        }
-        return true;
+      // Change the position of all elements in the column.
+      var w = _cellElements[0].length;
+      var lastCell = jQuery(_cellElements[0][w-1]);
+      var newLeft = lastCell.position().left + lastCell.width();
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        jQuery(_cellElements[i][col]).css({
+          left: newLeft
+        });
+      }
+      // Move col to end in matrix.
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
+        _cellElements[i].push(cell[0]); // Insert element at end of row i
+      }
+      return true;
     };
     
     /**
@@ -490,25 +513,172 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
     that.moveColToLeft = function(col) {
-        if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
-            console.error('Unable to move col ' + col + ' to left.');
-            return false;
-        }
+      if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
+        console.error('Unable to move col ' + col + ' to left.');
+        return false;
+      }
 
-        var firstCell = jQuery(_cellElements[0][0]);
-        // Change the position of all elements in the column.
-        var newRight = firstCell.position().left;
-        for (var i = 0, h = _cellElements.length; i < h; ++i) {
-            jQuery(_cellElements[i][col]).css({
-            left: newRight - jQuery(_cellElements[i][col]).width()
-            });
+      var firstCell = jQuery(_cellElements[0][0]);
+      // Change the position of all elements in the column.
+      var newRight = firstCell.position().left;
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        jQuery(_cellElements[i][col]).css({
+          left: newRight - jQuery(_cellElements[i][col]).width()
+        });
+      }
+      // Move col to first in matrix.
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
+        _cellElements[i].splice(0,0,cell[0]); // Insert element to [i][0]
+      }
+      return true;
+    };
+    
+    /**
+     * Scrolls the matrix one cell to the right.
+     */
+    that.scrollRight = function() {
+      if (checkScrollBounds('right'))
+        scrollCol('right');
+    };
+
+    /**
+     * Scrolls the matrix one cell to the left.
+     */
+    that.scrollLeft = function() {
+      if (checkScrollBounds('left'))
+        scrollCol('left');
+    };
+    
+    /**
+     * Scrolls a column of the matrix.
+     * @param {string} direction - the direction to scroll.
+     */
+    function scrollCol (direction) {
+      var col;
+      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
+      if (direction === 'left') {
+        // Move rightmost column to the left
+        col = _cellElements[0].length-1;
+        that.moveColToLeft(col);
+        --_self.currentCell.col;
+      } else {
+        // Move leftmost column to the right
+        col = 0;
+        that.moveColToRight(col);
+        ++_self.currentCell.col;
+      }
+
+      // Reposition cells to move them one cell to the right/left
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        for (var j = 0, w = _cellElements[i].length; j < w; ++j) {
+          var cell = jQuery(_cellElements[i][j]);
+          cell.css({
+            left: cell.position().left + (direction==='left'?1:-1)*cell.width()
+          });
         }
-        // Move col to first in matrix.
-        for (var i = 0, h = _cellElements.length; i < h; ++i) {
-            var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
-            _cellElements[i].splice(0,0,cell[0]); // Insert element to [i][0]
+      }
+        
+      var currentCell = _self.currentCell;
+        
+      // Reposition column headers.
+      _headers.col.children().each(function(index, element) {
+        var containerOffset = _container.offset();
+        var elementOffset = jQuery(_cellElements[0][index]).offset();
+        var left = elementOffset.left - containerOffset.left;
+        jQuery(element).css({
+          left: left
+        });
+      });
+        
+      // Set direction of overflow
+      if (direction === 'left') {
+        direction = 'right'; 
+      } else {
+        direction = 'left';
+      }
+        
+      // Trigger event for change
+      _elem.trigger({
+        type: 'jMatrixBrowseChange',
+        previousCell: previousCell,
+        currentCell: currentCell,
+        direction: direction
+      });
+    };
+    
+    /**
+     * Scrolls the matrix one row up.
+     */
+    that.scrollUp = function() {
+      if (checkScrollBounds('up'))
+        scrollRow('up');
+    };
+    
+    /**
+     * Scrolls the matrix one row down.
+     */
+    that.scrollDown = function() {
+      if (checkScrollBounds('down'))
+        scrollRow('down');
+    };
+    
+    /**
+     * Scrolls the matrix one row in the given direction.
+     * @param {string} direction - the direction to scroll.
+     */
+    function scrollRow(direction) {
+      var row;
+      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
+      if (direction === 'up') {
+        // Move bottommost column to the top
+        row = _cellElements.length-1;
+        that.moveRowToTop(row);
+        --_self.currentCell.row;
+      } else {
+        // Move topmost row to the bottom
+        row = 0;
+        that.moveRowToEnd(row);
+        ++_self.currentCell.row;
+      }
+
+      // Reposition cells to move them one cell to the right/left
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        for (var j = 0, w = _cellElements[i].length; j < w; ++j) {
+          var cell = jQuery(_cellElements[i][j]);
+          cell.css({
+            top: cell.position().top + (direction==='up'?1:-1)*cell.height()
+          });
         }
-        return true;
+      }
+        
+      var currentCell = _self.currentCell;
+        
+      // Reposition row headers.
+      _headers.row.children().each(function(index, element) {
+        var containerOffset = _container.offset();
+        var elementOffset = jQuery(_cellElements[index][0]).offset();
+        var top = elementOffset.top - containerOffset.top;
+
+        jQuery(element).css({
+          top: top
+        });
+      });
+        
+      // Set direction of overflow
+      if (direction === 'down') {
+        direction = 'top'; 
+      } else {
+        direction = 'bottom';
+      }
+        
+      // Trigger event for change
+      _elem.trigger({
+        type: 'jMatrixBrowseChange',
+        previousCell: previousCell,
+        currentCell: currentCell,
+        direction: direction
+      });
     };
     
     // TODO: This is a hack
