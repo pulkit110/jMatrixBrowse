@@ -296,39 +296,70 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadRowData(event) {
-      var rowData;
-      var rowToBeReplaced;
       var nBackgroundCells = 1; // TODO:
-      var rowIndex;
+      var rowIndex; // Index of the rows that would be fetched.
+      var firstRowToBeReplaced; // Index of the first row that should be replaced.
+      var nRowsReloaded = Math.abs(event.currentCell.row - event.previousCell.row);
+      
       if (event.direction === 'top') {
-        // If overflow from top, bottom row will have to be fetched.
+        var rowsNotInBound = 0;
+        var lastRowIndex = event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1;
+        // If overflow from top, bottom rows will have to be fetched.
         // First check if the row is within matrix bounds
-        if (event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1 >= _api.getMatrixSize().height)
-          return;
-        rowData = _api.getRowDataForCell({
-         row: event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1,
-         col: event.currentCell.col
-        });
-        rowIndex = event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1;
-        rowToBeReplaced = _renderer.getCellElements()[_renderer.getCellElements().length-1];
+        if (lastRowIndex >= _api.getMatrixSize().height) {
+          // Some rows might not be in bound. Find how many? 
+          rowsNotInBound = lastRowIndex - _api.getMatrixSize().height + 1;
+          if (rowsNotInBound === nRowsReloaded) {
+            // We don't need to reload any row.
+            return;
+          }
+        }
+        rowIndex = {
+          row1: lastRowIndex - (nRowsReloaded - 1),
+          row2: lastRowIndex - rowsNotInBound
+        };
+        // Data in the last few rows sould be replaced.
+        firstRowToBeReplaced = _renderer.getCellElements().length - nRowsReloaded;
       } else {
-        // If overflow from bottom, top row will have to be fetched.
-        // First check if the row is within matrix bounds
-        if (event.currentCell.row - nBackgroundCells < 0)
-          return;
-        rowData = _api.getRowDataForCell({
-         row: event.currentCell.row - nBackgroundCells,
-         col: event.currentCell.col
-        });
-        rowIndex = event.currentCell.row - nBackgroundCells;
-        rowToBeReplaced = _renderer.getCellElements()[0];
+        var rowsNotInBound = 0;
+        var firstRowIndex = event.currentCell.row - nBackgroundCells;
+        // If overflow from bottom, top rows will have to be fetched.
+        // First check if the rows are within matrix bounds
+        if (firstRowIndex < 0) {
+          // Some rows might not be in bound. Find how many? 
+          rowsNotInBound = -firstRowIndex;
+          if (rowsNotInBound === nRowsReloaded) {
+            // We don't need to reload any row.
+            return;
+          }
+        }
+        rowIndex = {
+          row1: firstRowIndex + rowsNotInBound,
+          row2: firstRowIndex + (nRowsReloaded - 1)
+        };
+        // Data in the first few rows (which are within matrix bounds) should be replaced.
+        firstRowToBeReplaced = 0 + rowsNotInBound;
       }
       
-      jQuery.each(rowToBeReplaced, function(index, cell) {
-        jQuery(cell).html(rowData[index]);
-        jQuery(cell).attr('data-row', rowIndex);
-        jQuery(cell).attr('data-col', event.currentCell.col - nBackgroundCells + index);
+      // Get data for the window.
+      var rowData = _api.getResponseData({
+        row1: rowIndex.row1,
+        row2: rowIndex.row2,
+        col1: event.currentCell.col - 1,
+        col2: event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1
       });
+        
+      // Replace the data in (event.currentCell.row - event.previousCell.row) 
+      // rows beginning from firstRowToBeReplaced.
+      for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
+        var j = i - rowIndex.row1;
+        var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + j];
+        jQuery.each(rowToBeReplaced, function(index, cell) {
+          jQuery(cell).html(rowData[j][index]);
+          jQuery(cell).attr('data-row', i);
+          jQuery(cell).attr('data-col', event.currentCell.col - nBackgroundCells + index);
+        });
+      }
     }
     
     /**
@@ -338,40 +369,71 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadColData(event) {
-      var colData;
-      var colToBeReplacedIndex;
       var nBackgroundCells = 1; // TODO:
       var colIndex;
+      var firstColumnToBeReplaced;
+      var nColsReloaded = Math.abs(event.currentCell.col - event.previousCell.col);
+      
       if (event.direction === 'left') {
-        // If overflow from left, right column will have to be fetched. 
-        // First check if the row is within matrix bounds
-        var temp = event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1;
-        if (event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 >= _api.getMatrixSize().width)
-          return;
-        colData = _api.getColDataForCell({
-         row: event.currentCell.row,
-         col: event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1 
-        });
-        colIndex = event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1;
-        colToBeReplacedIndex = _renderer.getCellElements()[0].length-1;
+        var colsNotInBound = 0;
+        var lastColIndex = event.currentCell.col - nBackgroundCells + _renderer.getCellElements()[0].length - 1;
+        // If overflow from left, right columns will have to be fetched. 
+        // First check if the column is within matrix bounds
+        if (lastColIndex >= _api.getMatrixSize().width) {
+          // Some columns might not be in bound. Find how many? 
+          colsNotInBound = lastColIndex - _api.getMatrixSize().width + 1;
+          if (colsNotInBound === nColsReloaded) {
+            // We don't need to reload any column.
+            return;
+          }
+        }
+        
+        colIndex = {
+          col1: lastColIndex - (nColsReloaded - 1),
+          col2: lastColIndex
+        };
+        // Data in the last few columns should be replaced.
+        firstColumnToBeReplaced = _renderer.getCellElements()[0].length - nColsReloaded;
       } else {
+        var colsNotInBound = 0;
+        var firstColIndex = event.currentCell.col - nBackgroundCells;
         // If overflow from right, left column will have to be fetched.
         // First check if the col is within matrix bounds
-        if (event.currentCell.col - nBackgroundCells < 0)
-          return;
-        colData = _api.getColDataForCell({
-         row: event.currentCell.row,
-         col: event.currentCell.col - nBackgroundCells
-        });
-        colIndex = event.currentCell.col - nBackgroundCells;
-        colToBeReplacedIndex = 0;
+        if (firstColIndex < 0) {
+          // Some columns might not be in bound. Find how many? 
+          colsNotInBound = -firstColIndex;
+          if (colsNotInBound === nColsReloaded) {
+            // We don't need to reload any column.
+            return;
+          }
+        }
+      
+        colIndex = {
+          col1: firstColIndex + colsNotInBound,
+          col2: firstColIndex + (nColsReloaded - 1)
+        };
+        // Data in the first few columns should be replaced.
+        firstColumnToBeReplaced = 0 + colsNotInBound;
       }
       
+      // Get data for the window.
+      var colData = _api.getResponseData({
+        row1: event.currentCell.row - 1,
+        row2: event.currentCell.row - nBackgroundCells + _renderer.getCellElements().length - 1,  // TODO: The row can stillb e outside bounds.
+        col1: colIndex.col1,
+        col2: colIndex.col2
+      });
+      
+      // Replace the data in (event.currentCell.col - event.previousCell.col) 
+      // columns beginning from firstColToBeReplaced.
       for (var i = 0; i < _renderer.getCellElements().length; ++i) {
-        var cell = _renderer.getCellElements()[i][colToBeReplacedIndex];
-        jQuery(cell).html(colData[i]);
-        jQuery(cell).attr('data-row', event.currentCell.row - nBackgroundCells + i);
-        jQuery(cell).attr('data-col', colIndex);
+        for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
+          var colToBeReplacedIndex = firstColumnToBeReplaced + j - colIndex.col1;
+          var cell = _renderer.getCellElements()[i][colToBeReplacedIndex];
+          jQuery(cell).html(colData[i][j - colIndex.col1]);
+          jQuery(cell).attr('data-row', event.currentCell.row - nBackgroundCells + i);
+          jQuery(cell).attr('data-col', j);
+        }
       }
     }
     
@@ -396,8 +458,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadMatrixData(event) {
-      // Only the last/first row/column will have changed based on the direction of drag
-      // e.g. for overflow from top, only bottom row needs to be reloaded.
       if (event.direction === 'top' || event.direction === 'bottom') {
         reloadRowData(event);
       } else {
@@ -412,7 +472,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadData(event) {
-      // TODO: Reloaded data might be wrong due to background loading.
       reloadHeaders(event);
       reloadMatrixData(event);
     }
@@ -473,19 +532,35 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       });
       
       jQuery(document).bind('keydown', 'right', function() {
-          _renderer.scrollRight();
+        _renderer.scrollRight();
       });
       
       jQuery(document).bind('keydown', 'left', function() {
-          _renderer.scrollLeft();
+        _renderer.scrollLeft();
       });
       
       jQuery(document).bind('keydown', 'up', function() {
-          _renderer.scrollUp();
+        _renderer.scrollUp();
       });
       
       jQuery(document).bind('keydown', 'down', function() {
-          _renderer.scrollDown();
+        _renderer.scrollDown();
+      });
+      
+      jQuery(document).bind('keydown', 'ctrl+up', function() {
+        _renderer.pageUp();
+      });
+      
+      jQuery(document).bind('keydown', 'ctrl+down', function() {
+        _renderer.pageDown();
+      });
+      
+      jQuery(document).bind('keydown', 'ctrl+left', function() {
+        _renderer.pageLeft();
+      });
+      
+      jQuery(document).bind('keydown', 'ctrl+right', function() {
+        _renderer.pageRight();
       });
     }
 

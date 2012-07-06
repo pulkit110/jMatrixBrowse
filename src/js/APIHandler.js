@@ -148,6 +148,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _api.getResponse(request);
     };
     
+    that.getResponseData = function(request) {
+      var response = _api.getResponse(request);
+      return response.data;
+    };
+    
     return that;
   };
   

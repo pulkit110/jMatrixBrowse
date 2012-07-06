@@ -539,7 +539,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     that.scrollRight = function() {
       if (checkScrollBounds('right'))
-        scrollCol('right');
+        scrollCols('right', 1);
     };
 
     /**
@@ -547,72 +547,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     that.scrollLeft = function() {
       if (checkScrollBounds('left'))
-        scrollCol('left');
+        scrollCols('left', 1);
     };
-    
-    /**
-     * Scrolls a column of the matrix.
-     * @param {string} direction - the direction to scroll.
-     */
-    function scrollCol (direction) {
-      var col;
-      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
-      if (direction === 'left') {
-        // Move rightmost column to the left
-        col = _cellElements[0].length-1;
-        that.moveColToLeft(col);
-        --_self.currentCell.col;
-      } else {
-        // Move leftmost column to the right
-        col = 0;
-        that.moveColToRight(col);
-        ++_self.currentCell.col;
-      }
-
-      // Reposition cells to move them one cell to the right/left
-      for (var i = 0, h = _cellElements.length; i < h; ++i) {
-        for (var j = 0, w = _cellElements[i].length; j < w; ++j) {
-          var cell = jQuery(_cellElements[i][j]);
-          cell.css({
-            left: cell.position().left + (direction==='left'?1:-1)*cell.width()
-          });
-        }
-      }
         
-      var currentCell = _self.currentCell;
-        
-      // Reposition column headers.
-      _headers.col.children().each(function(index, element) {
-        var containerOffset = _container.offset();
-        var elementOffset = jQuery(_cellElements[0][index]).offset();
-        var left = elementOffset.left - containerOffset.left;
-        jQuery(element).css({
-          left: left
-        });
-      });
-        
-      // Set direction of overflow
-      if (direction === 'left') {
-        direction = 'right'; 
-      } else {
-        direction = 'left';
-      }
-        
-      // Trigger event for change
-      _elem.trigger({
-        type: 'jMatrixBrowseChange',
-        previousCell: previousCell,
-        currentCell: currentCell,
-        direction: direction
-      });
-    };
-    
     /**
      * Scrolls the matrix one row up.
      */
     that.scrollUp = function() {
       if (checkScrollBounds('up'))
-        scrollRow('up');
+        scrollRows('up', 1);
     };
     
     /**
@@ -620,38 +563,125 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     that.scrollDown = function() {
       if (checkScrollBounds('down'))
-        scrollRow('down');
+        scrollRows('down', 1);
     };
     
     /**
-     * Scrolls the matrix one row in the given direction.
-     * @param {string} direction - the direction to scroll.
+     * Scrolls the matrix one page up.
      */
-    function scrollRow(direction) {
-      var row;
-      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
+    that.pageUp = function() {
+      var nRowsToScroll = getNumberOfRowsForPageScroll('up');
+      scrollRows('up', nRowsToScroll);
+    };
+    
+    /**
+     * Scrolls the matrix one page down.
+     */
+    that.pageDown = function() {
+      var nRowsToScroll = getNumberOfRowsForPageScroll('down');
+      scrollRows('down', nRowsToScroll);
+    };
+    
+    /**
+     * Scrolls the matrix one page left.
+     */
+    that.pageLeft = function() {
+      var nColsToScroll = getNumberOfColsForPageScroll('left');
+      scrollCols('left', nColsToScroll);
+    };
+    
+    /**
+     * Scrolls the matrix one page right.
+     */
+    that.pageRight = function() {
+      var nColsToScroll = getNumberOfColsForPageScroll('right');
+      scrollCols('right', nColsToScroll);
+    };
+    
+    /**
+     * Gets the number of rows that can be scrolled for a page up/down event without violating the matrix bounds.
+     * @param  {string} direction the direction of the scroll.
+     * @return {Number} the number of rows that can be safely scrolled.
+     */
+    function getNumberOfRowsForPageScroll(direction) {
+      var height = _configuration.getWindowSize().height;
+      var nBackgroundCells = 1;
       if (direction === 'up') {
-        // Move bottommost column to the top
-        row = _cellElements.length-1;
-        that.moveRowToTop(row);
-        --_self.currentCell.row;
+        var newTopRow = _self.currentCell.row - height;
+        if (newTopRow < 0) {
+          // The scroll exceeds bounds.
+          return Math.max(0, height + newTopRow);
+        }
       } else {
-        // Move topmost row to the bottom
-        row = 0;
-        that.moveRowToEnd(row);
-        ++_self.currentCell.row;
+        var matrixHeight = _api.getMatrixSize().height;
+        var newBottomRow = _self.currentCell.row + height + _cellElements.length - nBackgroundCells - 1;
+        if (newBottomRow >= matrixHeight) {
+          // The scroll exceeds bounds
+          return Math.max(0, height - (newBottomRow - matrixHeight));
+        }
       }
+      return height;
+    }
+  
+    /**
+     * Gets the number of cols that can be scrolled for a page left/right event without violating the matrix bounds.
+     * @param  {string} direction the direction of the scroll.
+     * @return {Number} the number of cols that can be safely scrolled.
+     */
+    function getNumberOfColsForPageScroll(direction) {
+      var width = _configuration.getWindowSize().width;
+      var nBackgroundCells = 1;
+      if (direction === 'left') {
+        var newLeftCol = _self.currentCell.col - width;
+        if (newLeftCol < 0) {
+          // The scroll exceeds bounds.
+          return Math.max(0, width + newLeftCol);
+        }
+      } else {
+        var matrixWidth = _api.getMatrixSize().width;
+        var newRightCol = _self.currentCell.col + width + _cellElements[0].length - nBackgroundCells - 1;
+        if (newRightCol >= matrixWidth) {
+          // The scroll exceeds bounds
+          return Math.max(0, width - (newRightCol - matrixWidth));
+        }
+      }
+      return width;
+    }
 
-      // Reposition cells to move them one cell to the right/left
+    /**
+     * Scrolls the matrix nRows row in the given direction.
+     * @param {string} direction - the direction to scroll.
+     * @param {Number} nRows - number of rows to scroll.
+     */
+    function scrollRows(direction, nRows) {
+      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
+      
+      if (direction === 'up') {
+        for(var i = 0; i < nRows; ++i) {
+          // Move bottommost column to the top
+          var row = _cellElements.length-1;
+          that.moveRowToTop(row);
+          --_self.currentCell.row;
+        }
+      } else {
+        for(var i = 0; i < nRows; ++i) {
+          // Move topmost row to the bottom
+          row = 0;
+          that.moveRowToEnd(row);
+          ++_self.currentCell.row;
+        }
+      }
+      
+      // Reposition cells to move them nRows cells up/down
       for (var i = 0, h = _cellElements.length; i < h; ++i) {
         for (var j = 0, w = _cellElements[i].length; j < w; ++j) {
           var cell = jQuery(_cellElements[i][j]);
           cell.css({
-            top: cell.position().top + (direction==='up'?1:-1)*cell.height()
+            top: cell.position().top + (direction==='up'?nRows:-nRows)*cell.height()
           });
         }
       }
-        
+  
       var currentCell = _self.currentCell;
         
       // Reposition row headers.
@@ -670,6 +700,68 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         direction = 'top'; 
       } else {
         direction = 'bottom';
+      }
+        
+      // Trigger event for change
+      _elem.trigger({
+        type: 'jMatrixBrowseChange',
+        previousCell: previousCell,
+        currentCell: currentCell,
+        direction: direction
+      });
+    };
+    
+    /**
+     * Scrolls the matrix nCols columns in the given direction.
+     * @param {string} direction - the direction to scroll.
+     * @param {Number} nCols - number of cols to scroll.
+     */
+    function scrollCols(direction, nCols) {
+      var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
+      
+      if (direction === 'left') {
+        for(var i = 0; i < nCols; ++i) {
+          // Move rightmost column to the left
+          var col = _cellElements[0].length-1;
+          that.moveColToLeft(col);
+          --_self.currentCell.col;
+        }
+      } else {
+        for(var i = 0; i < nCols; ++i) {
+          // Move rightmost col to the left
+          col = 0;
+          that.moveColToRight(col);
+          ++_self.currentCell.col;
+        }
+      }
+      
+      // Reposition cells to move them nCols cells left/right
+      for (var i = 0, h = _cellElements.length; i < h; ++i) {
+        for (var j = 0, w = _cellElements[i].length; j < w; ++j) {
+          var cell = jQuery(_cellElements[i][j]);
+          cell.css({
+            left: cell.position().left + (direction==='left'?nCols:-nCols)*cell.width()
+          });
+        }
+      }
+  
+      var currentCell = _self.currentCell;
+        
+      // Reposition column headers.
+      _headers.col.children().each(function(index, element) {
+        var containerOffset = _container.offset();
+        var elementOffset = jQuery(_cellElements[0][index]).offset();
+        var left = elementOffset.left - containerOffset.left;
+        jQuery(element).css({
+          left: left
+        });
+      });
+        
+      // Set direction of overflow
+      if (direction === 'left') {
+        direction = 'right'; 
+      } else {
+        direction = 'left';
       }
         
       // Trigger event for change
