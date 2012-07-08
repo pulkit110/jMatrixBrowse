@@ -190,13 +190,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       top: (draggable._convertPositionTo("absolute", newPosition).top - draggable.positionAbs.top),
       left: (draggable._convertPositionTo("absolute", newPosition).left - draggable.positionAbs.left)
     };
+    var firstRow = (_self.currentCell.row == 0)?1:0;
+    var firstCol = (_self.currentCell.col == 0)?1:0;
     // Get element and container offsets
-    var element = jQuery(_cellElements[0][0]);
+    var element = jQuery(_cellElements[firstRow][firstCol]);
     var containerOffset = _container.offset();
     var elementOffset = element.offset();
 
     // If we are at the topmost cell, then check that bounds from the top are maintained.
-    if (_self.currentCell.row == 1) {
+    if (_self.currentCell.row <= 1) {
       // The new posoition.top of the first element relative to cotainter.
       var top = changeInPosition.top + elementOffset.top - containerOffset.top;
       if (top > 0) { // The drag crosses matrix bounds from the top.
@@ -205,7 +207,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     }
 
     // If we are at the leftmost cell, then check that bounds from the left are maintained.
-    if (_self.currentCell.col == 1) {
+    if (_self.currentCell.col <= 1) {
       // The new posoition.top of the first element relative to cotainter.
       var left = changeInPosition.left + elementOffset.left - containerOffset.left;
       if (left > 0) { // The drag crosses matrix bounds from the left.
@@ -767,7 +769,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var height = _configuration.getWindowSize().height;
       if (direction === 'up') {
         var newTopRow = _self.currentCell.row - height;
-        if (newTopRow < 0) {
+        if (newTopRow < 1) {
           // The scroll exceeds bounds.
           return Math.max(0, height + newTopRow);
         }
@@ -820,7 +822,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       
       if (direction === 'up') {
         for(var i = 0; i < nRows; ++i) {
-          // Move bottommost column to the top
+          // Move bottommost row to the top
           var row = _cellElements.length-1;
           that.moveRowToTop(row);
           --_self.currentCell.row;
@@ -831,6 +833,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           row = 0;
           that.moveRowToEnd(row);
           ++_self.currentCell.row;
+          
         }
       }
       
