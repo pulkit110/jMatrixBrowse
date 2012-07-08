@@ -67,7 +67,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           break;
       }
     }
-    
+
+    // TODO: Move to Utils or Renderer and use in generate positions for jMatrixBrowseRenderer.
     /**
      * Check if the drag is valid.
      * @param {Number} overflow - Type of the overflow to check for.
