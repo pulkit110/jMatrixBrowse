@@ -504,6 +504,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       
       // Listen for drag stop and reposition cells, needed when there is a quick drag.
       _elem.bind('jMatrixBrowseDragStop', function (event) {
+
+        if (_configuration.isSnapEnabled()) {
+          _renderer.snapToGrid();
+        }
+        
         // Reposition matrix cells
         checkAndRepositionCells();  
         // Reposition headers

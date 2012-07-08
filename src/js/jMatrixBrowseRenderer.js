@@ -169,14 +169,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
     var newPosition = {
       top: (
-              pageY																// The absolute mouse position
-              - draggable.offset.click.top													// Click offset (relative to the element)
+              pageY															// The absolute mouse position
+              - draggable.offset.click.top												// Click offset (relative to the element)
               - draggable.offset.relative.top												// Only for relative positioned nodes: Relative offset from element to offset parent
               - draggable.offset.parent.top												// The offsetParent's offset without borders (offset + border)
               + (jQuery.browser.safari && jQuery.browser.version < 526 && draggable.cssPosition == 'fixed' ? 0 : ( draggable.cssPosition == 'fixed' ? -draggable.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ))
       ),
       left: (
-              pageX																// The absolute mouse position
+              pageX															// The absolute mouse position
               - draggable.offset.click.left												// Click offset (relative to the element)
               - draggable.offset.relative.left												// Only for relative positioned nodes: Relative offset from element to offset parent
               - draggable.offset.parent.left												// The offsetParent's offset without borders (offset + border)
@@ -695,7 +695,47 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var nColsToScroll = getNumberOfColsForPageScroll('right');
       scrollCols('right', nColsToScroll);
     };
-    
+
+    /**
+     * Snap the element to grid.
+     * If called without any argument, it finds the element closest to the boundary (TODO) to snap.
+     * If the direction is not defined, it snaps to both the top and left.
+     * Otherwise, it snaps the given element in the given direction.
+     *
+     * @param {jQuery Object} element - the element to snap to grid (optional).
+     * @param {string} - the direction to snap (from top, left) (optional).
+     */
+    that.snapToGrid = function(element, direction) {
+
+      if (element === undefined && direction === undefined) {
+        // TODO: (nBackgroundCells,nBackgroundCells) is not always the element that is closest to the edge.
+        _self.snapToGrid(jQuery(_self.getCellElements()[_configuration.getNumberOfBackgroundCells()][_configuration.getNumberOfBackgroundCells()]));
+        return;
+      }
+      
+      // Get element and container offsets
+      var containerOffset = _container.offset();
+      var elementOffset = element.offset();
+      var dragContainerOffset = _dragContainer.offset();
+
+      if (direction === 'top' || direction === undefined) {
+        // The posoition.top of the element relative to cotainter.
+        var top = elementOffset.top - containerOffset.top;
+        if (top !== 0) { // Element is not already snapped
+          dragContainerOffset.top -= top;
+        }
+      }
+      if (direction === 'left' || direction === undefined) {
+        // The posoition.left of the element relative to cotainter.
+        var left = elementOffset.left - containerOffset.left;
+        if (left !== 0) { // Element is not already snapped
+          dragContainerOffset.left -= left;
+        }
+      }
+
+      _dragContainer.offset(dragContainerOffset);
+    }
+
     /**
      * Gets the number of rows that can be scrolled for a page up/down event without violating the matrix bounds.
      * @param  {string} direction the direction of the scroll.

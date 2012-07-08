@@ -25,7 +25,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       boo_jMatrixBrowser: (elem.attr('data-jmatrix_browser') === 'true'),
       str_api: elem.attr('data-api'),
       str_initialWindowSize: elem.attr('data-initial-window-size'),
-      str_initialWindowPosition: elem.attr('data-initial-window-position')
+      str_initialWindowPosition: elem.attr('data-initial-window-position'),
+      boo_snap: elem.attr('data-snap') === 'true'
     };
     return options;
   }
@@ -41,7 +42,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   function extendDefaults(options) {
     return jQuery.extend({
       str_initialWindowPosition: '0,0',
-      str_initialWindowSize: '10,10'
+      str_initialWindowSize: '10,10',
+      boo_snap: false
     }, options);
   }
   
@@ -151,7 +153,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     that.getNumberOfBackgroundCells = function() {
       return jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
     };
-  
+
+    that.isSnapEnabled = function() {
+      return _settings.boo_snap;
+    };
+
     return that;
   };
 
