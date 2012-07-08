@@ -457,21 +457,44 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    */
   function checkScrollBounds(direction) {
     var size = _api.getMatrixSize();
-    if (direction === 'up' && _self.currentCell.row <= 0) {
+
+    if (direction === 'up' && _self.currentCell.row < 1) {
       return false;
     }
-    if (direction === 'down' && _self.currentCell.row + _cellElements.length - 2*_configuration.getNumberOfBackgroundCells() > size.height - 1) {
+    if (direction === 'down' && _self.currentCell.row - _configuration.getNumberOfBackgroundCells() + _cellElements.length - 1 > size.height - 1) {
       return false;
     }
-    if (direction === 'right' && _self.currentCell.col + _cellElements[0].length - 2*_configuration.getNumberOfBackgroundCells() > size.width - 1) {
+    if (direction === 'right' && _self.currentCell.col - _configuration.getNumberOfBackgroundCells() + _cellElements[0].length - 1 > size.width - 1) {
       return false;
     }
-    if (direction === 'left' && _self.currentCell.col <= 0) {
+    if (direction === 'left' && _self.currentCell.col < 1) {
       return false;
     }
     return true;
   }
-  
+
+  function getCellToSnap() {
+    var nBackgroundCells = _configuration.getNumberOfBackgroundCells();
+    var cell00Offsets = jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells-1]).offset();
+    var cell10Offsets = jQuery(_cellElements[nBackgroundCells][nBackgroundCells-1]).offset();
+    var cell01Offsets = jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells]).offset();
+    var cell11Offsets = jQuery(_cellElements[nBackgroundCells][nBackgroundCells]).offset();
+    var containerOffset = _container.offset();
+    var squaredDistance00 = (cell00Offsets.top - containerOffset.top)*(cell00Offsets.top - containerOffset.top) + (cell00Offsets.left - containerOffset.left)*(cell00Offsets.left - containerOffset.left);
+    var squaredDistance11 = (cell11Offsets.top - containerOffset.top)*(cell11Offsets.top - containerOffset.top) + (cell11Offsets.left - containerOffset.left)*(cell11Offsets.left - containerOffset.left);
+    var squaredDistance01 = (cell01Offsets.top - containerOffset.top)*(cell01Offsets.top - containerOffset.top) + (cell01Offsets.left - containerOffset.left)*(cell01Offsets.left - containerOffset.left);
+    var squaredDistance10 = (cell10Offsets.top - containerOffset.top)*(cell10Offsets.top - containerOffset.top) + (cell10Offsets.left - containerOffset.left)*(cell10Offsets.left - containerOffset.left);
+    var distances = [squaredDistance00, squaredDistance11, squaredDistance01, squaredDistance10];
+    var cells = [
+      jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells-1]),
+      jQuery(_cellElements[nBackgroundCells][nBackgroundCells]),
+      jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells]),
+      jQuery(_cellElements[nBackgroundCells][nBackgroundCells-1])
+    ];
+    
+    return cells[jMatrixBrowseNS.Utils.findIndexOfMin(distances).minIndex];
+  }
+
   /**
    * jMatrixBrowse Renderer manages the rendering of elements as well as row and 
    * column headers.
@@ -708,8 +731,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     that.snapToGrid = function(element, direction) {
 
       if (element === undefined && direction === undefined) {
-        // TODO: (nBackgroundCells,nBackgroundCells) is not always the element that is closest to the edge.
-        _self.snapToGrid(jQuery(_self.getCellElements()[_configuration.getNumberOfBackgroundCells()][_configuration.getNumberOfBackgroundCells()]));
+        _self.snapToGrid(getCellToSnap());
         return;
       }
       

@@ -56,6 +56,31 @@ jMatrixBrowseNs.Utils = {
         return (top > container.height());
     }
     return false;
+  },
+
+  /**
+   * Finds the min and index of min number in the array.
+   *
+   * @param {Array} array - the array to look into.
+   * @returns {Number} obj.min - the minimum number in the array.
+   * @returns {Number} obj.minIndex - the index of minimum number in the array.
+   */
+  findIndexOfMin : function(array) {
+    if (array && array.length) {
+      var min = array[0];
+      var minIndex = 0;
+      for (var i = 1, l = array.length; i < l; ++i) {
+        if (array[i] < min) {
+          min = array[i];
+          minIndex = i;
+        }
+      }
+      return {
+        min: min,
+        minIndex: minIndex
+      };
+    }
+    return null;
   }
 }
 
