@@ -654,6 +654,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} nRows - number of rows to scroll.
      */
     function scrollRows(direction, nRows) {
+      // Dont't scroll if no rows to scroll.
+      if (nRows === 0)
+        return;
+
       var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
       
       if (direction === 'up') {
@@ -717,6 +721,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} nCols - number of cols to scroll.
      */
     function scrollCols(direction, nCols) {
+      // Dont't scroll if no columns to scroll. 
+      if (nCols === 0)
+        return;
       var previousCell = jQuery.extend({}, _self.currentCell); // Clone currentCell
       
       if (direction === 'left') {
