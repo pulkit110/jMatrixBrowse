@@ -18,5 +18,6 @@ jMatrixBrowseNs.Constants = {
   OVERFLOW_TOP : 3,
   OVERFLOW_BOTTOM : 4,
   OVERFLOW_NONE : -1,
-  CLASS_BASE : 'jmatrixbrowse'
+  CLASS_BASE : 'jmatrixbrowse',
+  N_BACKGROUND_CELLS : 1
 };

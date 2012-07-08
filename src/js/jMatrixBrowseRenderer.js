@@ -215,11 +215,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     var windowPosition = _configuration.getWindowPosition();
       
     _cellElements = [];
-    var nBackgroundCells = 1; // TODO: Get number of background cells
-    var height = windowSize.height + 2*nBackgroundCells; 
-    var width = windowSize.width + 2*nBackgroundCells; // TODO: Get number of background cells
-    var rowBegin = Math.max(0, windowPosition.row - nBackgroundCells);
-    var colBegin = Math.max(0, windowPosition.col - nBackgroundCells);
+    var height = windowSize.height + 2*_configuration.getNumberOfBackgroundCells();
+    var width = windowSize.width + 2*_configuration.getNumberOfBackgroundCells(); // TODO: Get number of background cells
+    var rowBegin = Math.max(0, windowPosition.row - _configuration.getNumberOfBackgroundCells());
+    var colBegin = Math.max(0, windowPosition.col - _configuration.getNumberOfBackgroundCells());
       
     // Generate matrix content for only the rows that are in the window.
     var frag = document.createDocumentFragment();
@@ -232,8 +231,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         elem.style.width = cellWidth + "px";
         elem.style.height = cellHeight + "px";
         elem.style.position = "absolute";
-        elem.style.top = (row-rowBegin-nBackgroundCells)*cellHeight + "px";
-        elem.style.left = (col-colBegin-nBackgroundCells)*cellWidth + "px";
+        elem.style.top = (row-rowBegin-_configuration.getNumberOfBackgroundCells())*cellHeight + "px";
+        elem.style.left = (col-colBegin-_configuration.getNumberOfBackgroundCells())*cellWidth + "px";
         elem.style.display = "inline-block";
         elem.style.textIndent = "6px";
         elem.innerHTML = row + "," + col;
@@ -278,8 +277,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @param {jQuery object} header - row header container.
    */
   function generateRowHeaders(header) {  
-    var nBackgroundCells = 1; // TODO
-    var rowHeaders = _api.getRowHeadersFromTopRow(_self.currentCell.row-nBackgroundCells);
+    var rowHeaders = _api.getRowHeadersFromTopRow(_self.currentCell.row-_configuration.getNumberOfBackgroundCells());
     var frag = document.createDocumentFragment();
     for (var row = 0, nRows = rowHeaders.length; row < nRows; ++row) {
       var cellElement = jQuery(_cellElements[row][0]);
@@ -304,8 +302,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @param {jQuery object} header - column header container.
    */
   function generateColHeaders(header) {
-    var nBackgroundCells = 1; // TODO
-    var colHeaders = _api.getColHeadersFromLeftCol(_self.currentCell.col-nBackgroundCells);
+    var colHeaders = _api.getColHeadersFromLeftCol(_self.currentCell.col-_configuration.getNumberOfBackgroundCells());
     var frag = document.createDocumentFragment();
     for (var col = 0, nCols = colHeaders.length; col < nCols; ++col) {
       var cellElement = jQuery(_cellElements[0][col]);
@@ -357,15 +354,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @return {boolean} true if the bounds are valid. false otherwise.
    */
   function checkScrollBounds(direction) {
-    var nBackgroundCells = 1;
     var size = _api.getMatrixSize();
     if (direction === 'up' && _self.currentCell.row <= 0) {
       return false;
     }
-    if (direction === 'down' && _self.currentCell.row + _cellElements.length - 2*nBackgroundCells > size.height - 1) {
+    if (direction === 'down' && _self.currentCell.row + _cellElements.length - 2*_configuration.getNumberOfBackgroundCells() > size.height - 1) {
       return false;
     }
-    if (direction === 'right' && _self.currentCell.col + _cellElements[0].length - 2*nBackgroundCells > size.width - 1) {
+    if (direction === 'right' && _self.currentCell.col + _cellElements[0].length - 2*_configuration.getNumberOfBackgroundCells() > size.width - 1) {
       return false;
     }
     if (direction === 'left' && _self.currentCell.col <= 0) {
@@ -605,7 +601,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     function getNumberOfRowsForPageScroll(direction) {
       var height = _configuration.getWindowSize().height;
-      var nBackgroundCells = 1;
       if (direction === 'up') {
         var newTopRow = _self.currentCell.row - height;
         if (newTopRow < 0) {
@@ -614,8 +609,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         }
       } else {
         var matrixHeight = _api.getMatrixSize().height;
-        var newBottomRow = _self.currentCell.row + height + _cellElements.length - nBackgroundCells - 1;
-        if (newBottomRow >= matrixHeight) {
+        var newBottomRow = _self.currentCell.row + height + _cellElements.length - _configuration.getNumberOfBackgroundCells() - 1;
+        if (newBottomRow >= matrixHeight-1) {
           // The scroll exceeds bounds
           return Math.max(0, height - (newBottomRow - matrixHeight));
         }
@@ -630,7 +625,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     function getNumberOfColsForPageScroll(direction) {
       var width = _configuration.getWindowSize().width;
-      var nBackgroundCells = 1;
       if (direction === 'left') {
         var newLeftCol = _self.currentCell.col - width;
         if (newLeftCol < 0) {
@@ -639,7 +633,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         }
       } else {
         var matrixWidth = _api.getMatrixSize().width;
-        var newRightCol = _self.currentCell.col + width + _cellElements[0].length - nBackgroundCells - 1;
+        var newRightCol = _self.currentCell.col + width + _cellElements[0].length - _configuration.getNumberOfBackgroundCells() - 1;
         if (newRightCol >= matrixWidth) {
           // The scroll exceeds bounds
           return Math.max(0, width - (newRightCol - matrixWidth));

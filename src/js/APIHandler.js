@@ -89,9 +89,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Get the row data for the row index for current window. 
      * @param {Object} cell - row and column index of cell
      * @returns {Array} rowData - Array of row data
+     * @deprecated You need to pass in the full window now. See getResponseData.
      */
     that.getRowDataForCell = function(cell) {
-      var nBackgroundCells = 1; // TODO:
+      var nBackgroundCells = jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
       var rowData = [];
       var response = _api.getResponse({
         row1: cell.row,
@@ -109,12 +110,13 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     };
 
     /**
-    * Get the col data for the col index for current window. 
-    * @param {Object} cell - row and column index of cell.
-    * @returns {Array} colData - Array of col data.
-    */
+     * Get the col data for the col index for current window.
+     * @param {Object} cell - row and column index of cell.
+     * @returns {Array} colData - Array of col data.
+     * @deprecated You need to pass in the full window now. See getResponseData.
+     */
     that.getColDataForCell = function(cell) {
-      var nBackgroundCells = 1; // TODO:
+      var nBackgroundCells = jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
       var colData = [];
       var response = _api.getResponse({
         row1: cell.row - nBackgroundCells,
@@ -147,7 +149,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     that.getResponse = function(request) {
       return _api.getResponse(request);
     };
-    
+
+    /**
+     * Gets the response data for a request. No checks are performed.
+     * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+     * @returns response.data received from the server.
+     */
     that.getResponseData = function(request) {
       var response = _api.getResponse(request);
       return response.data;

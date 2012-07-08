@@ -143,6 +143,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         col2: Math.min(position.col + windowSize.width, size.width) 
       };
     };
+
+    /**
+     * Gets the number of background cells to use.
+     * @returns nBackgroundCells The number of background cells.
+     */
+    that.getNumberOfBackgroundCells = function() {
+      return jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
+    };
   
     return that;
   };
