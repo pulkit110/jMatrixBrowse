@@ -558,7 +558,64 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       reloadHeaders(event);
       reloadMatrixData(event);
     }
-    
+
+    /**
+     * Binds shortcuts for browsing.
+     */
+    function bindShortcuts() {
+      // Arrow keys
+      jQuery(document).bind('keydown', 'right', function() {
+        _renderer.scrollRight();
+      });
+
+      jQuery(document).bind('keydown', 'left', function() {
+        _renderer.scrollLeft();
+      });
+
+      jQuery(document).bind('keydown', 'up', function() {
+        _renderer.scrollUp();
+      });
+
+      jQuery(document).bind('keydown', 'down', function() {
+        _renderer.scrollDown();
+      });
+
+      // Vi like browsing.
+      jQuery(document).bind('keydown', 'j', function() {
+        _renderer.scrollRight();
+      });
+
+      jQuery(document).bind('keydown', 'h', function() {
+        _renderer.scrollLeft();
+      });
+
+      jQuery(document).bind('keydown', 'k', function() {
+        _renderer.scrollUp();
+      });
+
+      jQuery(document).bind('keydown', 'l', function() {
+        _renderer.scrollDown();
+      });
+
+      // Page ups and downs using ctrl + arrow keys
+      jQuery(document).bind('keydown', 'ctrl+up', function() {
+        _renderer.pageUp();
+      });
+
+      jQuery(document).bind('keydown', 'ctrl+down', function() {
+        _renderer.pageDown();
+      });
+
+      jQuery(document).bind('keydown', 'ctrl+left', function() {
+        _renderer.pageLeft();
+      });
+
+      jQuery(document).bind('keydown', 'ctrl+right', function() {
+        _renderer.pageRight();
+      });
+      
+    }
+
     /**
      * Initialize the jMatrixBrowse.
      * @param {jQuery object} elem - the element to which to attach the jMatrixBrowse.
@@ -618,38 +675,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       _elem.bind('jMatrixBrowseClick', function (event) {
         console.log('click: ' + event.row + ', ' + event.col);
       });
-      
-      jQuery(document).bind('keydown', 'right', function() {
-        _renderer.scrollRight();
-      });
-      
-      jQuery(document).bind('keydown', 'left', function() {
-        _renderer.scrollLeft();
-      });
-      
-      jQuery(document).bind('keydown', 'up', function() {
-        _renderer.scrollUp();
-      });
-      
-      jQuery(document).bind('keydown', 'down', function() {
-        _renderer.scrollDown();
-      });
-      
-      jQuery(document).bind('keydown', 'ctrl+up', function() {
-        _renderer.pageUp();
-      });
-      
-      jQuery(document).bind('keydown', 'ctrl+down', function() {
-        _renderer.pageDown();
-      });
-      
-      jQuery(document).bind('keydown', 'ctrl+left', function() {
-        _renderer.pageLeft();
-      });
-      
-      jQuery(document).bind('keydown', 'ctrl+right', function() {
-        _renderer.pageRight();
-      });
+
+      bindShortcuts();
     }
 
     //Public API
