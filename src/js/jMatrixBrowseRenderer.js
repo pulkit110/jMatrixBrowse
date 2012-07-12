@@ -475,25 +475,27 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     return true;
   }
 
+  /**
+   * Finds the cell that is closest to the top left boundaries.
+   * Checks only a few cells on the top.
+   * @returns {jQuery Object} cell that is closest to the top left boundary.
+   */
   function getCellToSnap() {
-    var nBackgroundCells = _configuration.getNumberOfBackgroundCells();
-    var cell00Offsets = jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells-1]).offset();
-    var cell10Offsets = jQuery(_cellElements[nBackgroundCells][nBackgroundCells-1]).offset();
-    var cell01Offsets = jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells]).offset();
-    var cell11Offsets = jQuery(_cellElements[nBackgroundCells][nBackgroundCells]).offset();
+    // Define the number of rows an columns to check starting from the top corner. 
+    var numberOfRowsToCheck = 2 * _configuration.getNumberOfBackgroundCells() + 1;
+    var numberOfColsToCheck = 2 * _configuration.getNumberOfBackgroundCells() + 1;
+    // Store the cells and distances that we check.
+    var cells = [];
+    var distances = [];
+    // Compute container offset to find distances from cells.
     var containerOffset = _container.offset();
-    var squaredDistance00 = (cell00Offsets.top - containerOffset.top)*(cell00Offsets.top - containerOffset.top) + (cell00Offsets.left - containerOffset.left)*(cell00Offsets.left - containerOffset.left);
-    var squaredDistance11 = (cell11Offsets.top - containerOffset.top)*(cell11Offsets.top - containerOffset.top) + (cell11Offsets.left - containerOffset.left)*(cell11Offsets.left - containerOffset.left);
-    var squaredDistance01 = (cell01Offsets.top - containerOffset.top)*(cell01Offsets.top - containerOffset.top) + (cell01Offsets.left - containerOffset.left)*(cell01Offsets.left - containerOffset.left);
-    var squaredDistance10 = (cell10Offsets.top - containerOffset.top)*(cell10Offsets.top - containerOffset.top) + (cell10Offsets.left - containerOffset.left)*(cell10Offsets.left - containerOffset.left);
-    var distances = [squaredDistance00, squaredDistance11, squaredDistance01, squaredDistance10];
-    var cells = [
-      jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells-1]),
-      jQuery(_cellElements[nBackgroundCells][nBackgroundCells]),
-      jQuery(_cellElements[nBackgroundCells-1][nBackgroundCells]),
-      jQuery(_cellElements[nBackgroundCells][nBackgroundCells-1])
-    ];
-    
+    for (var i = 0; i < numberOfRowsToCheck && i < _cellElements.length; ++i) {
+        for (var j = 0; j < numberOfColsToCheck && j < _cellElements[i].length; ++j) {
+            var offset = jQuery(_cellElements[i][j]).offset();
+            distances.push((offset.top - containerOffset.top)*(offset.top - containerOffset.top) + (offset.left - containerOffset.left)*(offset.left - containerOffset.left)); // Squared distance of the cell's top,left with container's top, left.
+            cells.push(jQuery(_cellElements[i][j]));
+        }
+    }
     return cells[jMatrixBrowseNS.Utils.findIndexOfMin(distances).minIndex];
   }
 
