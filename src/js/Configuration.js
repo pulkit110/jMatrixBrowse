@@ -1,7 +1,7 @@
 /**
  * @fileOverview Contains the jMatrixBrowse configuration.
  * @version 0.1
- * @author Pulkit Goyal <pulkit110@gmail.com> 
+ * @author Pulkit Goyal <pulkit110@gmail.com>
 */
 
 var jMatrixBrowseNs = jMatrixBrowseNs || {};
@@ -13,8 +13,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
   /**
    * Get user defined options from data-* elements.
-   * @param {jQuery object} elem - the element to retrieve the user options from. 
-   * @returns {Object} options - User's options for the plugin. 
+   * @param {jQuery object} elem - the element to retrieve the user options from.
+   * @returns {Object} options - User's options for the plugin.
    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
    * @returns {string} options.str_api - URI for the API.
    * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
@@ -33,7 +33,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
   /**
    * Extend the user's settings with defaults.
-   * @returns {Object} options - User's options for the plugin. 
+   * @returns {Object} options - User's options for the plugin.
    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
    * @returns {string} options.str_api - URI for the API.
    * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
@@ -46,7 +46,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       boo_snap: false
     }, options);
   }
-  
+
   /**
    * Set the settings object.
    * @param {Object} settings
@@ -57,7 +57,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
  /**
    * Manages configurations for jMatrixBrowse.
-   * 
+   *
    * @param {jQuery Object} elem - element that initiated jMatrixBrowse.
    * @param {Object} api - api manager for making requests to api.
    * @class Configuration
@@ -65,15 +65,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    */
   jMatrixBrowseNS.Configuration = function(elem, api) {
     var that = this;
-    
+
     _api = api;
-    
+
     // Get user options
     var options = getUserOptions(elem);
 
     // Extending user options with application defaults
     _settings = extendDefaults(options);
-    
+
     /**
      * Gets settings object.
      * @returns {Object} User settings for jMatrixBrowse.
@@ -83,10 +83,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _settings;
     };
 
-    /** 
-     * Gets window size from settings. 
-     * @returns {Object} size - size of the window. 
-     * @returns {Number} size.width - width of the window. 
+    /**
+     * Gets window size from settings.
+     * @returns {Object} size - size of the window.
+     * @returns {Number} size.width - width of the window.
      * @returns {Number} size.height - height of the window.
      */
     that.getWindowSize = function() {
@@ -99,10 +99,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
       return null;
     };
-  
-    /** 
-     * Gets position of window. 
-     * @returns {Object} position - position of the top-left corner of window. 
+
+    /**
+     * Gets position of window.
+     * @returns {Object} position - position of the top-left corner of window.
      * @returns {Number} position.row - row index of the position.
      * @returns {Number} position.col - column index of the position.
      */
@@ -113,13 +113,13 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
       return null;
     };
-    
+
     /**
-     * Get the window end points which has given point at its top left corner. 
+     * Get the window end points which has given point at its top left corner.
      * @param {Object} position - position of the cell.
      * @param {Number} position.row - row of the cell.
      * @param {Number} position.col - column of the cell.
-     * @returns {Object} window - Object representing the window coordinates. 
+     * @returns {Object} window - Object representing the window coordinates.
      * @returns {Number} window.row1 - row index of the top left corner.
      * @returns {Number} window.col1 - column index of the top left corner.
      * @returns {Number} window.row2 - row index of the bottom right corner.
@@ -142,7 +142,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         row1: position.row,
         col1: position.col,
         row2: Math.min(position.row + windowSize.height, size.height),
-        col2: Math.min(position.col + windowSize.width, size.width) 
+        col2: Math.min(position.col + windowSize.width, size.width)
       };
     };
 

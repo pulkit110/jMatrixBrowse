@@ -1,0 +1,9 @@
+/**
+ * @fileOverview jMatrixBrowse default stylesheet.
+ * @version 0.1
+ * @author Pulkit Goyal <pulkit110@gmail.com>
+*/
+
+.jMatrixBrowse-background-data-container {
+  display: none;
+}

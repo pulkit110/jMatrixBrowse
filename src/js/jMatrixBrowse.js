@@ -39,9 +39,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   jQuery.fn.jMatrixBrowse = function() {
 
     var _self = this;
-    var _renderer;      // jMatrixBrowse renderer
-    var _configuration; // jMatrixBrowse configuration manager.
-    var _api;           // API handler
+    var _renderer;              // jMatrixBrowse renderer.
+    var _configuration;         // jMatrixBrowse configuration manager.
+    var _api;                   // API handler.
+    var _backgroundDataManager; // Background data manager.
+    var _elem; 
     
     /**
      * Computes the new cell coordinates when a drag results in overflow.
@@ -677,6 +679,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       });
 
       bindShortcuts();
+
+      // Begin loading data in the background.
+      _backgroundDataManager = jMatrixBrowseNs.BackgorundDataManager(_elem, _api);
     }
 
     //Public API

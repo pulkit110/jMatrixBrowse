@@ -159,7 +159,18 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var response = _api.getResponse(request);
       return response.data;
     };
-    
+
+    /**
+     * Gets the response data for a request. No checks are performed.
+     * callback is called with the data received from api as a parameter.
+     * This method will eventually replace the getResponseData the older method is not very useful with a live API.
+     * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+     */
+    that.getResponseDataAsync = function(request, callback) {
+      var response = _api.getResponse(request);
+      callback.call(that, response.data);
+    };
+
     return that;
   };
   
