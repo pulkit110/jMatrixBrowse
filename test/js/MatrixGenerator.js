@@ -18,8 +18,8 @@ function MatrixGenerator(type) {
     type = 'random';
   }
   
-  var INT_MAX_LABEL_LENGTH = 10;
-  var FLO_NUM_PROBABILITY = 0.1;
+  var INT_MAX_LABEL_LENGTH = 4;
+  var FLO_NUM_PROBABILITY = 0.5;
 
   var arr_stateLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
 

@@ -352,7 +352,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
     }    
     content.append(frag);
-    
+      
     // Associate click handler with cell
     jQuery('.jMatrixBrowse-cell').click(function(event) {
       // Trigger click only when click is not for drag

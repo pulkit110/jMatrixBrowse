@@ -636,7 +636,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       _renderer = jMatrixBrowseNs.jMatrixBrowseRenderer(elem, _configuration, _api);
 
       // Load data
-      //_self.reloadData();
+      _self.reloadData();
       
       // Listen to events to implement reloading of data and headers
       
@@ -700,11 +700,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       if (response && response.data) {
         for (var i = 0; i < response.data.length; ++i) {
           for (var j = 0; j < response.data[i].length; ++j) {
-            // TODO: If we support named methods, the data should be extracted for the named method corresponding to current layer.
             var cellData = response.data[i][j]; 
-            var row = cellWindow.row1 + i;
-            var col = cellWindow.col1 + j;
-            jQuery('.' + generateClassNameForCell(row, col)).html(cellData);  
+            jQuery(_renderer.getCellElements()[i+1][j+1]).html(cellData);
           }
         }
       }
