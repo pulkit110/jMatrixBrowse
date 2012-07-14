@@ -16,13 +16,34 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   var _api;           // api manager
 
   /**
+   * Validates the options defined by the user.
+   * @param {Object} options - User's options for the plugin.
+   * @returns {Boolean} true if the options are valid.
+   */
+  function validate(options) {   
+    if (options.boo_jMatrixBrowser !== true && options.boo_jMatrixBrowser !== true) {
+      throw "data-jmatrix_browser invalid";
+    }
+    if (options.str_api === undefined || options.str_api === null) {
+      throw "data-api invalid.";
+    }
+    if (options.str_initialWindowSize && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowSize)) {
+      throw "data-initial-window-size invalid."
+    }
+    if (options.str_initialWindowPosition && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowPosition)) {
+      throw "data-initial-window-size invalid."
+    }
+    return true;
+  }
+  
+  /**
    * Get user defined options from data-* elements.
    * @param {jQuery object} elem - the element to retrieve the user options from.
    * @returns {Object} options - User's options for the plugin.
    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
    * @returns {string} options.str_api - URI for the API.
-   * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
-   * @returns {string} options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).
+   * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
+   * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
    */
   function getUserOptions(elem) {
     var options = {
@@ -32,7 +53,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       str_initialWindowPosition: elem.attr('data-initial-window-position'),
       boo_snap: elem.attr('data-snap') === 'true'
     };
-    return options;
+    if (validate(options))
+      return options;
+    else
+      throw "Unable to get user options.";
   }
 
   /**
@@ -40,14 +64,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @returns {Object} options - User's options for the plugin.
    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
    * @returns {string} options.str_api - URI for the API.
-   * @returns {string} options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).
-   * @returns {string} options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).
+   * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
+   * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
    */
   function extendDefaults(options) {
     return jQuery.extend({
-      str_initialWindowPosition: '0,0',
-      str_initialWindowSize: '10,10',
-      boo_snap: false
+      str_initialWindowPosition: jMatrixBrowseNs.Constants.INITIAL_WINDOW_POSITION,
+      str_initialWindowSize: jMatrixBrowseNs.Constants.INITIAL_WINDOW_SIZE,
+      boo_snap: jMatrixBrowseNs.Constants.DEFAULT_OPTION_SNAP
     }, options);
   }
 
@@ -132,13 +156,13 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     that.getCellWindow = function(position) {
       var size = _api.getMatrixSize();
       if (size == undefined) {
-        console.error("Unable to get matrix size");
+        throw "Unable to get matrix size";
         return null;
       }
 
       var windowSize = this.getWindowSize();
       if (windowSize == undefined) {
-        console.error("Unable to get window size");
+        throw "Unable to get window size.";
         return null;
       }
 
