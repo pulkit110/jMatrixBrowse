@@ -1,5 +1,9 @@
 /**
  * @fileOverview Contains the jMatrixBrowse configuration.
+ * 
+ * This reads the configuration set in the DOM by the user as per the options 
+ * defined in https://github.com/pulkit110/jMatrixBrowse/wiki/Use
+ * 
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com>
 */

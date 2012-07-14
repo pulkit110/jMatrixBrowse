@@ -1,5 +1,10 @@
 /**
  * @fileOverview Contains the jMatrixBrowse rendering code.
+ * 
+ * Handles rendering of jMatrixBrowse and manages the dragging, keyboard
+ * shortcuts and mouse shortcuts. This doesn't perform reloading of the data
+ * which is handled by catching corresponding events in jMatrixBrowse.
+ * 
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com> 
 */

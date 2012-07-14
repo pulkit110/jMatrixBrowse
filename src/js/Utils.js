@@ -1,5 +1,6 @@
 /**
- * @fileOverview Contains the jMatrixBrowse utility code.
+ * @fileOverview Contains utility funcitons that several modules of 
+ * jMatrixBrowse use.
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com> 
  */

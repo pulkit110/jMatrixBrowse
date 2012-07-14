@@ -1,5 +1,11 @@
 /**
  * @fileOverview Handles requests to the API.
+ * 
+ * Handles the requests to API. All the requests to the API are sent through 
+ * this class rather than directly making requests to the API. To manage data 
+ * of different formats, the user can implement his own API class that 
+ * implements the public methods for the module.
+ * 
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com> 
 */

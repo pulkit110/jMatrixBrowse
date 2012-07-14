@@ -1,5 +1,12 @@
 /**
  * @fileOverview Manages background loading of data for jMatrixBrowse.
+ * 
+ * When initiated, it loads the data for the complete matrix in the DOM. 
+ * Other components should make requests to this to obtain data to be loaded
+ * in the matrix rather than directly speaking with the API as this module
+ * will manage the data already cached form the API and make additional requests 
+ * if necessary. 
+ * 
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com>
 */

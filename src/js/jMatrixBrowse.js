@@ -1,5 +1,9 @@
 /**
  * @fileOverview Contains the jMatrixBrowse plug-in code.
+ * 
+ * The core file for jMatrixBrowse that manages the initialization of the 
+ * component and manages interaction with different parts of the components.
+ * 
  * @version 0.1
  * @author Pulkit Goyal <pulkit110@gmail.com> 
 */
