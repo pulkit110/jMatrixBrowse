@@ -101,6 +101,52 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
     beginLoadingData();
 
+    that.getCellsForRequest = function(request, callback) {
+      // Naïve implementation:
+      // Checks if all the cells have already been loaded and returns those.
+      // Otherwise loads all the cells again.
+      // TODO: Create a request dynamically to load only the cells which have not already been loaded.
+      var notAllCellsExist = false;
+      var cells = [];
+      for (var i = request.row1; i <= request.row2; ++i) {
+        cells.push([]);
+        for (var j = request.col1; j <= request.col2; ++j) {
+          var cellSelector = '.jMatrixBrowse-background-cell[data-row=' + i + '][data-col=' + j + ']';
+          if (jQuery(cellSelector).length == 0) {
+            notAllCellsExist = true;
+            break;
+          } else {
+            cells[i-request.row1].push(jQuery(cellSelector));
+          }
+        }
+        if (notAllCellsExist)
+          break;
+      }
+
+      if (notAllCellsExist) {
+        // Get data from API
+        _api.getResponseDataAsync(request, function(data) {
+          cells = [];
+          // Load data in DOM
+          for (var i = 0; i < data.length; ++i) {
+            cells.push([]);
+            for (var j = 0; j < data[i].length; ++j) {
+              cells[i].push(jQuery('<div/>', {
+                className: 'jMatrixBrowse-background-cell',
+                'data-row': i + request.row1,
+                'data-col': j + request.col1,
+                html: data[i][j]
+              }));
+            }
+          }
+          callback.call(this, cells);
+        });
+      } else {
+        // All cells are already loaded. Send them to the callback.
+        callback.call(this, cells);
+      }
+    };
+
     return that;
   };
 

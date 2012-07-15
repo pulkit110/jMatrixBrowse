@@ -453,7 +453,39 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
       // Get col index by checking from both sides.
       var colIndex = getColIndexForReload(event, 'both');
-      
+
+      // Get data from the background data manager.
+      var cells = _backgroundDataManager.getCellsForRequest({
+        row1: rowIndex.row1,
+        row2: rowIndex.row2,
+        col1: colIndex.col1,
+        col2: colIndex.col2
+      }, function(cells) {
+        // Replace the data in (event.currentCell.row - event.previousCell.row)
+        // rows beginning from firstRowToBeReplaced.
+        for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
+          var k = i - rowIndex.row1;
+          var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + k];
+          for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
+            var cell = jQuery(rowToBeReplaced[j-colIndex.col1]);
+            var newCell = cells[i-rowIndex.row1][j-colIndex.col1].clone().removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
+                width: cell.css('width'),
+                height: cell.css('height'),
+                top: cell.css('top'),
+                left: cell.css('left'),
+                position: 'absolute'
+              });
+            cell.replaceWith(newCell);
+            _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
+          //cell.html(rowData[k][j-colIndex.col1]);
+          //cell.attr('data-row', i);
+          //cell.attr('data-col', j);
+          }
+        }
+      });
+
+
+      /*
       // Get data for the window.
       var rowData = _api.getResponseData({
         row1: rowIndex.row1,
@@ -473,7 +505,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           cell.attr('data-row', i);
           cell.attr('data-col', j);
         }
-      }
+      }*/
     }
     
     /**
