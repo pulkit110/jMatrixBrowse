@@ -18,6 +18,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   var _api;                     // api manager
   var _elem;                    // Element that triggered jMatrixBrowse.
   var _backgroundDataContainer; // Container for background data.
+  var _config;                  // jMatrixBrowse configuration.
 
   var backgroundLoadingWindowSize = {height: 20, width: 20}; // TODO: Move to config
   
@@ -41,12 +42,18 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           // Load data in DOM
           for (var i = 0; i < data.length; ++i) {
             for (var j = 0; j < data[i].length; ++j) {
-              _backgroundDataContainer.append(jQuery('<div/>', {
+              var backgroundCell = jQuery('<div/>', {
                 className: 'jMatrixBrowse-background-cell',
                 'data-row': i + request.row1,
                 'data-col': j + request.col1,
                 html: data[i][j]
-              }));
+              });
+              if (_config.getDataReloadStrategy === jMatrixBrowseNS.Constants.RELOAD_CELL_POSITION) {
+                jQuery('.jMatrixBrowse-content').append(backgroundCell);
+                backgroundCell.hide();
+              } else {
+                _backgroundDataContainer.append(backgroundCell);
+              }
             }
           }
 
@@ -75,7 +82,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           loadData(request);
         });
         
-      }, 2500);
+      }, jMatrixBrowseNS.Constants.BACKGROUND_DATA_RELOAD_DELAY);
     })({
       row1: 0,
       row2: backgroundLoadingWindowSize.height,
@@ -93,11 +100,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @class BackgorundDataManager
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNS.BackgorundDataManager = function(elem, api) {
+  jMatrixBrowseNS.BackgorundDataManager = function(elem, api, config) {
     var that = this;
 
     _elem = elem;
     _api = api;
+    _config = config;
 
     beginLoadingData();
 
@@ -131,12 +139,17 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           for (var i = 0; i < data.length; ++i) {
             cells.push([]);
             for (var j = 0; j < data[i].length; ++j) {
-              cells[i].push(jQuery('<div/>', {
+              var cell = jQuery('<div/>', {
                 className: 'jMatrixBrowse-background-cell',
                 'data-row': i + request.row1,
                 'data-col': j + request.col1,
                 html: data[i][j]
-              }));
+              });
+              if (_config.getDataReloadStrategy === jMatrixBrowseNS.Constants.RELOAD_CELL_POSITION) {
+                jQuery('.jMatrixBrowse-content').append(cell);
+                cell.hide();
+              }
+              cells[i].push(cell);
             }
           }
           callback.call(this, cells);

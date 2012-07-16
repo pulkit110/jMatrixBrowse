@@ -48,7 +48,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @returns {jQuery Object} content 
    */
   function createContentDiv(container) {
-    var content = jQuery(document.createElement('div'));
+    var content = jQuery(document.createElement('div')).addClass('jMatrixBrowse-content');
     container.append(content);
     return content;
   }
@@ -144,7 +144,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
     // Override the original _generatePosition in draggable to check for matrix bounds on drag.
     dragContainer.draggable().data("draggable")._generatePosition = function(event) {
-      console.log('my draggable');
       return generatePositionsForDrag(dragContainer.draggable().data("draggable"), event);
     };
 

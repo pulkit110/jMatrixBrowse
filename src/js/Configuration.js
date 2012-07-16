@@ -10,10 +10,11 @@
 
 var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
-(function (jQuery, jMatrixBrowseNS) {
+(function (jQuery, jMatrixBrowseNs) {
 
   var _settings;      // user settings
   var _api;           // api manager
+  var _dataReloadStategy = jMatrixBrowseNs.Constants.DEFAULT_DATA_RELOAD_STRATEGY;
 
   /**
    * Validates the options defined by the user.
@@ -91,7 +92,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @class Configuration
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNS.Configuration = function(elem, api) {
+  jMatrixBrowseNs.Configuration = function(elem, api) {
     var that = this;
 
     _api = api;
@@ -167,8 +168,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
 
       return {
-        row1: position.row,
-        col1: position.col,
+        row1: position.row - that.getNumberOfBackgroundCells(),
+        col1: position.col - that.getNumberOfBackgroundCells(),
         row2: Math.min(position.row + windowSize.height, size.height),
         col2: Math.min(position.col + windowSize.width, size.width)
       };
@@ -182,6 +183,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
     };
 
+    /**
+     * Gets the number ata reload strategy to use.
+     * @returns dataReloadStrategy Reload strategy (possible options defined in Constants)
+     */
+    that.getDataReloadStrategy = function() {
+      return _dataReloadStategy;
+    };
+    
     that.isSnapEnabled = function() {
       return _settings.boo_snap;
     };

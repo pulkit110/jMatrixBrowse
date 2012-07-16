@@ -468,44 +468,38 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + k];
           for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
             var cell = jQuery(rowToBeReplaced[j-colIndex.col1]);
-            var newCell = cells[i-rowIndex.row1][j-colIndex.col1].clone().removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
+            if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_REPLACEMENT) {
+              // Clone and move the cell from background container to matrix content.
+              var newCell = cells[i-rowIndex.row1][j-colIndex.col1].clone().removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
+                  width: cell.css('width'),
+                  height: cell.css('height'),
+                  top: cell.css('top'),
+                  left: cell.css('left'),
+                  position: 'absolute'
+                });
+              cell.replaceWith(newCell);
+              _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
+            } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_HTML_REPLACEMENT) {
+              // Change only the html content of the cell.
+              cell.html(cells[i-rowIndex.row1][j-colIndex.col1].html());
+              cell.attr('data-row', i);
+              cell.attr('data-col', j);
+            } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
+              // Cell is already in the matrix container. Change its position etc. to put it in correct place. 
+              var newCell = cells[i-rowIndex.row1][j-colIndex.col1].removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
                 width: cell.css('width'),
                 height: cell.css('height'),
                 top: cell.css('top'),
                 left: cell.css('left'),
                 position: 'absolute'
               });
-            cell.replaceWith(newCell);
-            _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
-          //cell.html(rowData[k][j-colIndex.col1]);
-          //cell.attr('data-row', i);
-          //cell.attr('data-col', j);
+              cell.hide();
+              newCell.show();
+             _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
+            }
           }
         }
       });
-
-
-      /*
-      // Get data for the window.
-      var rowData = _api.getResponseData({
-        row1: rowIndex.row1,
-        row2: rowIndex.row2,
-        col1: colIndex.col1,
-        col2: colIndex.col2
-      });
-        
-      // Replace the data in (event.currentCell.row - event.previousCell.row) 
-      // rows beginning from firstRowToBeReplaced.
-      for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
-        var k = i - rowIndex.row1;
-        var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + k];
-        for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
-          var cell = jQuery(rowToBeReplaced[j-colIndex.col1]);
-          cell.html(rowData[k][j-colIndex.col1]);
-          cell.attr('data-row', i);
-          cell.attr('data-col', j);
-        }
-      }*/
     }
     
     /**
@@ -545,6 +539,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         col2: colIndex.col2
       });
       
+      // TODO: Do similar strategy as for row reloading. 
       // Replace the data in (event.currentCell.col - event.previousCell.col) 
       // columns beginning from firstColToBeReplaced.
       for (var i = rowIndex.row1; i <= rowIndex.row2 /*_renderer.getCellElements().length*/; ++i) {
@@ -717,7 +712,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       bindShortcuts();
 
       // Begin loading data in the background.
-      _backgroundDataManager = jMatrixBrowseNs.BackgorundDataManager(_elem, _api);
+      _backgroundDataManager = jMatrixBrowseNs.BackgorundDataManager(_elem, _api, _configuration);
     }
 
     //Public API
@@ -737,7 +732,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         for (var i = 0; i < response.data.length; ++i) {
           for (var j = 0; j < response.data[i].length; ++j) {
             var cellData = response.data[i][j]; 
-            jQuery(_renderer.getCellElements()[i+1][j+1]).html(cellData);
+            jQuery(_renderer.getCellElements()[i][j]).html(cellData);
           }
         }
       }
