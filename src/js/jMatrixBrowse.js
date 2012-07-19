@@ -468,35 +468,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + k];
           for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
             var cell = jQuery(rowToBeReplaced[j-colIndex.col1]);
-            if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_REPLACEMENT) {
-              // Clone and move the cell from background container to matrix content.
-              var newCell = cells[i-rowIndex.row1][j-colIndex.col1].clone().removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
-                  width: cell.css('width'),
-                  height: cell.css('height'),
-                  top: cell.css('top'),
-                  left: cell.css('left'),
-                  position: 'absolute'
-                });
-              cell.replaceWith(newCell);
-              _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
-            } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_HTML_REPLACEMENT) {
-              // Change only the html content of the cell.
-              cell.html(cells[i-rowIndex.row1][j-colIndex.col1].html());
-              cell.attr('data-row', i);
-              cell.attr('data-col', j);
-            } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
-              // Cell is already in the matrix container. Change its position etc. to put it in correct place. 
-              var newCell = cells[i-rowIndex.row1][j-colIndex.col1].removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
-                width: cell.css('width'),
-                height: cell.css('height'),
-                top: cell.css('top'),
-                left: cell.css('left'),
-                position: 'absolute'
-              });
-              cell.hide();
-              newCell.show();
-             _renderer.getCellElements()[firstRowToBeReplaced + k][j-colIndex.col1] = newCell;
-            }
+            updateCellForReload(cell, firstRowToBeReplaced + k, j-colIndex.col1, cells[i-rowIndex.row1][j-colIndex.col1], i, j);
           }
         }
       });
@@ -531,25 +503,63 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       // Get row index by checking from both sides.
       var rowIndex = getRowIndexForReload(event, 'both');
 
-      // Get data for the window.
-      var colData = _api.getResponseData({
+      // Get data from the background data manager.
+      var cells = _backgroundDataManager.getCellsForRequest({
         row1: rowIndex.row1,
         row2: rowIndex.row2,
         col1: colIndex.col1,
         col2: colIndex.col2
-      });
-      
-      // TODO: Do similar strategy as for row reloading. 
-      // Replace the data in (event.currentCell.col - event.previousCell.col) 
-      // columns beginning from firstColToBeReplaced.
-      for (var i = rowIndex.row1; i <= rowIndex.row2 /*_renderer.getCellElements().length*/; ++i) {
-        for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
-          var colToBeReplacedIndex = firstColumnToBeReplaced + j - colIndex.col1;
-          var cell = _renderer.getCellElements()[i-rowIndex.row1][colToBeReplacedIndex];
-          jQuery(cell).html(colData[i-rowIndex.row1][j - colIndex.col1]);
-          jQuery(cell).attr('data-row', i/*event.currentCell.row - _configuration.getNumberOfBackgroundCells() + i*/);
-          jQuery(cell).attr('data-col', j);
+      }, function(cells) {
+        // Replace the data in (event.currentCell.col - event.previousCell.col)
+        // cols beginning from firstColumnToBeReplaced.
+        for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
+          for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
+            var colToBeReplacedIndex = firstColumnToBeReplaced + j - colIndex.col1;
+            var cell = jQuery(_renderer.getCellElements()[i-rowIndex.row1][colToBeReplacedIndex]);
+            updateCellForReload(cell, i - rowIndex.row1, colToBeReplacedIndex, cells[i-rowIndex.row1][j-colIndex.col1], i, j);
+          }
         }
+      });
+    }
+
+    /**
+     * Updates the cell content for reload based on the reload strategy.
+     * @param  {jQuery Object} cell - cell to be replaced/reloaded.
+     * @param  {Number} rowIndex - row index of the cell to be replaced.
+     * @param  {Number} colIndex - column index of the cell to be replaced.
+     * @param  {jQuery Object} newCell - cell to be replaced with. 
+     * @param  {Number} newRowNumber - new row number of the cell.
+     * @param  {Number} newColNumber - new column number of the cell.
+     */
+    function updateCellForReload(cell, rowIndex, colIndex, newCell, newRowNumber, newColNumber) {
+      if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_REPLACEMENT) {
+        // Clone and move the cell from background container to matrix content.
+        newCell = newCell.clone().removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
+          width: cell.css('width'),
+          height: cell.css('height'),
+          top: cell.css('top'),
+          left: cell.css('left'),
+          position: 'absolute'
+        });
+        cell.replaceWith(newCell);
+        _renderer.getCellElements()[rowIndex][colIndex] = newCell;
+      } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_HTML_REPLACEMENT) {
+        // Change only the html content of the cell.
+        cell.html(newCell.html());
+        cell.attr('data-row', newRowNumber);
+        cell.attr('data-col', newColNumber);
+      } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
+        // Cell is already in the matrix container. Change its position etc. to put it in correct place. 
+        newCell = newCell.removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
+          width: cell.css('width'),
+          height: cell.css('height'),
+          top: cell.css('top'),
+          left: cell.css('left'),
+          position: 'absolute'
+        });
+        cell.hide();
+        newCell.show();
+       _renderer.getCellElements()[rowIndex][colIndex] = newCell;
       }
     }
     
