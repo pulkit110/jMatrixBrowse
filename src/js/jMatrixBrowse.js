@@ -722,7 +722,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       bindShortcuts();
 
       // Begin loading data in the background.
-      _backgroundDataManager = jMatrixBrowseNs.BackgorundDataManager(_elem, _api, _configuration);
+      _backgroundDataManager = jMatrixBrowseNs.BackgroundDataManager(_elem, _api, _configuration);
     }
 
     //Public API
