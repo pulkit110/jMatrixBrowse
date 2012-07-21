@@ -1,0 +1,37 @@
+#my_browser-first {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+}
+#main-first {
+  height: 650px;
+  width: 45%;
+  border: 5px solid black;
+  cursor: default;
+  overflow: hidden;
+  float: left;
+}
+
+#my_browser-second {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+}
+#main-second {
+  height: 650px;
+  width: 45%;
+  border: 5px solid black;
+  cursor: default;
+  overflow: hidden;
+  float: right;
+}
+
+.jMatrixBrowse-cell {
+  border-color: #ff9900;
+  border-width: thin;
+  border-style: solid;
+}

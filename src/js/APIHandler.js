@@ -14,21 +14,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
 (function (jQuery, jMatrixBrowseNS) {
   
-  var _api;           // API object
-  var _renderer;      // Reference to the renderer
-  
-  /**
-   * Initialize the API
-   * @param {string} type type of api: 'test' initializes the mockAPI
-   */
-  function initApi(type) {
-    if (type === 'test') {
-      _api = new MockApi();
-    } else {
-      console.error('API ' + type + 'not yet supported.');
-    }
-  };
-
  /**
    * Manages requests to the api. 
    * 
@@ -38,7 +23,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    */
   jMatrixBrowseNS.APIHandler = function(type) {
     var that = this;
-
+    
     // Initialize the API
     initApi(type);
     
@@ -177,6 +162,22 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       callback.call(that, response.data);
     };
 
+    // Private methods
+    var _api;           // API object
+    var _renderer;      // Reference to the renderer
+
+    /**
+    * Initialize the API
+    * @param {string} type type of api: 'test' initializes the mockAPI
+    */
+    function initApi(type) {
+      if (type === 'test') {
+        _api = new MockApi();
+      } else {
+        console.error('API ' + type + 'not yet supported.');
+      }
+    };
+    
     return that;
   };
   

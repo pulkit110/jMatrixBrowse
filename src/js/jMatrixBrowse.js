@@ -48,6 +48,102 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     var _api;                   // API handler.
     var _backgroundDataManager; // Background data manager.
     var _elem; 
+
+    //Public API
+    /**
+     * Reload data in the matrix for the visible window. 
+     */
+    this.reloadData = function() {
+      var cellWindow = _configuration.getCellWindow(_renderer.currentCell);
+      if (cellWindow == undefined) {
+        console.error('Unable to get cell window.');
+        return;
+      }
+      var response = _api.getResponse(cellWindow);
+      
+      if (response && response.data) {
+        for (var i = 0; i < response.data.length; ++i) {
+          for (var j = 0; j < response.data[i].length; ++j) {
+            var cellData = response.data[i][j]; 
+            jQuery(_renderer.getCellElements()[i][j]).html(cellData);
+          }
+        }
+      }
+    }
+    
+    this.getPosition = function() {
+      return _renderer.currentCell;
+    };
+    
+    // initialize the plugin.
+    init(this);
+    
+    // Private methods
+    /**
+     * Initialize the jMatrixBrowse.
+     * @param {jQuery object} elem - the element to which to attach the jMatrixBrowse.
+     */
+    function init(elem) {
+      _elem = jQuery('<div/>', {
+        position: 'absolute'
+      }).appendTo(elem);
+      
+      // Initialize mock api
+      _api = new jMatrixBrowseNs.APIHandler('test');
+      
+      // Initialize configuration, get user options and extend with default.
+      _configuration = new jMatrixBrowseNs.Configuration(elem, _api);
+      
+      // Initialize the jMatrixBrowseRenderer
+      _renderer = new jMatrixBrowseNs.jMatrixBrowseRenderer(_elem, _configuration, _api);
+
+      // Load data
+      _self.reloadData();
+      
+      // Listen to events to implement reloading of data and headers
+      // Listen for drag and reposition cells
+      _elem.bind('jMatrixBrowseDrag', function (event) {
+        // Reposition matrix cells
+        checkAndRepositionCells();  
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
+      
+      // Listen for drag stop and reposition cells, needed when there is a quick drag.
+      _elem.bind('jMatrixBrowseDragStop', function (event) {
+
+        if (_configuration.isSnapEnabled()) {
+          _renderer.snapToGrid();
+        }
+        
+        // Reposition matrix cells
+        checkAndRepositionCells();  
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
+      
+      // Listen for change and reload new data
+      _elem.bind('jMatrixBrowseChange', function (event) {
+        reloadData({
+          currentCell: event.currentCell,
+          previousCell: event.previousCell,
+          direction: event.direction
+        });
+        
+        console.log('jMatrixBrowseChange'); 
+        console.log(event);
+      });
+      
+      // Listen for click event
+      _elem.bind('jMatrixBrowseClick', function (event) {
+        console.log('click: ' + event.row + ', ' + event.col);
+      });
+
+      bindShortcuts();
+
+      // Begin loading data in the background.
+      _backgroundDataManager = new jMatrixBrowseNs.BackgroundDataManager(_elem, _api, _configuration);
+    }
     
     /**
      * Computes the new cell coordinates when a drag results in overflow.
@@ -658,106 +754,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       });
       
     }
-
-    /**
-     * Initialize the jMatrixBrowse.
-     * @param {jQuery object} elem - the element to which to attach the jMatrixBrowse.
-     */
-    function init(elem) {
-      
-      _elem = elem;
-      
-      // Initialize mock api
-      _api = jMatrixBrowseNs.APIHandler('test');
-      
-      // Initialize configuration, get user options and extend with default.
-      _configuration = jMatrixBrowseNs.Configuration(elem, _api);
-      
-      // Initialize the jMatrixBrowseRenderer
-      _renderer = jMatrixBrowseNs.jMatrixBrowseRenderer(elem, _configuration, _api);
-
-      // Load data
-      _self.reloadData();
-      
-      // Listen to events to implement reloading of data and headers
-      
-      // Listen for drag and reposition cells
-      _elem.bind('jMatrixBrowseDrag', function (event) {
-        // Reposition matrix cells
-        checkAndRepositionCells();  
-        // Reposition headers
-        checkAndRepositionHeaders();
-      });
-      
-      // Listen for drag stop and reposition cells, needed when there is a quick drag.
-      _elem.bind('jMatrixBrowseDragStop', function (event) {
-
-        if (_configuration.isSnapEnabled()) {
-          _renderer.snapToGrid();
-        }
-        
-        // Reposition matrix cells
-        checkAndRepositionCells();  
-        // Reposition headers
-        checkAndRepositionHeaders();
-      });
-      
-      // Listen for change and reload new data
-      _elem.bind('jMatrixBrowseChange', function (event) {
-        reloadData({
-          currentCell: event.currentCell,
-          previousCell: event.previousCell,
-          direction: event.direction
-        });
-        
-        console.log('jMatrixBrowseChange'); 
-        console.log(event);
-      });
-      
-      // Listen for click event
-      _elem.bind('jMatrixBrowseClick', function (event) {
-        console.log('click: ' + event.row + ', ' + event.col);
-      });
-
-      bindShortcuts();
-
-      // Begin loading data in the background.
-      _backgroundDataManager = jMatrixBrowseNs.BackgroundDataManager(_elem, _api, _configuration);
-    }
-
-    //Public API
-
-    /**
-     * Reload data in the matrix for the visible window. 
-     */
-    this.reloadData = function() {
-      var cellWindow = _configuration.getCellWindow(_renderer.currentCell);
-      if (cellWindow == undefined) {
-        console.error('Unable to get cell window.');
-        return;
-      }
-      var response = _api.getResponse(cellWindow);
-      
-      if (response && response.data) {
-        for (var i = 0; i < response.data.length; ++i) {
-          for (var j = 0; j < response.data[i].length; ++j) {
-            var cellData = response.data[i][j]; 
-            jQuery(_renderer.getCellElements()[i][j]).html(cellData);
-          }
-        }
-      }
-    }
-    
-    this.getPosition = function() {
-      return _renderer.currentCell;
-    };
-    
-    /**
-     * Main plugin function
-     */
-    jQuery('[data-jmatrix_browser=true]').each( function() {
-      init(jQuery(this));
-    });
     
     return this;
   };

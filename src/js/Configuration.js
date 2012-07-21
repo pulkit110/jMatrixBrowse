@@ -12,78 +12,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
 (function (jQuery, jMatrixBrowseNs) {
 
-  var _settings;      // user settings
-  var _api;           // api manager
-  var _dataReloadStategy = jMatrixBrowseNs.Constants.DEFAULT_DATA_RELOAD_STRATEGY;
-
-  /**
-   * Validates the options defined by the user.
-   * @param {Object} options - User's options for the plugin.
-   * @returns {Boolean} true if the options are valid.
-   */
-  function validate(options) {   
-    if (options.boo_jMatrixBrowser !== true && options.boo_jMatrixBrowser !== true) {
-      throw "data-jmatrix_browser invalid";
-    }
-    if (options.str_api === undefined || options.str_api === null) {
-      throw "data-api invalid.";
-    }
-    if (options.str_initialWindowSize && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowSize)) {
-      throw "data-initial-window-size invalid."
-    }
-    if (options.str_initialWindowPosition && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowPosition)) {
-      throw "data-initial-window-size invalid."
-    }
-    return true;
-  }
-  
-  /**
-   * Get user defined options from data-* elements.
-   * @param {jQuery object} elem - the element to retrieve the user options from.
-   * @returns {Object} options - User's options for the plugin.
-   * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
-   * @returns {string} options.str_api - URI for the API.
-   * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
-   * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
-   */
-  function getUserOptions(elem) {
-    var options = {
-      boo_jMatrixBrowser: (elem.attr('data-jmatrix_browser') === 'true'),
-      str_api: elem.attr('data-api'),
-      str_initialWindowSize: elem.attr('data-initial-window-size'),
-      str_initialWindowPosition: elem.attr('data-initial-window-position'),
-      boo_snap: elem.attr('data-snap') === 'true'
-    };
-    if (validate(options))
-      return options;
-    else
-      throw "Unable to get user options.";
-  }
-
-  /**
-   * Extend the user's settings with defaults.
-   * @returns {Object} options - User's options for the plugin.
-   * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
-   * @returns {string} options.str_api - URI for the API.
-   * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
-   * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
-   */
-  function extendDefaults(options) {
-    return jQuery.extend({
-      str_initialWindowPosition: jMatrixBrowseNs.Constants.INITIAL_WINDOW_POSITION,
-      str_initialWindowSize: jMatrixBrowseNs.Constants.INITIAL_WINDOW_SIZE,
-      boo_snap: jMatrixBrowseNs.Constants.DEFAULT_OPTION_SNAP
-    }, options);
-  }
-
-  /**
-   * Set the settings object.
-   * @param {Object} settings
-   */
-  function setSettings(settings) {
-    _settings = settings;
-  }
-
  /**
    * Manages configurations for jMatrixBrowse.
    *
@@ -95,14 +23,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   jMatrixBrowseNs.Configuration = function(elem, api) {
     var that = this;
 
-    _api = api;
+    var _dataReloadStategy = jMatrixBrowseNs.Constants.DEFAULT_DATA_RELOAD_STRATEGY;
 
+    var _api = api;         // api manager
     // Get user options
     var options = getUserOptions(elem);
-
     // Extending user options with application defaults
-    _settings = extendDefaults(options);
+    var _settings = extendDefaults(options);
 
+    // Public methods
     /**
      * Gets settings object.
      * @returns {Object} User settings for jMatrixBrowse.
@@ -195,6 +124,75 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _settings.boo_snap;
     };
 
+    // Private methods
+    /**
+    * Validates the options defined by the user.
+    * @param {Object} options - User's options for the plugin.
+    * @returns {Boolean} true if the options are valid.
+    */
+    function validate(options) {   
+      if (options.boo_jMatrixBrowser !== true && options.boo_jMatrixBrowser !== true) {
+        throw "data-jmatrix_browser invalid";
+      }
+      if (options.str_api === undefined || options.str_api === null) {
+        throw "data-api invalid.";
+      }
+      if (options.str_initialWindowSize && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowSize)) {
+        throw "data-initial-window-size invalid."
+      }
+      if (options.str_initialWindowPosition && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowPosition)) {
+        throw "data-initial-window-size invalid."
+      }
+      return true;
+    }
+
+    /**
+    * Get user defined options from data-* elements.
+    * @param {jQuery object} elem - the element to retrieve the user options from.
+    * @returns {Object} options - User's options for the plugin.
+    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
+    * @returns {string} options.str_api - URI for the API.
+    * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
+    * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
+    */
+    function getUserOptions(elem) {
+      var options = {
+        boo_jMatrixBrowser: (elem.attr('data-jmatrix_browser') === 'true'),
+        str_api: elem.attr('data-api'),
+        str_initialWindowSize: elem.attr('data-initial-window-size'),
+        str_initialWindowPosition: elem.attr('data-initial-window-position'),
+        boo_snap: elem.attr('data-snap') === 'true'
+      };
+      if (validate(options))
+        return options;
+      else
+        throw "Unable to get user options.";
+    }
+
+    /**
+    * Extend the user's settings with defaults.
+    * @returns {Object} options - User's options for the plugin.
+    * @returns {boolean} options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.
+    * @returns {string} options.str_api - URI for the API.
+    * @returns {string} options.str_initialWindowSize - comma separated window size as (width, height).
+    * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
+    */
+    function extendDefaults(options) {
+      return jQuery.extend({
+        str_initialWindowPosition: jMatrixBrowseNs.Constants.INITIAL_WINDOW_POSITION,
+        str_initialWindowSize: jMatrixBrowseNs.Constants.INITIAL_WINDOW_SIZE,
+        boo_snap: jMatrixBrowseNs.Constants.DEFAULT_OPTION_SNAP
+      }, options);
+    }
+
+    /**
+    * Set the settings object.
+    * @param {Object} settings
+    */
+    function setSettings(settings) {
+      _settings = settings;
+    }
+    
     return that;
   };
 
