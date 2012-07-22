@@ -97,8 +97,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       // Initialize the jMatrixBrowseRenderer
       _renderer = new jMatrixBrowseNs.jMatrixBrowseRenderer(_elem, _configuration, _api);
 
-      // Load data
-      _self.reloadData();
+      // Load data after renderer completes initialization.
+      _elem.bind('jMatrixBrowseRendererInitialized', function() {
+        _self.reloadData();
+      });
       
       // Listen to events to implement reloading of data and headers
       // Listen for drag and reposition cells
@@ -641,7 +643,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         _renderer.getCellElements()[rowIndex][colIndex] = newCell;
       } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_HTML_REPLACEMENT) {
         // Change only the html content of the cell.
-        cell.html(newCell.html());
+        var html = newCell.html();
+        cell.html(html);
         cell.attr('data-row', newRowNumber);
         cell.attr('data-col', newColNumber);
       } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
@@ -753,6 +756,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         _renderer.pageRight();
       });
       
+      jQuery(document).bind('keydown', 'i', function() {
+        console.log('zoom in');
+        _renderer.zoomIn();
+      });
+
+      jQuery(document).bind('keydown', 'o', function() {
+        console.log('zoom out');
+        _renderer.zoomOut();
+      });
     }
     
     return this;

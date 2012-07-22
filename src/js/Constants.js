@@ -21,7 +21,7 @@ jMatrixBrowseNs.Constants = {
   OVERFLOW_NONE : -1,
   
   CLASS_BASE : 'jmatrixbrowse',
-  N_BACKGROUND_CELLS : 1,
+  N_BACKGROUND_CELLS : 1, 
   
   // Default option values
   INITIAL_WINDOW_POSITION: '0,0',
@@ -33,5 +33,7 @@ jMatrixBrowseNs.Constants = {
   RELOAD_HTML_REPLACEMENT: 1,
   RELOAD_CELL_REPLACEMENT: 2,
   RELOAD_CELL_POSITION: 3,
-  BACKGROUND_DATA_RELOAD_DELAY: 2000 // milliseconds to wait before sending another request to api
+  BACKGROUND_DATA_RELOAD_DELAY: 2000, // milliseconds to wait before sending another request to api
+
+  ZOOM_LEVEL_DIFFERENCE: 2
 };

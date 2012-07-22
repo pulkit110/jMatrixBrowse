@@ -28,7 +28,7 @@
 
 var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
-(function (jQuery, jMatrixBrowseNS) {
+(function (jQuery, jMatrixBrowseNs) {
 
   
 
@@ -42,7 +42,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @class jMatrixBrowseRenderer
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNS.jMatrixBrowseRenderer = function(elem, configuration, api) {
+  jMatrixBrowseNs.jMatrixBrowseRenderer = function(elem, configuration, api) {
     var that = this;
     
     var _dragContainer;       // Drag container that allows dragging using jQuery UI
@@ -305,28 +305,93 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       _dragContainer.offset(dragContainerOffset);
     }
 
-    // TODO: This is a hack
-    _api.setRenderer(that);
+    /**
+     * Zooms one level in.
+     */
+    that.zoomIn = function() {
+      // Set the window size in Configuration
+      var currentSize = _configuration.getWindowSize();
+      _configuration.setWindowSize({
+        height: Math.max(1, currentSize.height - jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE),
+        width: Math.max(1, currentSize.width - jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE)
+      });
+
+      // Remove already existing containers.
+      cleanup();
+
+      // Initialize with the new window size.
+      init(_self.currentCell);
+    };
+
+    /**
+     * Zooms one level out.
+     */
+    that.zoomOut = function() {
+      // Set the window size in Configuration
+      var currentSize = _configuration.getWindowSize();
+      var windowSize = {
+        height: Math.min(_api.getMatrixSize().height, currentSize.height + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE),
+        width: Math.min(_api.getMatrixSize().width, currentSize.width + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE)
+      };
+      _configuration.setWindowSize(windowSize);
+
+      // Update the position of window (if required)
+      var matrixSize = _api.getMatrixSize();
+      var windowPosition = _self.currentCell;
+      windowPosition = {
+        row: (windowPosition.row + windowSize.height > matrixSize.height)?(matrixSize.height - windowSize.height):windowPosition.row,
+        col: (windowPosition.col + windowSize.width > matrixSize.width)?(matrixSize.width - windowSize.width):windowPosition.col,
+      };
+
+      // Remove already existing containers.
+      cleanup();
       
-    // Create row and column headers.
-    _headers = createRowColumnHeaderContainer(_elem);
+      // Initialize with the new window size.
+      init(windowPosition);
+    };
 
-    // Create draggable area and add matrix to it.
-    var containers = createDragContainer(_elem);
-    _dragContainer = containers.dragContainer;
-    _container = containers.container;
+    init(_configuration.getWindowPosition());
 
-    // Scroll to the initial position
-    var windowPosition = _configuration.getWindowPosition();
-    scrollTo(windowPosition.row, windowPosition.col);
-
-    // Generate initial content
-    _content = generateInitialMatrixContent(_dragContainer);
-
-    // Generate row and column header content
-    generateRowColumnHeaders(_headers);
-    
     // Private methods
+    /**
+     * Initializes the jMatrixBrowseRenderer component. 
+     * This creates the required contianers and generates content in the matrix.
+     * @param  {Object} windowPosition - position of first cell in window (properties: row and col)
+     */
+    function init(windowPosition) {
+      // TODO: This is a hack
+      _api.setRenderer(that);
+        
+      // Create row and column headers.
+      _headers = createRowColumnHeaderContainer(_elem);
+
+      // Create draggable area and add matrix to it.
+      var containers = createDragContainer(_elem);
+      _dragContainer = containers.dragContainer;
+      _container = containers.container;
+
+      // Scroll to the window position
+      scrollTo(windowPosition.row, windowPosition.col);
+
+      // Generate initial content
+      _content = generateInitialMatrixContent(_dragContainer);
+
+      // Generate row and column header content
+      generateRowColumnHeaders(_headers);
+
+      _elem.trigger('jMatrixBrowseRendererInitialized');
+    }
+
+    /**
+     * Removes all the DOM elements created by jMatrixBrowseRenderer. 
+     */
+    function cleanup() {
+      _headers.row.remove();
+      _headers.col.remove();
+      _dragContainer.remove();
+      _container.remove();
+    }
+
     /**
     * Create the content div and append to container.
     * @param {jQuery Object} container - container to attacht the content to.
@@ -543,7 +608,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       event.type = 'jMatrixBrowseClick';
       event.row = elem.attr('data-row');
       event.col = elem.attr('data-col');
-      console.log(event);
       _elem.trigger(event);
     }
 
@@ -785,7 +849,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
               cells.push(jQuery(_cellElements[i][j]));
           }
       }
-      return cells[jMatrixBrowseNS.Utils.findIndexOfMin(distances).minIndex];
+      return cells[jMatrixBrowseNs.Utils.findIndexOfMin(distances).minIndex];
     }
     
     /**

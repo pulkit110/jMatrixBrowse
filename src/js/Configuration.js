@@ -59,6 +59,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     };
 
     /**
+     * Sets window size.
+     * @param {Object} size - size of the window.
+     */
+    that.setWindowSize = function(size) {
+      _settings.str_initialWindowSize = size.height + ',' + size.width;
+    };
+
+    /**
      * Gets position of window.
      * @returns {Object} position - position of the top-left corner of window.
      * @returns {Number} position.row - row index of the position.
