@@ -1,23 +1,27 @@
 #my_browser {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-  bottom: 20px;
-  right: 20px;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
 }
+
 #main {
-  position: absolute;
-  left: 20px;
-  top: 20px;
   height: 650px;
-  right: 240px;
+  width: 100%;
   border: 5px solid black;
   cursor: default;
   overflow: hidden;
+  float: left;
 }
 
 .jMatrixBrowse-cell {
   border-color: #ff9900;
   border-width: thin;
   border-style: solid;
+}
+
+.hotkeys {
+  float: right;
+  position: relative;
 }

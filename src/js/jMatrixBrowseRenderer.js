@@ -330,8 +330,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       // Set the window size in Configuration
       var currentSize = _configuration.getWindowSize();
       var windowSize = {
-        height: Math.min(_api.getMatrixSize().height, currentSize.height + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE),
-        width: Math.min(_api.getMatrixSize().width, currentSize.width + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE)
+        height: Math.min(jMatrixBrowseNs.Constants.ZOOM_MAX_WINDOW_SIZE.height, _api.getMatrixSize().height, currentSize.height + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE),
+        width: Math.min(jMatrixBrowseNs.Constants.ZOOM_MAX_WINDOW_SIZE.width, _api.getMatrixSize().width, currentSize.width + jMatrixBrowseNs.Constants.ZOOM_LEVEL_DIFFERENCE)
       };
       _configuration.setWindowSize(windowSize);
 

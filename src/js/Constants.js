@@ -35,5 +35,10 @@ jMatrixBrowseNs.Constants = {
   RELOAD_CELL_POSITION: 3,
   BACKGROUND_DATA_RELOAD_DELAY: 2000, // milliseconds to wait before sending another request to api
 
-  ZOOM_LEVEL_DIFFERENCE: 2
+  // Zooming
+  ZOOM_LEVEL_DIFFERENCE: 2,
+  ZOOM_MAX_WINDOW_SIZE: {
+    height: 10,
+    width: 20
+  }
 };
