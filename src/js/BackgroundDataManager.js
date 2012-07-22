@@ -186,9 +186,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             notAllCellsExist = true;
             break;
           }
-          if (notAllCellsExist)
-            break;
         }
+        if (notAllCellsExist)
+          break;
       }
       if (notAllCellsExist) {
         if (i > request.row1 && i < request.row2 && j > request.col1 && j < request.col2) {
@@ -200,7 +200,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           });
         }
       }
-
       return requests;
     }
 
@@ -226,15 +225,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           for (var k = currentResponse[j].length - 1; k >= 0; --k) {
             var cell = jQuery('<div/>', {
               className: 'jMatrixBrowse-background-cell',
-              'data-row': i + request.row1,
-              'data-col': j + request.col1,
+              'data-row': j + currentRequest.row1,
+              'data-col': k + currentRequest.col1,
               html: currentResponse[j][k]
             });
             if (_config.getDataReloadStrategy === jMatrixBrowseNS.Constants.RELOAD_CELL_POSITION) {
               _elem.find('.jMatrixBrowse-content').append(cell);
               cell.hide();
             }
-            cells[j][k] = cell;
+            cells[j + currentRequest.row1 - request.row1][k + currentRequest.col1 - request.col1] = cell;
           };
         };
       };
@@ -243,7 +242,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       for (var j = request.col1; j <= requests[0].col1; ++j) {
         // If we are at requests[0].col1, we should load only upto request[0].row1 rows from background 
         // Otherwise, we load until request.row2 rows
-        for (var i = request.row1; i < ((j == requests[0].col1) ? requests[0].row1 : request.row2); ++i) {
+        for (var i = request.row1; i <= request.row2; ++i) {
+          if (j == requests[0].col1 && i >= requests[0].row1)
+            break;
           var cellSelector = '.jMatrixBrowse-background-cell[data-row=' + i + '][data-col=' + j + ']';
           cells[i - request.row1][j - request.col1] = _elem.find(cellSelector);
         };
