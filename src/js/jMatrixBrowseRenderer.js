@@ -88,7 +88,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     that.getContainer = function() {
       return _container;
     };
-    
+
     /**
      * Moves the row to bottom. 
      * @param {Number} row - index of the row to be moved.
@@ -115,7 +115,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var cellRow = _cellElements.splice(row,1); // Remove row at [backgroundTopRow]
       if (cellRow.length > 0)
         _cellElements.push(cellRow[0]);  // Insert row at the end.
-        
+
+      addSpinners({
+        row1: _cellElements.length-1,
+        row2: _cellElements.length-1
+      }, {
+        col1: 0,
+        col2: _cellElements[0].length-1
+      });
+
       return true;
     };
     
@@ -143,7 +151,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var cellRow = _cellElements.splice(row,1);  // Remove row at [backgroundBottomRow]
       if (cellRow.length > 0)
         _cellElements.splice(0,0,cellRow[0]);  // Insert row at the beginning.
-        
+      
+      addSpinners({
+        row1: 0,
+        row2: 0
+      }, {
+        col1: 0,
+        col2: _cellElements[0].length-1
+      });
       return true;
     };
     
@@ -172,6 +187,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
         _cellElements[i].push(cell[0]); // Insert element at end of row i
       }
+
+      addSpinners({
+        row1: 0,
+        row2: _cellElements.length-1
+      }, {
+        col1: _cellElements[0].length-1,
+        col2: _cellElements[0].length-1
+      });
       return true;
     };
     
@@ -199,6 +222,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         var cell = _cellElements[i].splice(col, 1); // Remove element at [i][col]
         _cellElements[i].splice(0,0,cell[0]); // Insert element to [i][0]
       }
+
+      addSpinners({
+        row1: 0,
+        row2: _cellElements.length-1
+      }, {
+        col1: 0,
+        col2: 0
+      });
       return true;
     };
     
@@ -1032,6 +1063,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         direction: direction
       });
     };
+
+    function addSpinners(rowIndex, colIndex) {
+      for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
+        for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
+          jQuery(_cellElements[i][j]).html('<div class="jMatrixBrowse-loading"/>');
+        }
+      }
+    }
     
     return that;
   };

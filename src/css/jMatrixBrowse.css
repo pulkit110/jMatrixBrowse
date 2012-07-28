@@ -7,3 +7,11 @@
 .jMatrixBrowse-background-data-container {
   display: none;
 }
+
+.jMatrixBrowse-loading {
+	background-image: url(images/loading.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: inherit;
+	height: inherit;
+}
