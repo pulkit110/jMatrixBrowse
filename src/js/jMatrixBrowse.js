@@ -531,22 +531,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadRowData(event) {
-      var firstRowToBeReplaced; // Index of the first row that should be replaced.
-      var nRowsReloaded = Math.abs(event.currentCell.row - event.previousCell.row);
-
       // Index of the rows that would be fetched.
       var rowIndex = getRowIndexForReload(event, event.direction);
       if (rowIndex === -1) {
         // We don't need to reload any row.
         return;
-      }
-
-      if (event.direction === 'top') {
-        // Data in the last few rows sould be replaced.
-        firstRowToBeReplaced = _renderer.getCellElements().length - nRowsReloaded;
-      } else {
-        // Data in the first few rows (which are within matrix bounds) should be replaced.
-        firstRowToBeReplaced = 0 + rowIndex.rowsNotInBound;
       }
 
       // Get col index by checking from both sides.
@@ -559,16 +548,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         col1: colIndex.col1,
         col2: colIndex.col2
       }, function(cells) {
-        // Replace the data in (event.currentCell.row - event.previousCell.row)
-        // rows beginning from firstRowToBeReplaced.
-        for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
-          var k = i - rowIndex.row1;
-          var rowToBeReplaced = _renderer.getCellElements()[firstRowToBeReplaced + k];
-          for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
-            var cell = jQuery(rowToBeReplaced[j-colIndex.col1]);
-            updateCellForReload(cell, firstRowToBeReplaced + k, j-colIndex.col1, cells[i-rowIndex.row1][j-colIndex.col1], i, j);
-          }
-        }
+        updateCellsForReload(rowIndex, colIndex, cells);
       });
     }
     
@@ -579,10 +559,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadColData(event) {
-      var colIndex;
-      var firstColumnToBeReplaced;
-      var nColsReloaded = Math.abs(event.currentCell.col - event.previousCell.col);
-
       // Index of the rows that would be fetched.
       var colIndex = getColIndexForReload(event, event.direction);
       if (colIndex === -1) {
@@ -590,14 +566,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         return;
       }
       
-      if (event.direction === 'left') {
-        // Data in the last few columns should be replaced.
-        firstColumnToBeReplaced = _renderer.getCellElements()[0].length - nColsReloaded;
-      } else {
-        // Data in the first few columns should be replaced.
-        firstColumnToBeReplaced = 0 + colIndex.colsNotInBound;
-      }
-
       // Get row index by checking from both sides.
       var rowIndex = getRowIndexForReload(event, 'both');
 
@@ -608,16 +576,35 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         col1: colIndex.col1,
         col2: colIndex.col2
       }, function(cells) {
-        // Replace the data in (event.currentCell.col - event.previousCell.col)
-        // cols beginning from firstColumnToBeReplaced.
-        for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
-          for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
-            var colToBeReplacedIndex = firstColumnToBeReplaced + j - colIndex.col1;
-            var cell = jQuery(_renderer.getCellElements()[i-rowIndex.row1][colToBeReplacedIndex]);
-            updateCellForReload(cell, i - rowIndex.row1, colToBeReplacedIndex, cells[i-rowIndex.row1][j-colIndex.col1], i, j);
-          }
-        }
+        updateCellsForReload(rowIndex, colIndex, cells);
       });
+    }
+
+    /**
+     * Updates the cells which have been reloaded for the given row and col indices.
+     * @param  {Object} rowIndex - row1 and row2 for the request that was made.
+     * @param  {Object} colIndex - col1 and col2 for the request that was made.
+     * @param  {Array}  cells    - Array of Array of the response data. 
+     */
+    function updateCellsForReload(rowIndex, colIndex, cells) {
+      for (var i = rowIndex.row1; i <= rowIndex.row2; ++i) {
+        // Find which row needs to be replaced.
+        var rowToBeReplacedIndex = i - _renderer.currentCell.row + _configuration.getNumberOfBackgroundCells();
+        // Check if the row has already gone out of window. 
+        if (rowToBeReplacedIndex < 0 || rowToBeReplacedIndex >= _renderer.getCellElements().length) 
+          continue;
+        var rowToBeReplaced = _renderer.getCellElements()[rowToBeReplacedIndex];
+        for (var j = colIndex.col1; j <= colIndex.col2; ++j) {
+          // Find which col needs to be replaced.
+          var colToBeReplacedIndex = j - _renderer.currentCell.col + _configuration.getNumberOfBackgroundCells();
+          // Check if the column has already gone out of window. 
+          if (colToBeReplacedIndex < 0 || colToBeReplacedIndex >= rowToBeReplaced.length)
+            continue;
+          // Get the cell that is to be replaced.
+          var cell = jQuery(rowToBeReplaced[colToBeReplacedIndex]);
+          updateCellForReload(cell, rowToBeReplacedIndex, colToBeReplacedIndex, cells[i-rowIndex.row1][j-colIndex.col1], i, j);
+        }
+      }
     }
 
     /**

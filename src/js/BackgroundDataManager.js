@@ -53,15 +53,17 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         var numberOfResponsesToReceive = requests.length;
         var responses = new Array(numberOfResponsesToReceive);
         for (var i = requests.length - 1; i >= 0; i--) {
-          _api.getResponseDataAsync(requests[i], function(data) {
-            responses[i] = data;
-            -- numberOfResponsesToReceive;
-            if (numberOfResponsesToReceive == 0) {
-              // All responses have been loaded. Combine responses by taking the data from responses and background cells
-              var cells = combineResponses(requests, responses, request);
-              callback.call(this, cells);
-            }
-          });
+          (function(i) {
+            _api.getResponseDataAsync(requests[i], function(data) {
+              responses[i] = data;
+              -- numberOfResponsesToReceive;
+              if (numberOfResponsesToReceive == 0) {
+                // All responses have been loaded. Combine responses by taking the data from responses and background cells
+                var cells = combineResponses(requests, responses, request);
+                callback.call(this, cells);
+              }
+            });
+          })(i);
         };
       } else {
         // No need to make requests to the api.
