@@ -693,19 +693,23 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     function bindShortcuts() {
       // Arrow keys
-      jQuery(document).bind('keydown', 'right', function() {
+      jQuery(document).bind('keydown', 'right', function(e) {
+        e.preventDefault();
         _renderer.scrollRight();
       });
 
-      jQuery(document).bind('keydown', 'left', function() {
+      jQuery(document).bind('keydown', 'left', function(e) {
+        e.preventDefault();
         _renderer.scrollLeft();
       });
 
-      jQuery(document).bind('keydown', 'up', function() {
+      jQuery(document).bind('keydown', 'up', function(e) {
+        e.preventDefault();
         _renderer.scrollUp();
       });
 
-      jQuery(document).bind('keydown', 'down', function() {
+      jQuery(document).bind('keydown', 'down', function(e) {
+        e.preventDefault();
         _renderer.scrollDown();
       });
 
