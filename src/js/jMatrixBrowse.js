@@ -111,13 +111,28 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         checkAndRepositionHeaders();
       });
       
+      _elem.bind('jMatrixBrowseAnimationStep', function (event) {
+        // Reposition matrix cells
+        checkAndRepositionCells();
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
+
       // Listen for drag stop and reposition cells, needed when there is a quick drag.
       _elem.bind('jMatrixBrowseDragStop', function (event) {
+        if (_configuration.isSnapEnabled() && !_renderer.getIsAnimating()) {
+          _renderer.snapToGrid();
+        }
+        // Reposition matrix cells
+        checkAndRepositionCells();  
+        // Reposition headers
+        checkAndRepositionHeaders();
+      });
 
+      _elem.bind('jMatrixBrowseAnimationComplete', function (event) {
         if (_configuration.isSnapEnabled()) {
           _renderer.snapToGrid();
         }
-        
         // Reposition matrix cells
         checkAndRepositionCells();  
         // Reposition headers
@@ -131,9 +146,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           previousCell: event.previousCell,
           direction: event.direction
         });
-        
-        console.log('jMatrixBrowseChange'); 
-        console.log(event);
       });
       
       // Listen for click event

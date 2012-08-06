@@ -12,6 +12,7 @@
             <script type="text/javascript" src="../../../lib/jquery/core/js/jquery.js"></script>
             <script type="text/javascript" src="../../../lib/jquery/ui/js/jquery-ui-all.js"></script>
             <script type="text/javascript" src="../../../lib/jquery/hotkeys/jquery.hotkeys.js"></script>
+            <script type="text/javascript" src="../../../lib/jquery/kinetic/jquery.kinetic.js"></script>
 
             <!--  jMatrixBrowse includes-->
             <script type="text/javascript" src="../../../src/js/Constants.js"></script>
@@ -38,7 +39,10 @@
 		data-api="http://foo.org/path/to/api"
 		data-initial-window-position="20,30"
 		data-initial-window-size="5,10"
-                data-snap="true">
+        data-snap="false"
+        data-deceleration-duration="1000"
+        data-min-velocity-for-animation="0"
+        data-animate="true">
 		</div>
 	</div>
 

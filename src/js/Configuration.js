@@ -132,6 +132,18 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _settings.boo_snap;
     };
 
+    that.getAnimationDuration = function() {
+      return _settings.animationDuration;
+    };
+
+    that.getMinVelocityForAnimation = function() {
+      return _settings.minVelocityForAnimation;
+    };
+
+    that.animateEnabled = function() {
+      return _settings.boo_animate;
+    }
+
     // Private methods
     /**
     * Validates the options defined by the user.
@@ -169,8 +181,13 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         str_api: elem.attr('data-api'),
         str_initialWindowSize: elem.attr('data-initial-window-size'),
         str_initialWindowPosition: elem.attr('data-initial-window-position'),
-        boo_snap: elem.attr('data-snap') === 'true'
+        boo_snap: elem.attr('data-snap') === 'true',
+        boo_animate: elem.attr('data-animate') === 'true',
+        animationDuration: elem.attr('data-deceleration-duration'),
+        minVelocityForAnimation: elem.attr('data-min-velocity-for-animation')
       };
+      var temp = elem.attr('data-animate');
+      
       if (validate(options))
         return options;
       else
@@ -186,11 +203,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     * @returns {string} options.str_initialWindowPosition - comma separated window position as (row,col).
     */
     function extendDefaults(options) {
-      return jQuery.extend({
-        str_initialWindowPosition: jMatrixBrowseNs.Constants.INITIAL_WINDOW_POSITION,
-        str_initialWindowSize: jMatrixBrowseNs.Constants.INITIAL_WINDOW_SIZE,
-        boo_snap: jMatrixBrowseNs.Constants.DEFAULT_OPTION_SNAP
-      }, options);
+      return jQuery.extend(jMatrixBrowseNs.Constants.DEFAULT_OPTIONS, options);
     }
 
     /**

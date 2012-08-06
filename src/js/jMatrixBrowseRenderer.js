@@ -55,6 +55,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     var _dragActive = false;  // boolean to indicate if drag is active
     var _container;           // container for jMatrixBrowse
 
+    var _positions = new Array();            // last few positions for drag.
+    var _isAnimating = false;          // is the scroller animating.
+    var _wasAnimating = false;          // was the scroller animating.
+    var _decelerationVelocity; // velocity of animation.
+
     _self = that;
     _elem = elem;
     _configuration = configuration;
@@ -381,6 +386,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       init(windowPosition);
     };
 
+    that.getIsAnimating = function() {
+      return _isAnimating;
+    };
+
     init(_configuration.getWindowPosition());
 
     // Private methods
@@ -512,9 +521,19 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       dragContainer.draggable({
         drag: function (event, ui) {
           dragHandler(event, ui);
+
+          // Store the positions.
+          _positions.push({
+            position: ui.position, 
+            timestamp: new Date().getTime()
+          });
+
+          // Keep list from growing infinitely (holding min 10, max 20 measure points)
+          if (_positions.length > 60) {
+            _positions.splice(0, 30);
+          }
         }, 
         start: function (event, ui) {
-          _dragActive = true;
           dragStartHandler(event, ui);
         }, 
         stop: function (event, ui) {
@@ -522,7 +541,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         },
         containment: [ 0, 0, 2000, 2000]
       });
-
       // Override the original _generatePosition in draggable to check for matrix bounds on drag.
       dragContainer.draggable().data("draggable")._generatePosition = function(event) {
         return generatePositionsForDrag(dragContainer.draggable().data("draggable"), event);
@@ -537,6 +555,48 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       };
     }
 
+    /**
+     * Begin animating the matrix using _decelartionVelocity.
+     * This uses cubic easing to ease out the animation. The duration of the animation can be set in configuration.
+     */
+    function startAnimation() {
+      var duration = _configuration.getAnimationDuration();
+
+      _dragContainer.animate({
+        top: '+=' + _decelerationVelocity.y * duration / 10, // divide by 10 to slow down animation
+        left: '+=' + _decelerationVelocity.x * duration / 10, // divide by 10 to slow down animation
+      }, {
+        duration: duration, 
+        easing: (!_wasAnimating)?'easeOutCubic':'easeInOutCubic', // If the animation was already running, use easeInOutCubic. 
+        step: function(now, fx) {
+          // Trigger the animation step event.
+          _elem.trigger({
+            type: 'jMatrixBrowseAnimationStep',
+            now: now,
+            fx: fx
+          });
+        }, 
+        complete: function() {
+          _isAnimating = false;
+
+          // Check if the new position crosses bounds and revert to the boundaries of matrix if bounds are crossed. 
+          var position = checkPositionBounds (jQuery(this).position(), {top: 0, left:0}, _dragContainer.draggable().data("draggable"));
+          _dragContainer.animate(position, {
+            duration: 'fast',
+            complete: function() {
+              // Trigger animation complete event.
+              _elem.trigger({
+                type: 'jMatrixBrowseAnimationComplete'
+              });
+            }
+          });  
+        }
+      });
+
+      // Animation has started.
+      _isAnimating = true;
+    }
+    
     /**
     * Generate new positions of the draggable element. This is used to override
     * the original generate positions which had no way of specifying dynamic
@@ -575,6 +635,19 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         top: (draggable._convertPositionTo("absolute", newPosition).top - draggable.positionAbs.top),
         left: (draggable._convertPositionTo("absolute", newPosition).left - draggable.positionAbs.left)
       };
+
+      return checkPositionBounds(newPosition, changeInPosition, draggable);
+    }
+
+    /**
+     * Checks the bounds for the matirx from four directions to find if the bounds are violated and returns the new positions.
+     * @param  {Object} newPosition - The new position of the container for which to check the bounds.
+     * @param  {Object} changeInPosition - The change in position. {top:0, left:0} can be passed here.
+     * @param  {Object} draggable - The draggable instance.
+     * @returns {Object} newPosition of the container.
+     */
+    function checkPositionBounds (newPosition, changeInPosition, draggable) {
+      
       var firstRow = (_self.currentCell.row == 0)?1:0;
       var firstCol = (_self.currentCell.col == 0)?1:0;
       // Get element and container offsets
@@ -627,7 +700,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
 
       return newPosition;
-
     }
 
     /**
@@ -658,6 +730,16 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     * @param {Object} ui
     */
     function dragStartHandler (event, ui) {
+
+      // Stop any existing animations.
+      if (_isAnimating) {
+        _dragContainer.stop();
+        _wasAnimating = true;
+        _isAnimating = false;
+      } else {
+        _wasAnimating = false;
+      }
+
       event.type = 'jMatrixBrowseDragStart';
       _elem.trigger(event);
     }
@@ -668,6 +750,45 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     * @param {Object} ui
     */
     function dragStopHandler (event, ui) {
+      var timestamp = new Date().getTime();
+
+      // Check if animation is enabled.
+      if (_configuration.animateEnabled()) {
+        var endPositionIndex = _positions.length - 1;
+        // Check if we need to start animation.
+        if (timestamp - _positions[endPositionIndex].timestamp < 1000) {
+          var startPositionIndex = endPositionIndex;
+          // Get the position where we were 100 msec before
+          for (var i = endPositionIndex; i > 0 && _positions[i].timestamp > (_positions[endPositionIndex].timestamp - 100); --i) {
+            startPositionIndex = i;
+          };
+
+          // If start and end position are the same, we can't compute the velocity
+          if (startPositionIndex !== endPositionIndex) {
+            // Compute relative movement between these two points
+            var timeOffset = _positions[endPositionIndex].timestamp - _positions[startPositionIndex].timestamp;
+            var movedLeft = _positions[endPositionIndex].position.left - _positions[startPositionIndex].position.left;
+            var movedTop = _positions[endPositionIndex].position.top - _positions[startPositionIndex].position.top;
+
+            // Compute the deceleration velocity
+            _decelerationVelocity = {
+              x: movedLeft / timeOffset,
+              y: movedTop / timeOffset
+            };
+
+            // Check if we have enough velocity for animation
+            _decelerationVelocity.x = (Math.abs(_decelerationVelocity.x) < _configuration.getMinVelocityForAnimation()) ? 0 : _decelerationVelocity.x;
+            _decelerationVelocity.y = (Math.abs(_decelerationVelocity.y) < _configuration.getMinVelocityForAnimation()) ? 0 : _decelerationVelocity.y;
+
+            if (Math.abs(_decelerationVelocity.x) > 0 || Math.abs(_decelerationVelocity.y) > 0) {
+              // Begin animation with deceleration.
+              startAnimation();
+            }
+          }
+        }
+      }
+
+      // Trigger the drag stop event.
       event.type = 'jMatrixBrowseDragStop';
       _elem.trigger(event);
     }

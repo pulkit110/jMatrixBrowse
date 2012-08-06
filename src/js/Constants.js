@@ -24,9 +24,14 @@ jMatrixBrowseNs.Constants = {
   N_BACKGROUND_CELLS : 1, 
   
   // Default option values
-  INITIAL_WINDOW_POSITION: '0,0',
-  INITIAL_WINDOW_SIZE: '10,10',
-  DEFAULT_OPTION_SNAP: false,
+  DEFAULT_OPTIONS : {
+    str_initialWindowPosition: '0,0',
+    str_initialWindowSize: '10,10',
+    boo_snap: false,
+    boo_animate: false,
+    minVelocityForAnimation: 4,
+    animationDuration: 1000
+  },
   
   // Background Loading
   DEFAULT_DATA_RELOAD_STRATEGY: 1,
