@@ -768,6 +768,39 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         console.log('zoom out');
         _renderer.zoomOut();
       });
+
+      _elem.mousewheel(function(event, delta) {
+        var scrollLeft, scrollRight, scrollUp, scrollRight;
+
+        if (event.ctrlKey) {
+          // If ctrl key is down, we scroll by page.
+          scrollLeft = _renderer.pageLeft;
+          scrollRight = _renderer.pageRight;
+          // If shift key is down, we do horizontal scroll instead of vertical.
+          scrollDown = (event.shiftKey) ? _renderer.pageRight : _renderer.pageDown;
+          scrollUp = (event.shiftKey) ? _renderer.pageLeft : _renderer.pageUp;
+        } else {
+          scrollLeft = _renderer.scrollLeft;
+          scrollRight = _renderer.scrollRight;
+          // If shift key is down, we do horizontal scroll instead of vertical.
+          scrollDown = (event.shiftKey) ? _renderer.scrollRight : _renderer.scrollDown;
+          scrollUp = (event.shiftKey) ? _renderer.scrollLeft : _renderer.scrollUp;
+        }
+        
+        // Is mouse wheel scrolled horizontally?
+        if (event.originalEvent.wheelDeltaX > 0) {
+          scrollLeft();
+        } else if (event.originalEvent.wheelDeltaX < 0) {
+          scrollRight();
+        }
+
+        // Is mouse wheel scrolled vertically?
+        if (event.originalEvent.wheelDeltaY > 0) {
+            scrollUp();
+        } else if (event.originalEvent.wheelDeltaY < 0) {
+            scrollDown();
+        }
+      });
     }
     
     return this;
