@@ -30,7 +30,7 @@ jMatrixBrowseNs.Constants = {
     boo_snap: false,
     boo_animate: false,
     minVelocityForAnimation: 4,
-    animationDuration: 1000
+    animationDuration: 2000
   },
   
   // Background Loading

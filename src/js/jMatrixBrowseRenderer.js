@@ -562,9 +562,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     function startAnimation() {
       var duration = _configuration.getAnimationDuration();
 
+      if (_wasAnimating) {
+        // Increase velocity if element was already animating. 
+        _decelerationVelocity.y *= 2;
+        _decelerationVelocity.x *= 2;
+      }
       _dragContainer.animate({
-        top: '+=' + _decelerationVelocity.y * duration / 10, // divide by 10 to slow down animation
-        left: '+=' + _decelerationVelocity.x * duration / 10, // divide by 10 to slow down animation
+        top: '+=' + _decelerationVelocity.y * duration,
+        left: '+=' + _decelerationVelocity.x * duration,
       }, {
         duration: duration, 
         easing: (!_wasAnimating)?'easeOutCubic':'easeInOutCubic', // If the animation was already running, use easeInOutCubic. 
