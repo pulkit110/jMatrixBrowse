@@ -12,16 +12,16 @@
 
 var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
-(function (jQuery, jMatrixBrowseNS) {
+(function (jQuery, jMatrixBrowseNs) {
   
  /**
    * Manages requests to the api. 
    * 
    * @param {jQuery Object} type - type of API to use.
-   * @class jMatrixBrowseRenderer
+   * @class APIHandler
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNS.APIHandler = function(type) {
+  jMatrixBrowseNs.APIHandler = function(type) {
     var that = this;
     
     // Initialize the API
@@ -33,7 +33,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Number} size.width - width of the matrix. 
      * @returns {Number} size.height - height of the matrix.
      */
-    that.getMatrixSize = function() {
+    this.getMatrixSize = function() {
       var response = _api.getResponse({
         'row1': 0,
         'col1': 0,
@@ -50,7 +50,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} topRowIndex - index of the top row
      * @returns {Array} rowHeaders - Array of row headers
      */
-    that.getRowHeadersFromTopRow = function(topRowIndex) {
+    this.getRowHeadersFromTopRow = function(topRowIndex) {
 
       var height = _renderer.getCellElements().length;
       var rowHeaders = [];
@@ -66,7 +66,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} leftColIndex - index of the left column
      * @returns {Array} colHeaders - Array of column headers
      */
-    that.getColHeadersFromLeftCol = function(leftColIndex) {
+    this.getColHeadersFromLeftCol = function(leftColIndex) {
       var width = _renderer.getCellElements()[0].length;
       var colHeaders = [];
       // TODO: Load from API
@@ -82,7 +82,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Array} rowData - Array of row data
      * @deprecated You need to pass in the full window now. See getResponseData.
      */
-    that.getRowDataForCell = function(cell) {
+    this.getRowDataForCell = function(cell) {
       var nBackgroundCells = jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
       var rowData = [];
       var response = _api.getResponse({
@@ -106,7 +106,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Array} colData - Array of col data.
      * @deprecated You need to pass in the full window now. See getResponseData.
      */
-    that.getColDataForCell = function(cell) {
+    this.getColDataForCell = function(cell) {
       var nBackgroundCells = jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
       var colData = [];
       var response = _api.getResponse({
@@ -128,7 +128,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Sets the renderer.
      * @param {Object} renderer
      */
-    that.setRenderer = function(renderer) {
+    this.setRenderer = function(renderer) {
       _renderer = renderer;
     };
     
@@ -137,7 +137,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      * @returns response received from the server. 
      */
-    that.getResponse = function(request) {
+    this.getResponse = function(request) {
       return _api.getResponse(request);
     };
 
@@ -146,7 +146,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      * @returns response.data received from the server.
      */
-    that.getResponseData = function(request) {
+    this.getResponseData = function(request) {
       var response = _api.getResponse(request);
       return response.data;
     };

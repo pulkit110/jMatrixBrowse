@@ -72,7 +72,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Gets the cell elements.
      * @returns {Array of Array of DOM elements} Elements in the cell.
      */
-    that.getCellElements = function() {
+    this.getCellElements = function() {
       return _cellElements;
     };
     
@@ -82,7 +82,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {jQuery Object} headers.row - row header.
      * @returns {jQuery Object} headers.col - column header.
      */
-    that.getHeaders = function() {
+    this.getHeaders = function() {
       return _headers;
     };
     
@@ -90,7 +90,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Gets the container for jMatrixBrowse.
      * @returns {jQuery Object} The container for jMatrixBrowse.
      */
-    that.getContainer = function() {
+    this.getContainer = function() {
       return _container;
     };
 
@@ -99,7 +99,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} row - index of the row to be moved.
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
-    that.moveRowToEnd = function(row) {
+    this.moveRowToEnd = function(row) {
       // Get index of last cell
       var height = _cellElements.length;
       var lastCell = (_cellElements[height-1].length > 0) ? jQuery(_cellElements[height-1][0]) : undefined;
@@ -137,7 +137,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} row - index of the row to be moved.
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
-    that.moveRowToTop = function(row) {
+    this.moveRowToTop = function(row) {
       // Get index of first cell
       var firstCell = (_cellElements.length > 0 && _cellElements[0].length > 0)?jQuery(_cellElements[0][0]):undefined;
       if (firstCell === undefined) {
@@ -172,7 +172,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} col - index of the column to be moved.
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
-    that.moveColToRight = function(col) {
+    this.moveColToRight = function(col) {
       if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
         console.error('Unable to move col ' + col + ' to right.');
         return false;
@@ -208,7 +208,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} col - index of the column to be moved.
      * @returns {boolean} true if the operation was successful. false otherwise.
      */
-    that.moveColToLeft = function(col) {
+    this.moveColToLeft = function(col) {
       if (_cellElements.length <= 0 || _cellElements[0].length <= 0) {
         console.error('Unable to move col ' + col + ' to left.');
         return false;
@@ -241,7 +241,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one cell to the right.
      */
-    that.scrollRight = function() {
+    this.scrollRight = function() {
       if (checkScrollBounds('right'))
         scrollCols('right', 1);
     };
@@ -249,7 +249,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one cell to the left.
      */
-    that.scrollLeft = function() {
+    this.scrollLeft = function() {
       if (checkScrollBounds('left'))
         scrollCols('left', 1);
     };
@@ -257,7 +257,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one row up.
      */
-    that.scrollUp = function() {
+    this.scrollUp = function() {
       if (checkScrollBounds('up'))
         scrollRows('up', 1);
     };
@@ -265,7 +265,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one row down.
      */
-    that.scrollDown = function() {
+    this.scrollDown = function() {
       if (checkScrollBounds('down'))
         scrollRows('down', 1);
     };
@@ -273,7 +273,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one page up.
      */
-    that.pageUp = function() {
+    this.pageUp = function() {
       var nRowsToScroll = getNumberOfRowsForPageScroll('up');
       scrollRows('up', nRowsToScroll);
     };
@@ -281,7 +281,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one page down.
      */
-    that.pageDown = function() {
+    this.pageDown = function() {
       var nRowsToScroll = getNumberOfRowsForPageScroll('down');
       scrollRows('down', nRowsToScroll);
     };
@@ -289,7 +289,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one page left.
      */
-    that.pageLeft = function() {
+    this.pageLeft = function() {
       var nColsToScroll = getNumberOfColsForPageScroll('left');
       scrollCols('left', nColsToScroll);
     };
@@ -297,7 +297,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Scrolls the matrix one page right.
      */
-    that.pageRight = function() {
+    this.pageRight = function() {
       var nColsToScroll = getNumberOfColsForPageScroll('right');
       scrollCols('right', nColsToScroll);
     };
@@ -311,7 +311,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {jQuery Object} element - the element to snap to grid (optional).
      * @param {string} - the direction to snap (from top, left) (optional).
      */
-    that.snapToGrid = function(element, direction) {
+    this.snapToGrid = function(element, direction) {
 
       if (element === undefined && direction === undefined) {
         _self.snapToGrid(getCellToSnap());
@@ -344,7 +344,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Zooms one level in.
      */
-    that.zoomIn = function() {
+    this.zoomIn = function() {
       // Set the window size in Configuration
       var currentSize = _configuration.getWindowSize();
       _configuration.setWindowSize({
@@ -362,7 +362,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Zooms one level out.
      */
-    that.zoomOut = function() {
+    this.zoomOut = function() {
       // Set the window size in Configuration
       var currentSize = _configuration.getWindowSize();
       var windowSize = {
@@ -386,7 +386,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       init(windowPosition);
     };
 
-    that.getIsAnimating = function() {
+    this.getIsAnimating = function() {
       return _isAnimating;
     };
 

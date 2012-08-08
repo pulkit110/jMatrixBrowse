@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - MatrixGenerator</title>
+		<title>JsDoc Reference - jMatrixBrowseNs.APIHandler</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -224,7 +224,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class MatrixGenerator
+				Class jMatrixBrowseNs.APIHandler
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -232,16 +232,16 @@ ul.inheritsList
 				
 				
 			
-				MatrixGenerator
+				APIHandler
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_js_MatrixGenerator.js.html">MatrixGenerator.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_APIHandler.js.html">APIHandler.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MatrixGenerator.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jMatrixBrowseNs.APIHandler.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -254,9 +254,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/MatrixGenerator.html#constructor">MatrixGenerator</a></b>(type)
+								<b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#constructor">jMatrixBrowseNs.APIHandler</a></b>(type)
 							</div>
-							<div class="description">Generates random matrix with characters from A-F and numbers.</div>
+							<div class="description">Manages requests to the api.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -270,7 +270,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MatrixGenerator.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class jMatrixBrowseNs.APIHandler.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -281,47 +281,83 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getColDataForCell">getColDataForCell</a></b>(cell)
+								</div>
+								<div class="description">Get the col data for the col index for current window.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getColHeadersFromLeftCol">getColHeadersFromLeftCol</a></b>(leftColIndex)
+								</div>
+								<div class="description">Get the column headers for the current window from left column index.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getMatrixSize">getMatrixSize</a></b>()
+								</div>
+								<div class="description">Get matrix size from api.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getResponse">getResponse</a></b>(request)
+								</div>
+								<div class="description">Gets the response for a request.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getResponseData">getResponseData</a></b>(request)
+								</div>
+								<div class="description">Gets the response data for a request.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getRowDataForCell">getRowDataForCell</a></b>(cell)
+								</div>
+								<div class="description">Get the row data for the row index for current window.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#getRowHeadersFromTopRow">getRowHeadersFromTopRow</a></b>(topRowIndex)
+								</div>
+								<div class="description">Get the row headers for the current window from top row index.</div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#-getRandomString">getRandomString</a></b>(length)
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#-initApi">initApi</a></b>(type)
 								</div>
-								<div class="description">Returns a random string of given length.</div>
+								<div class="description">Initialize the API</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#init">init</a></b>(int_height, int_width)
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.APIHandler.html#setRenderer">setRenderer</a></b>(renderer)
 								</div>
-								<div class="description">Initialize the MatrixGenerator.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrix">test_getMatrix</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrixColumnLabels">test_getMatrixColumnLabels</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrixRowLabels">test_getMatrixRowLabels</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
+								<div class="description">Sets the renderer.</div>
 							</td>
 						</tr>
 					
@@ -342,11 +378,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>MatrixGenerator</b>(type)
+						<b>jMatrixBrowseNs.APIHandler</b>(type)
 				</div>
 				
 				<div class="description">
-					Generates random matrix with characters from A-F and numbers.
+					Manages requests to the api.
 					
 				</div>
 				
@@ -358,10 +394,10 @@ ul.inheritsList
 						<dt class="heading">Parameters:</dt>
 						
 							<dt>
-								 <b>type</b>
+								<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span>  <b>type</b>
 								
 							</dt>
-								<dd></dd>
+								<dd>- type of API to use.</dd>
 						
 						</dl>
 					
@@ -384,15 +420,323 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name="-getRandomString"> </a>
+					<a name="getColDataForCell"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getColDataForCell</b>(cell)
+					
+					</div>
+					<div class="description">
+						Get the col data for the col index for current window.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>cell</b>
+									
+								</dt>
+								<dd>- row and column index of cell.</dd>
+							
+							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Deprecated:</dt>
+							<dt>
+								You need to pass in the full window now. See getResponseData.
+							</dt>
+							</dl>
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> colData - Array of col data.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getColHeadersFromLeftCol"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getColHeadersFromLeftCol</b>(leftColIndex)
+					
+					</div>
+					<div class="description">
+						Get the column headers for the current window from left column index.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>leftColIndex</b>
+									
+								</dt>
+								<dd>- index of the left column</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> colHeaders - Array of column headers</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getMatrixSize"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object, Number, Number}</span>
+					<b>getMatrixSize</b>()
+					
+					</div>
+					<div class="description">
+						Get matrix size from api.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> size - size of the matrix.</dd>
+							
+								<dd><span class="light fixedFont">{Number}</span> size.width - width of the matrix.</dd>
+							
+								<dd><span class="light fixedFont">{Number}</span> size.height - height of the matrix.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getResponse"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getResponse</b>(request)
+					
+					</div>
+					<div class="description">
+						Gets the response for a request. No checks are performed.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>request</b>
+									
+								</dt>
+								<dd>- request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>response received from the server.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getResponseData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getResponseData</b>(request)
+					
+					</div>
+					<div class="description">
+						Gets the response data for a request. No checks are performed.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>request</b>
+									
+								</dt>
+								<dd>- request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>response.data received from the server.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getRowDataForCell"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getRowDataForCell</b>(cell)
+					
+					</div>
+					<div class="description">
+						Get the row data for the row index for current window.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>cell</b>
+									
+								</dt>
+								<dd>- row and column index of cell</dd>
+							
+							</dl>
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Deprecated:</dt>
+							<dt>
+								You need to pass in the full window now. See getResponseData.
+							</dt>
+							</dl>
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> rowData - Array of row data</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getRowHeadersFromTopRow"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getRowHeadersFromTopRow</b>(topRowIndex)
+					
+					</div>
+					<div class="description">
+						Get the row headers for the current window from top row index.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>topRowIndex</b>
+									
+								</dt>
+								<dd>- index of the top row</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> rowHeaders - Array of row headers</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-initApi"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{string}</span>
-					<b>getRandomString</b>(length)
+					
+					<b>initApi</b>(type)
 					
 					</div>
 					<div class="description">
-						Returns a random string of given length.
+						Initialize the API
 						
 						
 					</div>
@@ -404,38 +748,31 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>length</b>
+									<span class="light fixedFont">{string}</span> <b>type</b>
 									
 								</dt>
-								<dd>- length of the string.</dd>
+								<dd>type of api: 'test' initializes the mockAPI</dd>
 							
 							</dl>
 						
 						
 						
 						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{string}</span> random string of given length.</dd>
-							
-							</dl>
 						
 						
 						
 
 					<hr />
 				
-					<a name="init"> </a>
+					<a name="setRenderer"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>init</b>(int_height, int_width)
+					<b>setRenderer</b>(renderer)
 					
 					</div>
 					<div class="description">
-						Initialize the MatrixGenerator.
+						Sets the renderer.
 						
 						
 					</div>
@@ -447,119 +784,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>int_height</b>
+									<span class="light fixedFont">{Object}</span> <b>renderer</b>
 									
 								</dt>
-								<dd>- height of the matrix to generate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>int_width</b>
-									
-								</dt>
-								<dd>- width of the matrix to generate.</dd>
+								<dd></dd>
 							
 							</dl>
 						
 						
 						
 						
-						
-						
-						
-
-					<hr />
-				
-					<a name="test_getMatrix"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{ArrayOfArray}</span>
-					<b>test_getMatrix</b>()
-					
-					</div>
-					<div class="description">
-						Returns the complete matrix.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{ArrayOfArray}</span> mat_testMatrix - An array of array representing 
-the matrix.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="test_getMatrixColumnLabels"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Array}</span>
-					<b>test_getMatrixColumnLabels</b>()
-					
-					</div>
-					<div class="description">
-						Returns the complete matrix.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> arr_rowLabels - An array of column labels.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="test_getMatrixRowLabels"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Array}</span>
-					<b>test_getMatrixRowLabels</b>()
-					
-					</div>
-					<div class="description">
-						Returns the complete matrix.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> arr_rowLabels - An array of row labels.</dd>
-							
-							</dl>
 						
 						
 						

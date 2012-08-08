@@ -191,6 +191,20 @@ ul.inheritsList
 	
 	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
 	
+	<li><a href="../symbols/jMatrixBrowseNs.html">jMatrixBrowseNs</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.APIHandler.html">jMatrixBrowseNs.APIHandler</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html">jMatrixBrowseNs.BackgroundDataManager</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.Configuration.html">jMatrixBrowseNs.Configuration</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.Constants.html">jMatrixBrowseNs.Constants</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.jMatrixBrowseRenderer.html">jMatrixBrowseNs.jMatrixBrowseRenderer</a></li>
+	
+	<li><a href="../symbols/jMatrixBrowseNs.Utils.html">jMatrixBrowseNs.Utils</a></li>
+	
 	<li><a href="../symbols/jQuery.html">jQuery</a></li>
 	
 	<li><a href="../symbols/jQuery.fn.html">jQuery.fn</a></li>
@@ -221,7 +235,7 @@ ul.inheritsList
 				jMatrixBrowse
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/src_js_jMatrixBrowse.js.html">jMatrixBrowse.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_jMatrixBrowse.js.html">jMatrixBrowse.js</a>.
 				
 			</p>
 
@@ -266,6 +280,15 @@ matrices.</div>
 						</tr>
 					</thead>
 					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-bindShortcuts">bindShortcuts</a></b>()
+								</div>
+								<div class="description">Binds shortcuts for browsing.</div>
+							</td>
+						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
@@ -324,15 +347,6 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-checkOverflow">checkOverflow</a></b>(element, container)
-								</div>
-								<div class="description">Check overflow for an element inside the container.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-computeNewCellCoordinates">computeNewCellCoordinates</a></b>(overflow)
 								</div>
 								<div class="description">Computes the new cell coordinates when a drag results in overflow.</div>
@@ -342,207 +356,18 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-createContentDiv">createContentDiv</a></b>(container)
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getColIndexForReload">getColIndexForReload</a></b>(direction)
 								</div>
-								<div class="description">Create the content div and append to container.</div>
+								<div class="description">Computes the col index needed for reload.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-createDragContainer">createDragContainer</a></b>(container)
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getRowIndexForReload">getRowIndexForReload</a></b>(direction)
 								</div>
-								<div class="description">Create the drag container and make it draggable.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-createRowColumnHeaderContainer">createRowColumnHeaderContainer</a></b>(container)
-								</div>
-								<div class="description">Create the row and column header containers.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-dragHandler">dragHandler</a></b>(event, ui)
-								</div>
-								<div class="description">Function that handles the drag event on dragContainer.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-dragStartHandler">dragStartHandler</a></b>(event, ui)
-								</div>
-								<div class="description">Function that handles the drag start event on dragContainer.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-dragStopHandler">dragStopHandler</a></b>(event, ui)
-								</div>
-								<div class="description">Function that handles the drag stop event on dragContainer.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-extendDefaults">extendDefaults</a></b>(options)
-								</div>
-								<div class="description">Extend the user's settings with defaults.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateClassNameForCell">generateClassNameForCell</a></b>(row, col)
-								</div>
-								<div class="description">Generate class name for given cell position.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateColHeaders">generateColHeaders</a></b>(header)
-								</div>
-								<div class="description">Generates elements and appends them to column header container.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateInitialMatrixContent">generateInitialMatrixContent</a></b>(container)
-								</div>
-								<div class="description">Creates an empty matrix with size obtained from API and appends to content.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateRowColumnHeaders">generateRowColumnHeaders</a></b>(headers)
-								</div>
-								<div class="description">Creates an empty matrix with size obtained from API and appends to content.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-generateRowHeaders">generateRowHeaders</a></b>(header)
-								</div>
-								<div class="description">Generates elements and appends them to row header container.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#getCellPosition">getCellPosition</a></b>(row, col)
-								</div>
-								<div class="description">Get the cell position for cell at (row,col).</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getCellWindow">getCellWindow</a></b>(position)
-								</div>
-								<div class="description">Get the window end points which has given point at its top left corner.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getColDataForCell">getColDataForCell</a></b>(cell)
-								</div>
-								<div class="description">Get the col data for the col index for current window.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getColHeadersFromLeftCol">getColHeadersFromLeftCol</a></b>(leftColIndex)
-								</div>
-								<div class="description">Get the column headers for the current window from left column index.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getMatrixSize">getMatrixSize</a></b>()
-								</div>
-								<div class="description">Get matrix size from api.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getRowDataForCell">getRowDataForCell</a></b>(cell)
-								</div>
-								<div class="description">Get the row data for the row index for current window.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getRowHeadersFromTopRow">getRowHeadersFromTopRow</a></b>(topRowIndex)
-								</div>
-								<div class="description">Get the row headers for the current window from top row index.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getSettings">getSettings</a></b>()
-								</div>
-								<div class="description">Get settings object.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getUserOptions">getUserOptions</a></b>(elem)
-								</div>
-								<div class="description">Get user defined options from data-* elements.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getWindowPosition">getWindowPosition</a></b>()
-								</div>
-								<div class="description">Get position of window.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-getWindowSize">getWindowSize</a></b>()
-								</div>
-								<div class="description">Get window size from settings.</div>
+								<div class="description">Computes the row index needed for reload.</div>
 							</td>
 						</tr>
 					
@@ -558,36 +383,9 @@ matrices.</div>
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-initApi">initApi</a></b>(type)
-								</div>
-								<div class="description">Initialize the API</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-isOverflowing">isOverflowing</a></b>(element, container, overflow)
-								</div>
-								<div class="description">Check if the given cell is overflowing the container dimensions.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-isValidDrag">isValidDrag</a></b>(overflow)
 								</div>
 								<div class="description">Check if the drag is valid.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-parsePosition">parsePosition</a></b>(str_position)
-								</div>
-								<div class="description">Utility function that parses a position (row,col).</div>
 							</td>
 						</tr>
 					
@@ -664,20 +462,20 @@ matrices.</div>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#scrollTo">scrollTo</a></b>(row, col)
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-updateCellForReload">updateCellForReload</a></b>(cell, rowIndex, colIndex, newCell, newRowNumber, newColNumber)
 								</div>
-								<div class="description">Scroll to given position.</div>
+								<div class="description">Updates the cell content for reload based on the reload strategy.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-setSettings">setSettings</a></b>(settings)
+								<div class="fixedFont"><b><a href="../symbols/jQuery.fn.jMatrixBrowse.html#-updateCellsForReload">updateCellsForReload</a></b>(rowIndex, colIndex, cells)
 								</div>
-								<div class="description">Set the settings object.</div>
+								<div class="description">Updates the cells which have been reloaded for the given row and col indices.</div>
 							</td>
 						</tr>
 					
@@ -730,10 +528,35 @@ matrices.
 					Method Detail
 				</div>
 				
-					<a name="-checkAndRepositionCellCol"> </a>
+					<a name="-bindShortcuts"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					
+					<b>bindShortcuts</b>()
+					
+					</div>
+					<div class="description">
+						Binds shortcuts for browsing.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-checkAndRepositionCellCol"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{boolean}</span>
 					<b>checkAndRepositionCellCol</b>(cellElements, container, col, overflow)
 					
 					</div>
@@ -779,6 +602,13 @@ matrices.
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> true if any cells were repositioned. false otherwise.</dd>
+							
+							</dl>
+						
 						
 						
 
@@ -787,7 +617,7 @@ matrices.
 					<a name="-checkAndRepositionCellRow"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					
+					<span class="light">{boolean}</span>
 					<b>checkAndRepositionCellRow</b>(cellElements, container, row, overflow)
 					
 					</div>
@@ -832,6 +662,13 @@ matrices.
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> true if any cells were repositioned. false otherwise.</dd>
+							
+							</dl>
 						
 						
 						
@@ -960,55 +797,6 @@ matrices.
 
 					<hr />
 				
-					<a name="-checkOverflow"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Number}</span>
-					<b>checkOverflow</b>(element, container)
-					
-					</div>
-					<div class="description">
-						Check overflow for an element inside the container.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>element</b>
-									
-								</dt>
-								<dd>- element to be checked for.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>container</b>
-									
-								</dt>
-								<dd>- container to be checked against.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Number}</span> type - type of the overflow.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
 					<a name="-computeNewCellCoordinates"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -1045,15 +833,15 @@ matrices.
 
 					<hr />
 				
-					<a name="-createContentDiv"> </a>
+					<a name="-getColIndexForReload"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span>
-					<b>createContentDiv</b>(container)
+					<span class="light">{Object}</span>
+					<b>getColIndexForReload</b>(direction)
 					
 					</div>
 					<div class="description">
-						Create the content div and append to container.
+						Computes the col index needed for reload.
 						
 						
 					</div>
@@ -1065,10 +853,22 @@ matrices.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									<span class="light fixedFont">{Number}</span> <b>event.currentCell</b>
 									
 								</dt>
-								<dd>- container to attacht the content to.</dd>
+								<dd>- currentCell at the top left</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>event.previousCell</b>
+									
+								</dt>
+								<dd>- previousCell at the top left</dd>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>direction</b>
+									
+								</dt>
+								<dd>- direction of overflow corresponding to the update</dd>
 							
 							</dl>
 						
@@ -1079,7 +879,7 @@ matrices.
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> content</dd>
+								<dd><span class="light fixedFont">{Object}</span> colIndex - col1, col2 and colsNotInBound</dd>
 							
 							</dl>
 						
@@ -1088,15 +888,15 @@ matrices.
 
 					<hr />
 				
-					<a name="-createDragContainer"> </a>
+					<a name="-getRowIndexForReload"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{Object, jQuery Object, jQuery Object}</span>
-					<b>createDragContainer</b>(container)
+					<span class="light">{Object}</span>
+					<b>getRowIndexForReload</b>(direction)
 					
 					</div>
 					<div class="description">
-						Create the drag container and make it draggable.
+						Computes the row index needed for reload.
 						
 						
 					</div>
@@ -1108,10 +908,22 @@ matrices.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									<span class="light fixedFont">{Number}</span> <b>event.currentCell</b>
 									
 								</dt>
-								<dd>- container to attach the content to.</dd>
+								<dd>- currentCell at the top left</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>event.previousCell</b>
+									
+								</dt>
+								<dd>- previousCell at the top left</dd>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>direction</b>
+									
+								</dt>
+								<dd>- direction of overflow corresponding to the update</dd>
 							
 							</dl>
 						
@@ -1122,907 +934,7 @@ matrices.
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Object}</span> coantiners</dd>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> coantiners.conatiner coantiner containing matrix content</dd>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> coantiners.dragConatiner dragCoantiner containing matrix content</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-createRowColumnHeaderContainer"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, jQuery Object, jQuery Object}</span>
-					<b>createRowColumnHeaderContainer</b>(container)
-					
-					</div>
-					<div class="description">
-						Create the row and column header containers.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
-									
-								</dt>
-								<dd>- container to attach the content to.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> headersContainer - hash containing column and row containers.</dd>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> headersContainer.row - row container.</dd>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> headersContainer.col - column container.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-dragHandler"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>dragHandler</b>(event, ui)
-					
-					</div>
-					<div class="description">
-						Function that handles the drag event on dragContainer.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>event</b>
-									
-								</dt>
-								<dd>- Drag event.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ui</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-dragStartHandler"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>dragStartHandler</b>(event, ui)
-					
-					</div>
-					<div class="description">
-						Function that handles the drag start event on dragContainer.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>event</b>
-									
-								</dt>
-								<dd>- Drag event.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ui</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-dragStopHandler"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>dragStopHandler</b>(event, ui)
-					
-					</div>
-					<div class="description">
-						Function that handles the drag stop event on dragContainer.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>event</b>
-									
-								</dt>
-								<dd>- Drag event.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ui</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-extendDefaults"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, boolean, string, string, string}</span>
-					<b>extendDefaults</b>(options)
-					
-					</div>
-					<div class="description">
-						Extend the user's settings with defaults.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>options</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> options - User's options for the plugin.</dd>
-							
-								<dd><span class="light fixedFont">{boolean}</span> options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_api - URI for the API.</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-generateClassNameForCell"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{string}</span>
-					<b>generateClassNameForCell</b>(row, col)
-					
-					</div>
-					<div class="description">
-						Generate class name for given cell position.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>row</b>
-									
-								</dt>
-								<dd>- zero indexed row of the element.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>col</b>
-									
-								</dt>
-								<dd>- zero indexed column of the element.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{string}</span> className - class name for the cell element.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-generateColHeaders"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>generateColHeaders</b>(header)
-					
-					</div>
-					<div class="description">
-						Generates elements and appends them to column header container.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>header</b>
-									
-								</dt>
-								<dd>- column header container.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-generateInitialMatrixContent"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{<a href="../symbols/jQuery.html">jQuery</a> object}</span>
-					<b>generateInitialMatrixContent</b>(container)
-					
-					</div>
-					<div class="description">
-						Creates an empty matrix with size obtained from API and appends to content.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>container</b>
-									
-								</dt>
-								<dd>- The element that acts as the matrix container (element that invoked jMatrixBrowse).</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> content where matrix is generated.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-generateRowColumnHeaders"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>generateRowColumnHeaders</b>(headers)
-					
-					</div>
-					<div class="description">
-						Creates an empty matrix with size obtained from API and appends to content.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>headers</b>
-									
-								</dt>
-								<dd>- header containers.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-generateRowHeaders"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>generateRowHeaders</b>(header)
-					
-					</div>
-					<div class="description">
-						Generates elements and appends them to row header container.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>header</b>
-									
-								</dt>
-								<dd>- row header container.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="getCellPosition"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Object, Number, Number}</span>
-					<b>getCellPosition</b>(row, col)
-					
-					</div>
-					<div class="description">
-						Get the cell position for cell at (row,col).
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>row</b>
-									
-								</dt>
-								<dd>- row index of the cell.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>col</b>
-									
-								</dt>
-								<dd>- column index of the cell.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> position - position of the cell.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.top - top coordinate of the cell.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.left - left coordinate of the cell.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getCellWindow"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, Number, Number, Number, Number}</span>
-					<b>getCellWindow</b>(position)
-					
-					</div>
-					<div class="description">
-						Get the window end points which has given point at its top left corner.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>position</b>
-									
-								</dt>
-								<dd>- position of the cell.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>position.row</b>
-									
-								</dt>
-								<dd>- row of the cell.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>position.col</b>
-									
-								</dt>
-								<dd>- column of the cell.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> window - Object representing the window coordinates.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> window.row1 - row index of the top left corner.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> window.col1 - column index of the top left corner.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> window.row2 - row index of the bottom right corner.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> window.col2 - column index of the bottom right corner.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getColDataForCell"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Array}</span>
-					<b>getColDataForCell</b>(cell)
-					
-					</div>
-					<div class="description">
-						Get the col data for the col index for current window.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>cell</b>
-									
-								</dt>
-								<dd>- row and column index of cell.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> colData - Array of col data.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getColHeadersFromLeftCol"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Array}</span>
-					<b>getColHeadersFromLeftCol</b>(leftColIndex)
-					
-					</div>
-					<div class="description">
-						Get the column headers for the current window from left column index.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>leftColIndex</b>
-									
-								</dt>
-								<dd>- index of the left column</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> colHeaders - Array of column headers</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getMatrixSize"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, Number, Number}</span>
-					<b>getMatrixSize</b>()
-					
-					</div>
-					<div class="description">
-						Get matrix size from api.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> size - size of the matrix.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> size.width - width of the matrix.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> size.height - height of the matrix.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getRowDataForCell"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Array}</span>
-					<b>getRowDataForCell</b>(cell)
-					
-					</div>
-					<div class="description">
-						Get the row data for the row index for current window.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>cell</b>
-									
-								</dt>
-								<dd>- row and column index of cell</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> rowData - Array of row data</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getRowHeadersFromTopRow"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Array}</span>
-					<b>getRowHeadersFromTopRow</b>(topRowIndex)
-					
-					</div>
-					<div class="description">
-						Get the row headers for the current window from top row index.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>topRowIndex</b>
-									
-								</dt>
-								<dd>- index of the top row</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array}</span> rowHeaders - Array of row headers</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getSettings"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>getSettings</b>()
-					
-					</div>
-					<div class="description">
-						Get settings object.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getUserOptions"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, boolean, string, string, string}</span>
-					<b>getUserOptions</b>(elem)
-					
-					</div>
-					<div class="description">
-						Get user defined options from data-* elements.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> object}</span> <b>elem</b>
-									
-								</dt>
-								<dd>- the element to retrieve the user options from.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> options - User's options for the plugin.</dd>
-							
-								<dd><span class="light fixedFont">{boolean}</span> options.boo_jMatrixBrowser - Is jMatrixBrowse active for the container.</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_api - URI for the API.</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_initialWindowSize - comma separated (TODO: no checks performed) window size as (width, height).</dd>
-							
-								<dd><span class="light fixedFont">{string}</span> options.str_initialWindowPosition - comma separated (TODO: no checks performed) window position as (row,col).</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getWindowPosition"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, Number, Number}</span>
-					<b>getWindowPosition</b>()
-					
-					</div>
-					<div class="description">
-						Get position of window.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> position - position of the top-left corner of window.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.row - row index of the position.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.col - column index of the position.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getWindowSize"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, Number, Number}</span>
-					<b>getWindowSize</b>()
-					
-					</div>
-					<div class="description">
-						Get window size from settings.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> size - size of the window.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> size.width - width of the window.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> size.height - height of the window.</dd>
+								<dd><span class="light fixedFont">{Object}</span> rowIndex - row1, row2 and rowsNotInBound</dd>
 							
 							</dl>
 						
@@ -2067,97 +979,6 @@ matrices.
 
 					<hr />
 				
-					<a name="-initApi"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>initApi</b>(type)
-					
-					</div>
-					<div class="description">
-						Initialize the API
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>type</b>
-									
-								</dt>
-								<dd>type of api: 'test' initializes the mockAPI</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-isOverflowing"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>isOverflowing</b>(element, container, overflow)
-					
-					</div>
-					<div class="description">
-						Check if the given cell is overflowing the container dimensions.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>element</b>
-									
-								</dt>
-								<dd>- jQuery object for the element to be checked for overflow.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
-									
-								</dt>
-								<dd>- The container against which to check the overflow.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>overflow</b>
-									
-								</dt>
-								<dd>- Type of oevrflow to check.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>true if there is an overflow. false otherwise.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
 					<a name="-isValidDrag"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -2193,53 +1014,6 @@ matrices.
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{boolean}</span> true if the drag is valid.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-parsePosition"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					<span class="light">{Object, Number, Number}</span>
-					<b>parsePosition</b>(str_position)
-					
-					</div>
-					<div class="description">
-						Utility function that parses a position (row,col).
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>str_position</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> position - Object representing the position denoted by the string.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.row - row index of the position.</dd>
-							
-								<dd><span class="light fixedFont">{Number}</span> position.col - column index of the position.</dd>
 							
 							</dl>
 						
@@ -2609,15 +1383,15 @@ matrices.
 
 					<hr />
 				
-					<a name="scrollTo"> </a>
-					<div class="fixedFont">
+					<a name="-updateCellForReload"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
 					
 					
-					<b>scrollTo</b>(row, col)
+					<b>updateCellForReload</b>(cell, rowIndex, colIndex, newCell, newRowNumber, newColNumber)
 					
 					</div>
 					<div class="description">
-						Scroll to given position.
+						Updates the cell content for reload based on the reload strategy.
 						
 						
 					</div>
@@ -2629,16 +1403,40 @@ matrices.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>row</b>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>cell</b>
 									
 								</dt>
-								<dd>- row index of the cell.</dd>
+								<dd>- cell to be replaced/reloaded.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>col</b>
+									<span class="light fixedFont">{Number}</span> <b>rowIndex</b>
 									
 								</dt>
-								<dd>- column index of the cell.</dd>
+								<dd>- row index of the cell to be replaced.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>colIndex</b>
+									
+								</dt>
+								<dd>- column index of the cell to be replaced.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>newCell</b>
+									
+								</dt>
+								<dd>- cell to be replaced with.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>newRowNumber</b>
+									
+								</dt>
+								<dd>- new row number of the cell.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>newColNumber</b>
+									
+								</dt>
+								<dd>- new column number of the cell.</dd>
 							
 							</dl>
 						
@@ -2651,15 +1449,15 @@ matrices.
 
 					<hr />
 				
-					<a name="-setSettings"> </a>
+					<a name="-updateCellsForReload"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					
-					<b>setSettings</b>(settings)
+					<b>updateCellsForReload</b>(rowIndex, colIndex, cells)
 					
 					</div>
 					<div class="description">
-						Set the settings object.
+						Updates the cells which have been reloaded for the given row and col indices.
 						
 						
 					</div>
@@ -2671,10 +1469,22 @@ matrices.
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>settings</b>
+									<span class="light fixedFont">{Object}</span> <b>rowIndex</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>- row1 and row2 for the request that was made.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>colIndex</b>
+									
+								</dt>
+								<dd>- col1 and col2 for the request that was made.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>cells</b>
+									
+								</dt>
+								<dd>- Array of Array of the response data.</dd>
 							
 							</dl>
 						
@@ -2699,7 +1509,7 @@ matrices.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jun 13 2012 23:47:54 GMT+0200 (CEST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Aug 09 2012 00:23:53 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

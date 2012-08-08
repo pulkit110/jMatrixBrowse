@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - jQuery.fn</title>
+		<title>JsDoc Reference - jMatrixBrowseNs.Utils</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -224,7 +224,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class jQuery.fn
+				Class jMatrixBrowseNs.Utils
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -232,17 +232,16 @@ ul.inheritsList
 				
 				
 			
-				See the jQuery Library  (http://jquery.com/) for full details.  This just
-documents the function and classes that are added to jQuery by this plug-in.
+				Utils
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_jMatrixBrowse.js.html">jMatrixBrowse.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_Utils.js.html">Utils.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jQuery.fn.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jMatrixBrowseNs.Utils.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -255,9 +254,9 @@ documents the function and classes that are added to jQuery by this plug-in.
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/jQuery.fn.html#constructor">jQuery.fn</a></b>()
+								<b><a href="../symbols/jMatrixBrowseNs.Utils.html#constructor">jMatrixBrowseNs.Utils</a></b>()
 							</div>
-							<div class="description">See (http://jquery.com/)</div>
+							<div class="description">Utility functions for jMatrixBrowse.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -268,6 +267,51 @@ documents the function and classes that are added to jQuery by this plug-in.
 			
 
 <!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class jMatrixBrowseNs.Utils.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">jMatrixBrowseNs.Utils.<b><a href="../symbols/jMatrixBrowseNs.Utils.html#.findIndexOfMin">findIndexOfMin</a></b>(array)
+								</div>
+								<div class="description">Finds the min and index of min number in the array.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">jMatrixBrowseNs.Utils.<b><a href="../symbols/jMatrixBrowseNs.Utils.html#.isOverflowing">isOverflowing</a></b>(element, container, overflow)
+								</div>
+								<div class="description">Check if the given cell is overflowing the container dimensions.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">jMatrixBrowseNs.Utils.<b><a href="../symbols/jMatrixBrowseNs.Utils.html#.parsePosition">parsePosition</a></b>(str_position)
+								</div>
+								<div class="description">Utility function that parses a position (row,col).</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
 			
 <!-- ============================== events summary ======================== -->
 			
@@ -280,11 +324,11 @@ documents the function and classes that are added to jQuery by this plug-in.
 				</div>
 				
 				<div class="fixedFont">
-						<b>jQuery.fn</b>()
+						<b>jMatrixBrowseNs.Utils</b>()
 				</div>
 				
 				<div class="description">
-					See (http://jquery.com/)
+					Utility functions for jMatrixBrowse.
 					
 				</div>
 				
@@ -306,6 +350,158 @@ documents the function and classes that are added to jQuery by this plug-in.
 			
 
 <!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".findIndexOfMin"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Number, Number}</span>
+					<span class="light">jMatrixBrowseNs.Utils.</span><b>findIndexOfMin</b>(array)
+					
+					</div>
+					<div class="description">
+						Finds the min and index of min number in the array.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>array</b>
+									
+								</dt>
+								<dd>- the array to look into.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Number}</span> obj.min - the minimum number in the array.</dd>
+							
+								<dd><span class="light fixedFont">{Number}</span> obj.minIndex - the index of minimum number in the array.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".isOverflowing"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">jMatrixBrowseNs.Utils.</span><b>isOverflowing</b>(element, container, overflow)
+					
+					</div>
+					<div class="description">
+						Check if the given cell is overflowing the container dimensions.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>element</b>
+									
+								</dt>
+								<dd>- jQuery object for the element to be checked for overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span> <b>container</b>
+									
+								</dt>
+								<dd>- The container against which to check the overflow.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>overflow</b>
+									
+								</dt>
+								<dd>- Type of oevrflow to check.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>true if there is an overflow. false otherwise.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".parsePosition"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object, Number, Number}</span>
+					<span class="light">jMatrixBrowseNs.Utils.</span><b>parsePosition</b>(str_position)
+					
+					</div>
+					<div class="description">
+						Utility function that parses a position (row,col).
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str_position</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> position - Object representing the position denoted by the string.</dd>
+							
+								<dd><span class="light fixedFont">{Number}</span> position.row - row index of the position.</dd>
+							
+								<dd><span class="light fixedFont">{Number}</span> position.col - column index of the position.</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
 			
 			
 <!-- ============================== event details ========================= -->		

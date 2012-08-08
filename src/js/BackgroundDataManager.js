@@ -13,17 +13,17 @@
 
 var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
-(function (jQuery, jMatrixBrowseNS) {
+(function (jQuery, jMatrixBrowseNs) {
 
   /**
    * Manages backgorund loading for jMatrixBrowse.
    *
    * @param {jQuery Object} elem - element that initiated jMatrixBrowse.
    * @param {Object} api - api manager for making requests to api.
-   * @class BackgorundDataManager
+   * @class BackgroundDataManager
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNS.BackgroundDataManager = function(elem, api, config) {
+  jMatrixBrowseNs.BackgroundDataManager = function(elem, api, config) {
     var that = this;
 
     var _backgroundDataContainer; // Container for background data.
@@ -44,7 +44,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     beginLoadingData();
 
     // Public methods
-    that.getCellsForRequest = function(request, callback) {
+    this.getCellsForRequest = function(request, callback) {
       // Create a request dynamically to load only the cells which have not already been loaded.
       var requests = getRequiredRequests(request);
 
@@ -84,7 +84,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * 
      * @returns {Object} windowLoaded - window (row1, col1, row2, col2) of cells that have been loaded. 
      */
-    that.getWindowLoaded = function() {
+    this.getWindowLoaded = function() {
       return _windowLoaded;
     };
 
@@ -114,7 +114,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
                   'data-col': j + request.col1,
                   html: data[i][j]
                 });
-                if (_config.getDataReloadStrategy === jMatrixBrowseNS.Constants.RELOAD_CELL_POSITION) {
+                if (_config.getDataReloadStrategy === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
                   _elem.find('.jMatrixBrowse-content').append(backgroundCell);
                   backgroundCell.hide();
                 } else {
@@ -154,7 +154,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
             loadData(request);
           });
 
-        }, jMatrixBrowseNS.Constants.BACKGROUND_DATA_RELOAD_DELAY);
+        }, jMatrixBrowseNs.Constants.BACKGROUND_DATA_RELOAD_DELAY);
       })({
         row1: 0,
         row2: backgroundLoadingWindowSize.height,
@@ -231,7 +231,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
               'data-col': k + currentRequest.col1,
               html: currentResponse[j][k]
             });
-            if (_config.getDataReloadStrategy === jMatrixBrowseNS.Constants.RELOAD_CELL_POSITION) {
+            if (_config.getDataReloadStrategy === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
               _elem.find('.jMatrixBrowse-content').append(cell);
               cell.hide();
             }

@@ -37,7 +37,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Object} User settings for jMatrixBrowse.
      * See (https://github.com/pulkit110/jMatrixBrowse/wiki/Use) for list of available settings.
      */
-    that.getSettings = function() {
+    this.getSettings = function() {
       return _settings;
     };
 
@@ -47,7 +47,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Number} size.width - width of the window.
      * @returns {Number} size.height - height of the window.
      */
-    that.getWindowSize = function() {
+    this.getWindowSize = function() {
       if (_settings && _settings.str_initialWindowSize) {
         var  position = jMatrixBrowseNs.Utils.parsePosition(_settings.str_initialWindowSize);
         return {
@@ -62,7 +62,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Sets window size.
      * @param {Object} size - size of the window.
      */
-    that.setWindowSize = function(size) {
+    this.setWindowSize = function(size) {
       _settings.str_initialWindowSize = size.height + ',' + size.width;
     };
 
@@ -72,7 +72,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Number} position.row - row index of the position.
      * @returns {Number} position.col - column index of the position.
      */
-    that.getWindowPosition = function() {
+    this.getWindowPosition = function() {
       if (_settings && _settings.str_initialWindowPosition) {
         var  position = jMatrixBrowseNs.Utils.parsePosition(_settings.str_initialWindowPosition);
         return position;
@@ -91,14 +91,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Number} window.row2 - row index of the bottom right corner.
      * @returns {Number} window.col2 - column index of the bottom right corner.
      */
-    that.getCellWindow = function(position) {
+    this.getCellWindow = function(position) {
       var size = _api.getMatrixSize();
       if (size == undefined) {
         throw "Unable to get matrix size";
         return null;
       }
 
-      var windowSize = this.getWindowSize();
+      var windowSize = that.getWindowSize();
       if (windowSize == undefined) {
         throw "Unable to get window size.";
         return null;
@@ -116,7 +116,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Gets the number of background cells to use.
      * @returns nBackgroundCells The number of background cells.
      */
-    that.getNumberOfBackgroundCells = function() {
+    this.getNumberOfBackgroundCells = function() {
       return jMatrixBrowseNs.Constants.N_BACKGROUND_CELLS;
     };
 
@@ -124,23 +124,23 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Gets the number ata reload strategy to use.
      * @returns dataReloadStrategy Reload strategy (possible options defined in Constants)
      */
-    that.getDataReloadStrategy = function() {
+    this.getDataReloadStrategy = function() {
       return _dataReloadStategy;
     };
     
-    that.isSnapEnabled = function() {
+    this.isSnapEnabled = function() {
       return _settings.boo_snap;
     };
 
-    that.getAnimationDuration = function() {
+    this.getAnimationDuration = function() {
       return _settings.animationDuration;
     };
 
-    that.getMinVelocityForAnimation = function() {
+    this.getMinVelocityForAnimation = function() {
       return _settings.minVelocityForAnimation;
     };
 
-    that.animateEnabled = function() {
+    this.animateEnabled = function() {
       return _settings.boo_animate;
     }
 

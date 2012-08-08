@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - MatrixGenerator</title>
+		<title>JsDoc Reference - jMatrixBrowseNs.BackgroundDataManager</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -224,7 +224,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class MatrixGenerator
+				Class jMatrixBrowseNs.BackgroundDataManager
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -232,16 +232,16 @@ ul.inheritsList
 				
 				
 			
-				MatrixGenerator
+				BackgroundDataManager
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_js_MatrixGenerator.js.html">MatrixGenerator.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_BackgroundDataManager.js.html">BackgroundDataManager.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class MatrixGenerator.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class jMatrixBrowseNs.BackgroundDataManager.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -254,9 +254,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/MatrixGenerator.html#constructor">MatrixGenerator</a></b>(type)
+								<b><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html#constructor">jMatrixBrowseNs.BackgroundDataManager</a></b>(elem, api, config)
 							</div>
-							<div class="description">Generates random matrix with characters from A-F and numbers.</div>
+							<div class="description">Manages backgorund loading for jMatrixBrowse.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -270,7 +270,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class MatrixGenerator.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class jMatrixBrowseNs.BackgroundDataManager.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -283,45 +283,36 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#-getRandomString">getRandomString</a></b>(length)
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html#-beginLoadingData">beginLoadingData</a></b>()
 								</div>
-								<div class="description">Returns a random string of given length.</div>
+								<div class="description">Begins loading all the data into the dom.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html#-combineResponses">combineResponses</a></b>(requests, responses, request)
+								</div>
+								<div class="description">Combines the responses from various api requests and backgrounds to form one matrix of cells.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html#-getRequiredRequests">getRequiredRequests</a></b>(request)
+								</div>
+								<div class="description">Forms the requests that should be made to the api to get the remaining cells.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#init">init</a></b>(int_height, int_width)
+								<div class="fixedFont"><b><a href="../symbols/jMatrixBrowseNs.BackgroundDataManager.html#getWindowLoaded">getWindowLoaded</a></b>()
 								</div>
-								<div class="description">Initialize the MatrixGenerator.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrix">test_getMatrix</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrixColumnLabels">test_getMatrixColumnLabels</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/MatrixGenerator.html#test_getMatrixRowLabels">test_getMatrixRowLabels</a></b>()
-								</div>
-								<div class="description">Returns the complete matrix.</div>
+								<div class="description">Gets the curernt window that has been loaded by the background data manager.</div>
 							</td>
 						</tr>
 					
@@ -342,11 +333,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>MatrixGenerator</b>(type)
+						<b>jMatrixBrowseNs.BackgroundDataManager</b>(elem, api, config)
 				</div>
 				
 				<div class="description">
-					Generates random matrix with characters from A-F and numbers.
+					Manages backgorund loading for jMatrixBrowse.
 					
 				</div>
 				
@@ -358,7 +349,19 @@ ul.inheritsList
 						<dt class="heading">Parameters:</dt>
 						
 							<dt>
-								 <b>type</b>
+								<span class="light fixedFont">{<a href="../symbols/jQuery.html">jQuery</a> Object}</span>  <b>elem</b>
+								
+							</dt>
+								<dd>- element that initiated jMatrixBrowse.</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>api</b>
+								
+							</dt>
+								<dd>- api manager for making requests to api.</dd>
+						
+							<dt>
+								 <b>config</b>
 								
 							</dt>
 								<dd></dd>
@@ -384,81 +387,22 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name="-getRandomString"> </a>
+					<a name="-beginLoadingData"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
-					<span class="light">{string}</span>
-					<b>getRandomString</b>(length)
+					
+					<b>beginLoadingData</b>()
 					
 					</div>
 					<div class="description">
-						Returns a random string of given length.
+						Begins loading all the data into the dom.
+This creates a new container to hold the data inside elem.
 						
 						
 					</div>
 					
 					
 					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>length</b>
-									
-								</dt>
-								<dd>- length of the string.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{string}</span> random string of given length.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="init"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>init</b>(int_height, int_width)
-					
-					</div>
-					<div class="description">
-						Initialize the MatrixGenerator.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>int_height</b>
-									
-								</dt>
-								<dd>- height of the matrix to generate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Number}</span> <b>int_width</b>
-									
-								</dt>
-								<dd>- width of the matrix to generate.</dd>
-							
-							</dl>
 						
 						
 						
@@ -469,21 +413,44 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="test_getMatrix"> </a>
-					<div class="fixedFont">
+					<a name="-combineResponses"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
 					
 					<span class="light">{ArrayOfArray}</span>
-					<b>test_getMatrix</b>()
+					<b>combineResponses</b>(requests, responses, request)
 					
 					</div>
 					<div class="description">
-						Returns the complete matrix.
+						Combines the responses from various api requests and backgrounds to form one matrix of cells.
 						
 						
 					</div>
 					
 					
 					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>requests</b>
+									
+								</dt>
+								<dd>Array of requests that were made to the api.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>responses</b>
+									
+								</dt>
+								<dd>Responses received from the api.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>request</b>
+									
+								</dt>
+								<dd>One big request for which we want the data.</dd>
+							
+							</dl>
 						
 						
 						
@@ -492,8 +459,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{ArrayOfArray}</span> mat_testMatrix - An array of array representing 
-the matrix.</dd>
+								<dd><span class="light fixedFont">{ArrayOfArray}</span> Array of array of cells in the requested window.</dd>
 							
 							</dl>
 						
@@ -502,21 +468,32 @@ the matrix.</dd>
 
 					<hr />
 				
-					<a name="test_getMatrixColumnLabels"> </a>
-					<div class="fixedFont">
+					<a name="-getRequiredRequests"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
 					
 					<span class="light">{Array}</span>
-					<b>test_getMatrixColumnLabels</b>()
+					<b>getRequiredRequests</b>(request)
 					
 					</div>
 					<div class="description">
-						Returns the complete matrix.
+						Forms the requests that should be made to the api to get the remaining cells.
 						
 						
 					</div>
 					
 					
 					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>request</b>
+									
+								</dt>
+								<dd>The requested window.</dd>
+							
+							</dl>
 						
 						
 						
@@ -525,7 +502,7 @@ the matrix.</dd>
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Array}</span> arr_rowLabels - An array of column labels.</dd>
+								<dd><span class="light fixedFont">{Array}</span> Array of requests to be made to api to get cells not already in background.</dd>
 							
 							</dl>
 						
@@ -534,15 +511,15 @@ the matrix.</dd>
 
 					<hr />
 				
-					<a name="test_getMatrixRowLabels"> </a>
+					<a name="getWindowLoaded"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Array}</span>
-					<b>test_getMatrixRowLabels</b>()
+					<span class="light">{Object}</span>
+					<b>getWindowLoaded</b>()
 					
 					</div>
 					<div class="description">
-						Returns the complete matrix.
+						Gets the curernt window that has been loaded by the background data manager.
 						
 						
 					</div>
@@ -557,7 +534,7 @@ the matrix.</dd>
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Array}</span> arr_rowLabels - An array of row labels.</dd>
+								<dd><span class="light fixedFont">{Object}</span> windowLoaded - window (row1, col1, row2, col2) of cells that have been loaded.</dd>
 							
 							</dl>
 						

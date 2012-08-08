@@ -186,6 +186,20 @@ ul.inheritsList
 	
 	<li><i><a href="symbols/_global_.html">_global_</a></i></li>
 	
+	<li><a href="symbols/jMatrixBrowseNs.html">jMatrixBrowseNs</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.APIHandler.html">jMatrixBrowseNs.APIHandler</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.BackgroundDataManager.html">jMatrixBrowseNs.BackgroundDataManager</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.Configuration.html">jMatrixBrowseNs.Configuration</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.Constants.html">jMatrixBrowseNs.Constants</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.jMatrixBrowseRenderer.html">jMatrixBrowseNs.jMatrixBrowseRenderer</a></li>
+	
+	<li><a href="symbols/jMatrixBrowseNs.Utils.html">jMatrixBrowseNs.Utils</a></li>
+	
 	<li><a href="symbols/jQuery.html">jQuery</a></li>
 	
 	<li><a href="symbols/jQuery.fn.html">jQuery.fn</a></li>
@@ -205,9 +219,15 @@ ul.inheritsList
 			
 			
 			<div>
-				<h2><a href="symbols/src/src_js_jMatrixBrowse.js.html">jMatrixBrowse.js</a></h2>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_BackgroundDataManager.js.html">BackgroundDataManager.js</a></h2>
 				
-Contains the jMatrixBrowse plug-in code.
+Manages background loading of data for jMatrixBrowse.
+
+When initiated, it loads the data for the complete matrix in the DOM. 
+Other components should make requests to this to obtain data to be loaded
+in the matrix rather than directly speaking with the API as this module
+will manage the data already cached form the API and make additional requests 
+if necessary.
 				<dl>
 					
 						<dt class="heading">Author:</dt>
@@ -224,7 +244,171 @@ Contains the jMatrixBrowse plug-in code.
 			<hr />
 			
 			<div>
-				<h2><a href="symbols/src/test_lib_qunit_js_qunit.js.html">qunit.js</a></h2>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_APIHandler.js.html">APIHandler.js</a></h2>
+				
+Handles requests to the API.
+
+Handles the requests to API. All the requests to the API are sent through 
+this class rather than directly making requests to the API. To manage data 
+of different formats, the user can implement his own API class that 
+implements the public methods for the module.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_Constants.js.html">Constants.js</a></h2>
+				
+Contains the jMatrixBrowse constants.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_jMatrixBrowse.js.html">jMatrixBrowse.js</a></h2>
+				
+Contains the jMatrixBrowse plug-in code.
+
+The core file for jMatrixBrowse that manages the initialization of the 
+component and manages interaction with different parts of the components.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_Configuration.js.html">Configuration.js</a></h2>
+				
+Contains the jMatrixBrowse configuration.
+
+This reads the configuration set in the DOM by the user as per the options 
+defined in https://github.com/pulkit110/jMatrixBrowse/wiki/Use
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_Utils.js.html">Utils.js</a></h2>
+				
+Contains utility funcitons that several modules of 
+jMatrixBrowse use.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_js_jMatrixBrowseTests.js.html">jMatrixBrowseTests.js</a></h2>
+				
+Contains the unit tests for jMatrixBrowse.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_js_MatrixGenerator.js.html">MatrixGenerator.js</a></h2>
+				
+Contains the code for generating a random matrix.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_js_MockApi.js.html">MockApi.js</a></h2>
+				
+Contains the code for mock api that responds to a request.
+				<dl>
+					
+						<dt class="heading">Author:</dt>
+						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
+					
+					
+						<dt class="heading">Version:</dt>
+							<dd>0.1</dd>
+					
+					
+					
+				</dl>
+			</div>
+			<hr />
+			
+			<div>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_lib_qunit_js_qunit.js.html">qunit.js</a></h2>
 				jsDump
 Copyright (c) 2008 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
 Licensed under BSD (http://www.opensource.org/licenses/bsd-license.php)
@@ -246,9 +430,13 @@ Advanced and extensible data dumping for Javascript.
 			<hr />
 			
 			<div>
-				<h2><a href="symbols/src/test_js_jMatrixBrowseTests.js.html">jMatrixBrowseTests.js</a></h2>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_src_js_jMatrixBrowseRenderer.js.html">jMatrixBrowseRenderer.js</a></h2>
 				
-Contains the unit tests for jMatrixBrowse.
+Contains the jMatrixBrowse rendering code.
+
+Handles rendering of jMatrixBrowse and manages the dragging, keyboard
+shortcuts and mouse shortcuts. This doesn't perform reloading of the data
+which is handled by catching corresponding events in jMatrixBrowse.
 				<dl>
 					
 						<dt class="heading">Author:</dt>
@@ -265,45 +453,7 @@ Contains the unit tests for jMatrixBrowse.
 			<hr />
 			
 			<div>
-				<h2><a href="symbols/src/test_js_MockApi.js.html">MockApi.js</a></h2>
-				
-Contains the code for mock api that responds to a request.
-				<dl>
-					
-						<dt class="heading">Author:</dt>
-						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
-					
-					
-						<dt class="heading">Version:</dt>
-							<dd>0.1</dd>
-					
-					
-					
-				</dl>
-			</div>
-			<hr />
-			
-			<div>
-				<h2><a href="symbols/src/test_js_MatrixGenerator.js.html">MatrixGenerator.js</a></h2>
-				
-Contains the code for generating a random matrix.
-				<dl>
-					
-						<dt class="heading">Author:</dt>
-						<dd>Pulkit Goyal <pulkit110@gmail.com></dd>
-					
-					
-						<dt class="heading">Version:</dt>
-							<dd>0.1</dd>
-					
-					
-					
-				</dl>
-			</div>
-			<hr />
-			
-			<div>
-				<h2><a href="symbols/src/test_test-core_jqUnit_js_jqUnit.js.html">./test/test-core/jqUnit/js/jqUnit.js</a></h2>
+				<h2><a href="symbols/src/_Users_pulkit_Sites_jMatrixBrowse_test_test-core_jqUnit_js_jqUnit.js.html">/Users/pulkit/Sites/jMatrixBrowse/test/test-core/jqUnit/js/jqUnit.js</a></h2>
 				
 				<dl>
 					
@@ -318,7 +468,7 @@ Contains the code for generating a random matrix.
 		</div>
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blankt">JsDoc Toolkit</a> 2.4.0 on Wed Jun 13 2012 23:47:54 GMT+0200 (CEST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blankt">JsDoc Toolkit</a> 2.4.0 on Thu Aug 09 2012 00:23:53 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
