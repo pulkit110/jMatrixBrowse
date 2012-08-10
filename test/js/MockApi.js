@@ -16,7 +16,7 @@
  */
 function MockApi(height, width) {
   var matrixGenerator = new MatrixGenerator('sequential');
-  matrixGenerator.init((height==undefined)?50:height, (width==undefined)?50:width);
+  matrixGenerator.init((height==undefined)?1000:height, (width==undefined)?1000:width);
   
   /**
    * Get a response for given request.
@@ -62,4 +62,41 @@ function MockApi(height, width) {
 
     return obj_response;
   }
+
+  /**
+   * Gets a response for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseDataAsync = function(request, callback) {
+    var response = this.getResponse(request);
+    callback.call(this, response.data);
+  };
+
+  /**
+   * Gets the response data for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseAsync = function(request, callback) {
+    var response = this.getResponse(request);
+    callback.call(this, response);
+  };
+
+    /**
+     * Get matrix size from api. 
+     * @returns {Object} size - size of the matrix. 
+     * @returns {Number} size.width - width of the matrix. 
+     * @returns {Number} size.height - height of the matrix.
+     */
+    this.getMatrixSize = function() {
+      var response = this.getResponse({
+        'row1': 0,
+        'col1': 0,
+        'row2': 0,
+        'col2': 0
+      });
+      if (response)
+        return response.matrix;
+    };
 };

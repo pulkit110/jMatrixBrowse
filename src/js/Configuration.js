@@ -20,12 +20,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @class Configuration
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNs.Configuration = function(elem, api) {
+  jMatrixBrowseNs.Configuration = function(elem) {
     var that = this;
 
     var _dataReloadStategy = jMatrixBrowseNs.Constants.DEFAULT_DATA_RELOAD_STRATEGY;
 
-    var _api = api;         // api manager
     // Get user options
     var options = getUserOptions(elem);
     // Extending user options with application defaults
@@ -81,35 +80,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     };
 
     /**
-     * Get the window end points which has given point at its top left corner.
-     * @param {Object} position - position of the cell.
-     * @param {Number} position.row - row of the cell.
-     * @param {Number} position.col - column of the cell.
-     * @returns {Object} window - Object representing the window coordinates.
-     * @returns {Number} window.row1 - row index of the top left corner.
-     * @returns {Number} window.col1 - column index of the top left corner.
-     * @returns {Number} window.row2 - row index of the bottom right corner.
-     * @returns {Number} window.col2 - column index of the bottom right corner.
+     * Gets the api url for requests.
+     * @returns url The url for api. A default value of 'test' is sent if this is not defined.
      */
-    this.getCellWindow = function(position) {
-      var size = _api.getMatrixSize();
-      if (size == undefined) {
-        throw "Unable to get matrix size";
-        return null;
-      }
-
-      var windowSize = that.getWindowSize();
-      if (windowSize == undefined) {
-        throw "Unable to get window size.";
-        return null;
-      }
-
-      return {
-        row1: position.row - that.getNumberOfBackgroundCells(),
-        col1: position.col - that.getNumberOfBackgroundCells(),
-        row2: Math.min(position.row + windowSize.height, size.height),
-        col2: Math.min(position.col + windowSize.width, size.width)
-      };
+    this.getApiUrl = function() {
+      return _settings.str_api;
     };
 
     /**
@@ -121,25 +96,41 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     };
 
     /**
-     * Gets the number ata reload strategy to use.
+     * Gets the data reload strategy to use.
      * @returns dataReloadStrategy Reload strategy (possible options defined in Constants)
      */
     this.getDataReloadStrategy = function() {
       return _dataReloadStategy;
     };
     
+    /**
+     * Gets if the snap is enabled.
+     * @returns {boolean} true if snap is enabled.
+     */
     this.isSnapEnabled = function() {
       return _settings.boo_snap;
     };
 
+    /**
+     * Get the duration of deceleration animation.
+     * @return {Number} Deceleration animation in msec.
+     */
     this.getAnimationDuration = function() {
       return _settings.animationDuration;
     };
 
+    /**
+     * Gets the min velocity for beginning animation.
+     * @return {Object} Minimum velocity to begin animation. properties x, y
+     */
     this.getMinVelocityForAnimation = function() {
       return _settings.minVelocityForAnimation;
     };
 
+    /**
+     * Is animation enabled?
+     * @return {boolean} true if animation is enabled.
+     */
     this.animateEnabled = function() {
       return _settings.boo_animate;
     }
@@ -153,9 +144,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     function validate(options) {   
       if (options.boo_jMatrixBrowser !== true && options.boo_jMatrixBrowser !== true) {
         throw "data-jmatrix_browser invalid";
-      }
-      if (options.str_api === undefined || options.str_api === null) {
-        throw "data-api invalid.";
       }
       if (options.str_initialWindowSize && !(/\s*\d+\s*,\s*\d+\s*/).test(options.str_initialWindowSize)) {
         throw "data-initial-window-size invalid."

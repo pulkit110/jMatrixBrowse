@@ -14,14 +14,66 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
 (function (jQuery, jMatrixBrowseNs) {
   
+  /**
+   * An instance of api that sends requests to url and receives response.
+   * 
+   * @param {string} url - url to make requests.
+   * @class NetworkedAPI
+   * @memberOf jMatrixBrowseNs
+   */
+  jMatrixBrowseNs.NetworkedAPI = function(url) {
+
+    // Get the matrix size.
+    jQuery.get(url, {
+        'row1': 0,
+        'col1': 0,
+        'row2': 0,
+        'col2': 0
+      }, function(data, textStatus, xhr) {
+        this.matrixSize = data.matrix;
+      });
+
+    /**
+     * Gets the response for a request. No checks are performed.
+     * callback is called with the response received from api as a parameter.
+     * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+     */
+    this.getResponseAsync = function(request, callback) {
+      jQuery.get(url, request, function(data, textStatus, xhr) {
+        callback.call(this, data);
+      });
+    };
+
+    /**
+     * Gets the response data for a request. No checks are performed.
+     * callback is called with the data received from api as a parameter.
+     * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+     */
+    this.getResponseDataAsync = function(request, callback) {
+      jQuery.get(url, request, function(data, textStatus, xhr) {
+        callback.call(this, data.data);
+      });
+    };
+
+    /**
+     * Gets the matrix size.
+     * @return {Object} height, width of the matrix.
+     */
+    this.getMatrixSize = function() {
+      return this.matrixSize;
+    };
+
+  };
+
  /**
    * Manages requests to the api. 
    * 
    * @param {jQuery Object} type - type of API to use.
+   * @param {string} url - The url for sending requests. Optional for type `test`.
    * @class APIHandler
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNs.APIHandler = function(type) {
+  jMatrixBrowseNs.APIHandler = function(type, url) {
     var that = this;
     
     // Initialize the API
@@ -34,14 +86,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Number} size.height - height of the matrix.
      */
     this.getMatrixSize = function() {
-      var response = _api.getResponse({
-        'row1': 0,
-        'col1': 0,
-        'row2': 0,
-        'col2': 0
-      });
-      if (response)
-        return response.matrix;
+      return _api.getMatrixSize();
     };
 
     // TODO: Not yet implemented
@@ -158,8 +203,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      */
     that.getResponseDataAsync = function(request, callback) {
-      var response = _api.getResponse(request);
-      callback.call(that, response.data);
+      _api.getResponseDataAsync(request, callback);
+      //var response = _api.getResponse(request);
+      //callback.call(that, response.data);
     };
 
     // Private methods
@@ -174,7 +220,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       if (type === 'test') {
         _api = new MockApi();
       } else {
-        console.error('API ' + type + 'not yet supported.');
+        _api = new jMatrixBrowseNs.NetworkedAPI(url);
       }
     };
     

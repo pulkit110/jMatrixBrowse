@@ -54,7 +54,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Reload data in the matrix for the visible window. 
      */
     this.reloadData = function() {
-      var cellWindow = _configuration.getCellWindow(_renderer.currentCell);
+      var cellWindow = _self.getCellWindow(_renderer.currentCell);
       if (cellWindow == undefined) {
         console.error('Unable to get cell window.');
         return;
@@ -71,6 +71,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
     }
     
+    /**
+     * Gets the current position of jMatrix browse.
+     * @return {Object} position of cell on top left corner. properties: row, col
+     */
     this.getPosition = function() {
       return _renderer.currentCell;
     };
@@ -88,12 +92,16 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         position: 'absolute'
       }).appendTo(elem);
       
-      // Initialize mock api
-      _api = new jMatrixBrowseNs.APIHandler('test');
-      
       // Initialize configuration, get user options and extend with default.
-      _configuration = new jMatrixBrowseNs.Configuration(elem, _api);
+      _configuration = new jMatrixBrowseNs.Configuration(elem);
       
+      // Initialize mock api
+      if (_configuration.getApiUrl() === 'test')  {
+        _api = new jMatrixBrowseNs.APIHandler('test');
+      } else {
+        _api = new jMatrixBrowseNs.APIHandler('networked', _configuration.getApiUrl());
+      }
+
       // Initialize the jMatrixBrowseRenderer
       _renderer = new jMatrixBrowseNs.jMatrixBrowseRenderer(_elem, _configuration, _api);
 
@@ -699,6 +707,38 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       reloadHeaders(event);
       reloadMatrixData(event);
     }
+
+    /**
+     * Get the window end points which has given point at its top left corner.
+     * @param {Object} position - position of the cell.
+     * @param {Number} position.row - row of the cell.
+     * @param {Number} position.col - column of the cell.
+     * @returns {Object} window - Object representing the window coordinates.
+     * @returns {Number} window.row1 - row index of the top left corner.
+     * @returns {Number} window.col1 - column index of the top left corner.
+     * @returns {Number} window.row2 - row index of the bottom right corner.
+     * @returns {Number} window.col2 - column index of the bottom right corner.
+     */
+    function getCellWindow(position) {
+      var size = _api.getMatrixSize();
+      if (size == undefined) {
+        throw "Unable to get matrix size";
+        return null;
+      }
+
+      var windowSize = _configuration.getWindowSize();
+      if (windowSize == undefined) {
+        throw "Unable to get window size.";
+        return null;
+      }
+
+      return {
+        row1: position.row - _configuration.getNumberOfBackgroundCells(),
+        col1: position.col - _configuration.getNumberOfBackgroundCells(),
+        row2: Math.min(position.row + windowSize.height, size.height),
+        col2: Math.min(position.col + windowSize.width, size.width)
+      };
+    };
 
     /**
      * Binds shortcuts for browsing.

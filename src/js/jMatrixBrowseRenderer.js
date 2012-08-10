@@ -30,8 +30,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
 (function (jQuery, jMatrixBrowseNs) {
 
-  
-
   /**
    * jMatrixBrowse Renderer manages the rendering of elements as well as row and 
    * column headers.
