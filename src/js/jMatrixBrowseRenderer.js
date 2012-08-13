@@ -374,7 +374,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var windowPosition = _self.currentCell;
       windowPosition = {
         row: (windowPosition.row + windowSize.height > matrixSize.height)?(matrixSize.height - windowSize.height):windowPosition.row,
-        col: (windowPosition.col + windowSize.width > matrixSize.width)?(matrixSize.width - windowSize.width):windowPosition.col,
+        col: (windowPosition.col + windowSize.width > matrixSize.width)?(matrixSize.width - windowSize.width):windowPosition.col
       };
 
       // Remove already existing containers.
@@ -567,7 +567,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       }
       _dragContainer.animate({
         top: '+=' + _decelerationVelocity.y * duration,
-        left: '+=' + _decelerationVelocity.x * duration,
+        left: '+=' + _decelerationVelocity.x * duration
       }, {
         duration: duration, 
         easing: (!_wasAnimating)?'easeOutCubic':'easeInOutCubic', // If the animation was already running, use easeInOutCubic. 

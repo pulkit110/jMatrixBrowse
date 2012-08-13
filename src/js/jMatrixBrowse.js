@@ -723,13 +723,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       var size = _api.getMatrixSize();
       if (size == undefined) {
         throw "Unable to get matrix size";
-        return null;
       }
 
       var windowSize = _configuration.getWindowSize();
       if (windowSize == undefined) {
         throw "Unable to get window size.";
-        return null;
       }
 
       return {
