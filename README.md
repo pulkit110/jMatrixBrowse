@@ -52,7 +52,6 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 ```
 
 * The plugin can be initialized by using HTML data-* element like this.
-
 ```html
 <div id="my_browser"
   data-jmatrix_browser=true
@@ -104,17 +103,13 @@ The API should be able to answer requests of the following form.
     "labels": ["label1", "label2", ..., "label50"]
   },
   "data": [
-    [
-      {
-        "author": "XYZ",
-        "date": "YYYYMMDDhhmm",
-        "value": 100
-      },
-      {data_{1,2}},
+    [ XYZ
+      ,
+      data_{1,2},
       .
       .
       .
-      {data_{1,50}}
+      data_{1,50}
     ],
     [data_2],
     .
