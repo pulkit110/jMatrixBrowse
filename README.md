@@ -120,6 +120,22 @@ The API should be able to answer requests of the following form.
 }
 ```
 
+Custom Styling
+==============
+
+You can plug in your own css to change the look and feel of jMatrixBrowse. Below is the description of the class names for different elements. 
+```
+jmb-matrix-container - The container for jMatrixBrowse. 
+  jmatrixbrowse-col-header - The container for column headers.
+  jmatrixbrowse-row-header - The container for row headers.
+  jmatrixbrowse-drag-container-container - The container for jMatrixBrowseDragContainer.
+    jmatrixbrowse-drag-container - jMatrixBrowseDragContainer. Container for matrix content.
+      jMatrixBrowse-content - The container for all matrix cells. 
+        jMatrixBrowse-cell - A matrix cell. Every cell contains two attributes data-row and data-col.
+  jMatrixBrowse-background-data-container - The container for background data. 
+  
+```
+
 Documentation
 =============
 Updated documentation can be found in `doc/` directory in the repository. Documentation can also be found online [here](http://pulkitgoyal.in/Demo/jMatrixBrowse/doc/). 
