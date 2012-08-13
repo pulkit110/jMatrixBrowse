@@ -120,6 +120,38 @@ The API should be able to answer requests of the following form.
 }
 ```
 
+If you would like to get data from javascript rather than having a complete API, you can extend the MockAPI provided in test/src/js.
+The MockAPI should implement the following three functions:
+```javascript
+  /**
+   * Gets a response for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseDataAsync = function(request, callback) {
+    // TODO: Your implementation here
+  }
+  
+  /**
+   * Gets the response data for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseAsync = function(request, callback) {
+    // TODO: Your implementation here
+  }
+  
+  /**
+   * Get matrix size from api. 
+   * @returns {Object} size - size of the matrix. 
+   * @returns {Number} size.width - width of the matrix. 
+   * @returns {Number} size.height - height of the matrix.
+   */
+  this.getMatrixSize = function() {
+    // TODO: Your implementation here
+  }
+```
+
 Custom Styling
 ==============
 
