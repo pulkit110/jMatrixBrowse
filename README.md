@@ -10,29 +10,77 @@ Matrices are basic data stores used throughout evolutionary studies. Large (1000
 Use
 ===
 
-The plugin can be initialized by using HTML data-* element like this.
-
+* Clone jMatrixBrowse using
+```shell
+git clone https://github.com/pulkit110/jMatrixBrowse.git
 ```
-<div id="my_browser" 
-    data-jmatrix_browser=true 
-    data-api="http://foo.org/path/to/api" 
-</div>
+or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 
+* Download and include jquery and jquery-ui in your HTML. 
+```html 
+<!--  jQuery includes -->
+<script type="text/javascript" src="../../../lib/jquery/core/js/jquery.js"></script>
+<script type="text/javascript" src="../../../lib/jquery/ui/js/jquery-ui-all.js"></script>
+```
+
+* Include jMatrixBrowse javascript file in your HTML. 
+```html
+<script type="text/javascript" src="jMatrixBrowse-master.js"></script> 
+```
+
+* If you would like to debug, include the individual files instead.
+```html
+<!--  jQuery plugins includes -->
+<script type="text/javascript" src="lib/jquery/hotkeys/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="lib/jquery/mousewheel/jquery.mousewheel.js"></script>
+<!--  jMatrixBrowse includes-->
+<script type="text/javascript" src="src/js/Constants.js"></script>
+<script type="text/javascript" src="src/js/Utils.js"></script>
+<script type="text/javascript" src="src/js/Configuration.js"></script>
+<script type="text/javascript" src="src/js/APIHandler.js"></script>
+<script type="text/javascript" src="src/js/jMatrixBrowseRenderer.js"></script>
+<script type="text/javascript" src="src/js/BackgroundDataManager.js"></script>
+<script type="text/javascript" src="src/js/jMatrixBrowse.js"></script>
+<!--  Test Matrix generator files -->
+<script type="text/javascript" src="test/js/MatrixGenerator.js"></script>
+<script type="text/javascript" src="test/js/MockApi.js"></script>
+```
+
+* Include the jMatrixBrowse css
+```html
+<link rel="stylesheet" href="src/css/jMatrixBrowse.css" />
+```
+
+* The plugin can be initialized by using HTML data-* element like this.
+
+```html
+<div id="my_browser"
+  data-jmatrix_browser=true
+  data-initial-window-position="20,30"
+  data-initial-window-size="5,10"
+  data-snap="false"
+  data-deceleration-duration="1000"
+  data-min-velocity-for-animation="0"
+  data-animate="true">
+</div>
 ```
 
 ### Required
 
 ```
-
-data-api=http://foo.org/path/to/api     -  The API to call 
 data-jmatrix_browser=true               -  This element is the wrapper for a jMatrixBrowser
 
 ```
+
 ### Optional
 ```
+data-api=http://foo.org/path/to/api     -  The API to call. (defaults to test API)
 data-initial-window-size="2,3"          -  Define the width, height of the initial window (defaults to 10,10 ?)
 data-initial-window-position="x,y"      -  Define the x,y position of the window  (defaults to 0,0)
-data-jmatrix-browser-css                 - URL/URI
+data-animate                            -  If the matrix should be animated if the user initiates a quick drag.
+data-min-velocity-for-animation         -  Minimum velocity for animation to be activated.
+data-deceleration-duration              -  The duration of deceleration animation.
+data-snap                               -  Whether the matrix should snap to edges when stopped.
 ```
 
 API Details
@@ -43,7 +91,7 @@ The API should be able to answer requests of the following form.
 **Request:** http://foo.org/path/to/api_action?row1=1&col1=1&row2=100&col2=50
 
 **Response:**
-```
+```javascript
 {
   "matrix": {
     "height": 1000,
