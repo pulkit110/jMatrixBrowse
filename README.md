@@ -25,7 +25,7 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 
 * Include jMatrixBrowse javascript file in your HTML. 
 ```html
-<script type="text/javascript" src="jMatrixBrowse-master.js"></script> 
+<script type="text/javascript" src="jMatrixBrowse-master.min.js"></script> 
 ```
 
 * If you would like to debug, include the individual files instead.
