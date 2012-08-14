@@ -55,6 +55,12 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 ```html
 <div id="my_browser"
   data-jmatrix_browser=true
+  data-initial-window-position="20,30"
+  data-initial-window-size="5,10"
+  data-snap="false"
+	data-deceleration-duration="1000"
+	data-min-velocity-for-animation="0"
+  data-animate="true"
   data-api=http://foo.org/path/to/api>
 </div>
 ```
