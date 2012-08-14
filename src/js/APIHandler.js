@@ -23,15 +23,23 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    */
   jMatrixBrowseNs.NetworkedAPI = function(url) {
 
+    var that = this;
+
     // Get the matrix size.
-    jQuery.get(url, {
+    jQuery.ajax({
+      url: url,
+      dataType: 'json',
+      data: {
         'row1': 0,
         'col1': 0,
         'row2': 0,
         'col2': 0
-      }, function(data, textStatus, xhr) {
-        this.matrixSize = data.matrix;
-      });
+      },
+      async: false,
+      success: function(data, textStatus, xhr) {
+        that.matrixSize = data.matrix;
+      }
+    });
 
     /**
      * Gets the response for a request. No checks are performed.
@@ -39,7 +47,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      */
     this.getResponseAsync = function(request, callback) {
-      jQuery.get(url, request, function(data, textStatus, xhr) {
+      jQuery.getJSON(url, request, function(data, textStatus, xhr) {
         callback.call(this, data);
       });
     };
@@ -50,7 +58,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      */
     this.getResponseDataAsync = function(request, callback) {
-      jQuery.get(url, request, function(data, textStatus, xhr) {
+      jQuery.getJSON(url, request, function(data, textStatus, xhr) {
         callback.call(this, data.data);
       });
     };
