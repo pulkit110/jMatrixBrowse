@@ -25,7 +25,7 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 
 * Include jMatrixBrowse javascript file in your HTML. 
 ```html
-<script type="text/javascript" src="jMatrixBrowse-master.js"></script> 
+<script type="text/javascript" src="jMatrixBrowse-master.min.js"></script> 
 ```
 
 * If you would like to debug, include the individual files instead.
@@ -58,9 +58,10 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
   data-initial-window-position="20,30"
   data-initial-window-size="5,10"
   data-snap="false"
-  data-deceleration-duration="1000"
-  data-min-velocity-for-animation="0"
-  data-animate="true">
+	data-deceleration-duration="1000"
+	data-min-velocity-for-animation="0"
+  data-animate="true"
+  data-api=http://foo.org/path/to/api>
 </div>
 ```
 
@@ -118,6 +119,54 @@ The API should be able to answer requests of the following form.
     [data_100]
   ]
 }
+```
+
+If you would like to get data from javascript rather than having a complete API, you can extend the MockAPI provided in test/src/js.
+The MockAPI should implement the following three functions:
+```javascript
+  /**
+   * Gets a response for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseDataAsync = function(request, callback) {
+    // TODO: Your implementation here
+  }
+  
+  /**
+   * Gets the response data for given request and calls the callback on success.
+   * @param {Object} request - the request.
+   * @param {function} callback - the callback function.
+   */
+  this.getResponseAsync = function(request, callback) {
+    // TODO: Your implementation here
+  }
+  
+  /**
+   * Get matrix size from api. 
+   * @returns {Object} size - size of the matrix. 
+   * @returns {Number} size.width - width of the matrix. 
+   * @returns {Number} size.height - height of the matrix.
+   */
+  this.getMatrixSize = function() {
+    // TODO: Your implementation here
+  }
+```
+
+Custom Styling
+==============
+
+You can plug in your own css to change the look and feel of jMatrixBrowse. Below is the description of the class names for different elements. 
+```
+jmb-matrix-container - The container for jMatrixBrowse. 
+  jmatrixbrowse-col-header - The container for column headers.
+  jmatrixbrowse-row-header - The container for row headers.
+  jmatrixbrowse-drag-container-container - The container for jMatrixBrowseDragContainer.
+    jmatrixbrowse-drag-container - jMatrixBrowseDragContainer. Container for matrix content.
+      jMatrixBrowse-content - The container for all matrix cells. 
+        jMatrixBrowse-cell - A matrix cell. Every cell contains two attributes data-row and data-col.
+  jMatrixBrowse-background-data-container - The container for background data. 
+  
 ```
 
 Documentation
