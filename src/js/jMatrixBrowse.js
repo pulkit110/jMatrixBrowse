@@ -60,12 +60,22 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         return;
       }
       _api.getResponseDataAsync(cellWindow, function(data) {
+        // Reload data
         for (var i = 0; i < data.length; ++i) {
           for (var j = 0; j < data[i].length; ++j) {
             var cellData = data[i][j]; 
             jQuery(_renderer.getCellElements()[i][j]).html(cellData);
           }
         }
+
+        // Reload headers
+        reloadRowHeaders({
+          currentCell: _renderer.currentCell
+        });
+        reloadColHeaders({
+          currentCell: _renderer.currentCell
+        });
+
       });
     }
     
@@ -384,8 +394,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Reload column headers on change of matrix.
      * @param {Number} event.currentCell - currentCell at the top left
-     * @param {Number} event.previousCell - previousCell at the top left
-     * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadRowHeaders(event) {
       var rowHeaders = _api.getRowHeadersFromTopRow(event.currentCell.row-_configuration.getNumberOfBackgroundCells());
@@ -399,8 +407,6 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     /**
      * Reload row headers on change of matrix.
      * @param {Number} event.currentCell - currentCell at the top left
-     * @param {Number} event.previousCell - previousCell at the top left
-     * @param {string} event.direction - direction of drag that triggered the change
      */
     function reloadColHeaders(event) {
       var colHeaders = _api.getColHeadersFromLeftCol(event.currentCell.col-_configuration.getNumberOfBackgroundCells());

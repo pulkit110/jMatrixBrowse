@@ -84,6 +84,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
   jMatrixBrowseNs.APIHandler = function(type, url) {
     var that = this;
     
+    // Row and column headers are going to be very few, so we can cache them.
+    that.cache = {
+      rowHeaders : [],
+      colHeaders : []
+    };
+
     // Initialize the API
     initApi(type);
     
@@ -104,12 +110,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns {Array} rowHeaders - Array of row headers
      */
     this.getRowHeadersFromTopRow = function(topRowIndex) {
-
       var height = _renderer.getCellElements().length;
       var rowHeaders = [];
-      // TODO: Load from API
       for (var i = 0; i < height; ++i) {
-        rowHeaders.push('row: ' + (topRowIndex+i));
+        rowHeaders.push(that.cache.rowHeaders[topRowIndex + i]);
       }
       return rowHeaders;
     };
@@ -122,9 +126,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     this.getColHeadersFromLeftCol = function(leftColIndex) {
       var width = _renderer.getCellElements()[0].length;
       var colHeaders = [];
-      // TODO: Load from API
       for (var i = 0; i < width; ++i) {
-        colHeaders.push('col: ' + (leftColIndex+i));
+        colHeaders.push(that.cache.colHeaders[leftColIndex + i]);
       }
       return colHeaders;
     };
@@ -191,7 +194,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @returns response received from the server. 
      */
     this.getResponse = function(request) {
-      return _api.getResponse(request);
+      var response = _api.getResponse(request);
+      cacheHeaders(request, response);
+      return response;
     };
 
     /**
@@ -201,7 +206,21 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      */
     this.getResponseData = function(request) {
       var response = _api.getResponse(request);
+      cacheHeaders(request, response);
       return response.data;
+    };
+
+    /**
+     * Gets the response for a request. No checks are performed.
+     * callback is called with the response received from api as a parameter.
+     * This method will eventually replace the getResponseAsync the older method is not very useful with a live API.
+     * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
+     */
+    that.getResponseAsync = function(request, callback) {
+      _api.getResponseAsync(request, function(response) {
+        cacheHeaders(request, response);
+        callback.call(this, response);
+      });
     };
 
     /**
@@ -211,9 +230,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Object} request - request to send to server. See (https://github.com/pulkit110/jMatrixBrowse/wiki/API-Details)
      */
     that.getResponseDataAsync = function(request, callback) {
-      _api.getResponseDataAsync(request, callback);
-      //var response = _api.getResponse(request);
-      //callback.call(that, response.data);
+      that.getResponseAsync(request, function(response) {
+        callback.call(that, response.data);
+      });
     };
 
     // Private methods
@@ -231,6 +250,15 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         _api = new jMatrixBrowseNs.NetworkedAPI(url);
       }
     };
+
+    function cacheHeaders(request, response) {
+      for (var i = request.row1; i <= request.row2; ++i) {
+        that.cache.rowHeaders[i] = response.row.labels[i-request.row1];
+      }
+      for (var j = request.col1; j <= request.col2; ++j) {
+        that.cache.colHeaders[j] = response.column.labels[j-request.col1];
+      }
+    }
     
     return that;
   };
