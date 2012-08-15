@@ -3,3 +3,4 @@ jsdoc ./src/ ./test/ -d=doc -r
 
 #Combine all js files
 java -jar  ~/Study/tools/closure-compiler/compiler.jar  --js lib/jquery/hotkeys/jquery.hotkeys.js --js lib/jquery/mousewheel/jquery.mousewheel.js --js src/js/Constants.js src/js/Utils.js --js src/js/Configuration.js src/js/APIHandler.js --js src/js/jMatrixBrowseRenderer.js --js src/js/BackgroundDataManager.js --js src/js/jMatrixBrowse.js --js test/js/MatrixGenerator.js --js test/js/MockApi.js --js_output_file jMatrixBrowse-master.min.js
+
