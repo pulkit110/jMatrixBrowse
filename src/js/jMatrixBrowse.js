@@ -54,21 +54,19 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * Reload data in the matrix for the visible window. 
      */
     this.reloadData = function() {
-      var cellWindow = _self.getCellWindow(_renderer.currentCell);
+      var cellWindow = getCellWindow(_renderer.currentCell);
       if (cellWindow == undefined) {
         console.error('Unable to get cell window.');
         return;
       }
-      var response = _api.getResponse(cellWindow);
-      
-      if (response && response.data) {
-        for (var i = 0; i < response.data.length; ++i) {
-          for (var j = 0; j < response.data[i].length; ++j) {
-            var cellData = response.data[i][j]; 
+      _api.getResponseDataAsync(cellWindow, function(data) {
+        for (var i = 0; i < data.length; ++i) {
+          for (var j = 0; j < data[i].length; ++j) {
+            var cellData = data[i][j]; 
             jQuery(_renderer.getCellElements()[i][j]).html(cellData);
           }
         }
-      }
+      });
     }
     
     /**
@@ -109,7 +107,9 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       _elem.bind('jMatrixBrowseRendererInitialized', function() {
         _self.reloadData();
       });
-      
+
+      _renderer.init(_configuration.getWindowPosition());
+
       // Listen to events to implement reloading of data and headers
       // Listen for drag and reposition cells
       _elem.bind('jMatrixBrowseDrag', function (event) {

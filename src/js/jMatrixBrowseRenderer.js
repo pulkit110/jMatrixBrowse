@@ -32,7 +32,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
 
   /**
    * jMatrixBrowse Renderer manages the rendering of elements as well as row and 
-   * column headers.
+   * column headers. Init should be called after creating the object to initialize 
+   * the matrix. 
    * 
    * @param {jQuery Object} elem - element that initiated jMatrixBrowse.
    * @param {Object} configuration - configuration for jMatrixBrowse.
@@ -66,6 +67,35 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     // Add class for jMatrixBrowse container
     elem.addClass('jmb-matrix-container');
     
+    /**
+     * Initializes the jMatrixBrowseRenderer component. 
+     * This creates the required contianers and generates content in the matrix.
+     * @param  {Object} windowPosition - position of first cell in window (properties: row and col)
+     */
+    this.init = function(windowPosition) {
+      // TODO: This is a hack
+      _api.setRenderer(that);
+        
+      // Create row and column headers.
+      _headers = createRowColumnHeaderContainer(_elem);
+
+      // Create draggable area and add matrix to it.
+      var containers = createDragContainer(_elem);
+      _dragContainer = containers.dragContainer;
+      _container = containers.container;
+
+      // Scroll to the window position
+      scrollTo(windowPosition.row, windowPosition.col);
+
+      // Generate initial content
+      _content = generateInitialMatrixContent(_dragContainer);
+
+      // Generate row and column header content
+      generateRowColumnHeaders(_headers);
+
+      _elem.trigger('jMatrixBrowseRendererInitialized');
+    };
+
     /**
      * Gets the cell elements.
      * @returns {Array of Array of DOM elements} Elements in the cell.
@@ -354,7 +384,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       cleanup();
 
       // Initialize with the new window size.
-      init(_self.currentCell);
+      _self.init(_self.currentCell);
     };
 
     /**
@@ -381,45 +411,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       cleanup();
       
       // Initialize with the new window size.
-      init(windowPosition);
+      _self.init(windowPosition);
     };
 
     this.getIsAnimating = function() {
       return _isAnimating;
     };
 
-    init(_configuration.getWindowPosition());
-
     // Private methods
-    /**
-     * Initializes the jMatrixBrowseRenderer component. 
-     * This creates the required contianers and generates content in the matrix.
-     * @param  {Object} windowPosition - position of first cell in window (properties: row and col)
-     */
-    function init(windowPosition) {
-      // TODO: This is a hack
-      _api.setRenderer(that);
-        
-      // Create row and column headers.
-      _headers = createRowColumnHeaderContainer(_elem);
-
-      // Create draggable area and add matrix to it.
-      var containers = createDragContainer(_elem);
-      _dragContainer = containers.dragContainer;
-      _container = containers.container;
-
-      // Scroll to the window position
-      scrollTo(windowPosition.row, windowPosition.col);
-
-      // Generate initial content
-      _content = generateInitialMatrixContent(_dragContainer);
-
-      // Generate row and column header content
-      generateRowColumnHeaders(_headers);
-
-      _elem.trigger('jMatrixBrowseRendererInitialized');
-    }
-
     /**
      * Removes all the DOM elements created by jMatrixBrowseRenderer. 
      */
