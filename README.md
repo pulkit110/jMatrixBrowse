@@ -54,14 +54,14 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 * The plugin can be initialized by using HTML data-* element like this.
 ```html
 <div id="my_browser"
-  data-jmatrix_browser=true
-  data-initial-window-position="20,30"
-  data-initial-window-size="5,10"
-  data-snap="false"
-	data-deceleration-duration="1000"
-	data-min-velocity-for-animation="0"
-  data-animate="true"
-  data-api="http://foo.org/path/to/api">
+    data-jmatrix_browser=true
+    data-initial-window-position="20,30"
+    data-initial-window-size="5,10"
+    data-snap="false"
+    data-deceleration-duration="1000"
+    data-min-velocity-for-animation="0"
+    data-animate="true"
+    data-api="http://foo.org/path/to/api">
 </div>
 ```
 
@@ -104,13 +104,17 @@ The API should be able to answer requests of the following form.
     "labels": ["label1", "label2", ..., "label50"]
   },
   "data": [
-    [ XYZ
-      ,
-      data_{1,2},
+    [
+      {
+        "author": "XYZ",
+        "date": "YYYYMMDDhhmm",
+        "value": 100
+      },
+      {data_{1,2}},
       .
       .
       .
-      data_{1,50}
+      {data_{1,50}}
     ],
     [data_2],
     .
@@ -119,6 +123,29 @@ The API should be able to answer requests of the following form.
     [data_100]
   ]
 }
+```
+
+The html of the cell is formed by using the string representation of the cell data. In order to customize the text that is displayed in the cells, you can specify your own function to parse the resopnse. In order to achieve this, define the method parseResponseToString(resopnse) for your jMatrixBrowse instance. 
+```javascript
+var browser = jQuery('#my_browser').jMatrixBrowse();
+browser.parseResponseToString = function(response) {
+  if (response !== null && response !== undefined) {
+    // TODO: Define your own parser here. 	
+  }
+  return '';
+};
+```
+The properties returned from the response would also be attached as html data elements to the cells to allow for custom styling based on the values of these properties. For example, for a cell with response 
+```  
+{
+  "author": "XYZ",
+  "text": "ABC"
+}
+```
+the cell will have attributes
+```html
+data-author="XYZ"
+data-text="ABC"
 ```
 
 If you would like to get data from javascript rather than having a complete API, you can extend the MockAPI provided in test/src/js.
