@@ -888,7 +888,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     * @param {jQuery object} header - row header container.
     */
     function generateRowHeaders(header) {  
-      var rowHeaders = _api.getRowHeadersFromTopRow(_self.currentCell.row-_configuration.getNumberOfBackgroundCells());
+      var startRow = _self.currentCell.row-_configuration.getNumberOfBackgroundCells();
+      var rowHeaders = _api.getRowHeadersFromTopRow(startRow);
       var frag = document.createDocumentFragment();
       for (var row = 0, nRows = rowHeaders.length; row < nRows; ++row) {
         var cellElement = jQuery(_cellElements[row][0]);
@@ -903,9 +904,16 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         };
         elem.css(css);
         elem.html(rowHeaders[row]);
+        elem.attr('data-row', startRow + row);
         frag.appendChild(elem[0]);
       }
       header.append(frag);
+
+      _elem.find('.' + jMatrixBrowseNs.Constants.CLASS_BASE+'-row-header-cell').click(function(event) {
+        event.type = 'jMatrixBrowseRowHeaderClick';
+        event.row = $(this).attr('data-row');
+        _elem.trigger(event);
+      });
     }
 
     /**
@@ -913,7 +921,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     * @param {jQuery object} header - column header container.
     */
     function generateColHeaders(header) {
-      var colHeaders = _api.getColHeadersFromLeftCol(_self.currentCell.col-_configuration.getNumberOfBackgroundCells());
+      var startCol = _self.currentCell.col-_configuration.getNumberOfBackgroundCells();
+      var colHeaders = _api.getColHeadersFromLeftCol(startCol);
       var frag = document.createDocumentFragment();
       for (var col = 0, nCols = colHeaders.length; col < nCols; ++col) {
         var cellElement = jQuery(_cellElements[0][col]);
@@ -928,9 +937,16 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         };
         elem.css(css);
         elem.html(colHeaders[col]);
+        elem.attr('data-col', startCol + col);
         frag.appendChild(elem[0]);
       }
       header.append(frag);
+      
+      _elem.find('.' + jMatrixBrowseNs.Constants.CLASS_BASE+'-col-header-cell').click(function(event) {
+        event.type = 'jMatrixBrowseColumnHeaderClick';
+        event.col = $(this).attr('data-col');
+        _elem.trigger(event);
+      });
     }
 
     //TODO: Might not work when more than one jMatrixBrowse on the same page. 

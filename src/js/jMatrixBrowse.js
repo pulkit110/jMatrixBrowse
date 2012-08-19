@@ -184,6 +184,14 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         console.log('click: ' + event.row + ', ' + event.col);
       });
 
+      _elem.bind('jMatrixBrowseRowHeaderClick', function (event) {
+        console.log('row header click: ' + event.row);
+      });
+
+      _elem.bind('jMatrixBrowseColumnHeaderClick', function (event) {
+        console.log('column header click: ' + event.col);
+      });
+
       bindShortcuts();
 
       // Begin loading data in the background.
@@ -409,10 +417,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} event.currentCell - currentCell at the top left
      */
     function reloadRowHeaders(event) {
-      var rowHeaders = _api.getRowHeadersFromTopRow(event.currentCell.row-_configuration.getNumberOfBackgroundCells());
+      var startRow = event.currentCell.row-_configuration.getNumberOfBackgroundCells();
+      var rowHeaders = _api.getRowHeadersFromTopRow(startRow);
       _renderer.getHeaders().row.children().each(function (index, element) {
         if (index < rowHeaders.length) {
           jQuery(element).html(rowHeaders[index]);
+          jQuery(element).attr('data-row', startRow + index);
         }
       });
     }
@@ -422,10 +432,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
      * @param {Number} event.currentCell - currentCell at the top left
      */
     function reloadColHeaders(event) {
-      var colHeaders = _api.getColHeadersFromLeftCol(event.currentCell.col-_configuration.getNumberOfBackgroundCells());
+      var startCol = event.currentCell.col-_configuration.getNumberOfBackgroundCells();
+      var colHeaders = _api.getColHeadersFromLeftCol(startCol);
       _renderer.getHeaders().col.children().each(function (index, element) {
         if (index < colHeaders.length) {
           jQuery(element).html(colHeaders[index]);
+          jQuery(element).attr('data-col', startCol + index);
         }
       });
     }
