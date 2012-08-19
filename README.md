@@ -83,6 +83,38 @@ data-deceleration-duration              -  The duration of deceleration animatio
 data-snap                               -  Whether the matrix should snap to edges when stopped.
 ```
 
+Events 
+======
+
+jMatrixBrowse will trigger several events which the user can bind to to perform specific tasks.
+
+```
+jMatrixBrowseChange     - Triggered on the change of content in jMatrixBrowse. 
+                          This is triggered when a row/col goes out of focus and a new one is loaded. 
+                          Properties:  
+                               `previousCell.row, previousCell.col` and `currentCell.row, currentCell.col`.
+
+jMatrixBrowseDragBegin   - Triggered when a drag on jMatrixBrowse begins.
+jMatrixBrowseDragStop    - Triggered when a drag on jMatrixBrowse stops.
+jMatrixBrowseClick       - Triggered when a cell in matrix is clicked. 
+                           Properties:
+                               `row` and `col`
+jMatrixBrowseRowHeaderClick     - Triggered when a row header in matrix is clicked. 
+                                  Properties:
+                                    `row`
+jMatrixBrowseColumnHeaderClick  - Triggered when a cell in matrix is clicked. 
+                                  Properties:
+                                    `col`
+jMatrixBrowseRendererInitialized - Triggered when jMatrixBrowse finished initialisation.
+jMatrixBrowseAnimationStep - Triggered at every step of the deceleration animation.
+                             Properties:
+                               `now` - the top and left of the drag container. 
+                               `fx`  - fx.elem for drag container.
+jMatrixBrowseAnimationComplete - Triggered after the deceleration animation for jMatrixBrowse is complete. 
+jMatrixBrowseLoadComplete   - Triggered after the background loading finishes loading everything in the matrix into the DOM. 
+
+```
+
 API Details
 ===========
 
