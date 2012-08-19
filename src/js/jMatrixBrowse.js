@@ -63,8 +63,10 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         // Reload data
         for (var i = 0; i < data.length; ++i) {
           for (var j = 0; j < data[i].length; ++j) {
-            var cellData = data[i][j]; 
+            var cellData = _self.parseResponseToString(data[i][j]); 
             jQuery(_renderer.getCellElements()[i][j]).html(cellData);
+            jQuery(_renderer.getCellElements()[i][j]).attr('data-response', (data[i][j] === undefined)?undefined:JSON.stringify(data[i][j]));
+            addResponseDataToCell(jQuery(_renderer.getCellElements()[i][j]), data[i][j]);
           }
         }
 
@@ -87,6 +89,17 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       return _renderer.currentCell;
     };
     
+    /**
+     * Returns a string representation of the data to be displayed in the cells.
+     * @param  {Object} response reponse for "one" cell received from the api.
+     * @return {string}          String representation to be displayed. Empty string if response is not defined
+     */
+    this.parseResponseToString = function(response) {
+      if (response !== null && response !== undefined)
+        return JSON.stringify(response);
+      return '';
+    };
+
     // initialize the plugin.
     init(this);
     
@@ -174,7 +187,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
       bindShortcuts();
 
       // Begin loading data in the background.
-      _backgroundDataManager = new jMatrixBrowseNs.BackgroundDataManager(_elem, _api, _configuration);
+      _backgroundDataManager = new jMatrixBrowseNs.BackgroundDataManager(_elem, _api, _configuration, _self);
     }
     
     /**
@@ -653,6 +666,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           position: 'absolute'
         });
         cell.replaceWith(newCell);
+        addResponseDataToCell(newCell, jQuery.parseJSON(cell.attr('data-response')));
         _renderer.getCellElements()[rowIndex][colIndex] = newCell;
       } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_HTML_REPLACEMENT) {
         // Change only the html content of the cell.
@@ -660,6 +674,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
         cell.html(html);
         cell.attr('data-row', newRowNumber);
         cell.attr('data-col', newColNumber);
+        addResponseDataToCell(cell, jQuery.parseJSON(cell.attr('data-response')));
       } else if (_configuration.getDataReloadStrategy() === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
         // Cell is already in the matrix container. Change its position etc. to put it in correct place. 
         newCell = newCell.removeClass('jMatrixBrowse-background-cell').addClass('jMatrixBrowse-cell').css({
@@ -670,6 +685,7 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
           position: 'absolute'
         });
         cell.hide();
+        addResponseDataToCell(newCell, jQuery.parseJSON(cell.attr('data-response')));
         newCell.show();
        _renderer.getCellElements()[rowIndex][colIndex] = newCell;
       }
@@ -712,6 +728,12 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
     function reloadData(event) {
       reloadHeaders(event);
       reloadMatrixData(event);
+    }
+
+    function addResponseDataToCell(cell, data) {
+      for (var key in data) {
+        cell.attr('data-' + key, data[key]);
+      }
     }
 
     /**

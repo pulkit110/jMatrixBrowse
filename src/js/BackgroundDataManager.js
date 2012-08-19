@@ -23,10 +23,11 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
    * @class BackgroundDataManager
    * @memberOf jMatrixBrowseNs
    */
-  jMatrixBrowseNs.BackgroundDataManager = function(elem, api, config) {
+  jMatrixBrowseNs.BackgroundDataManager = function(elem, api, config, browser) {
     var that = this;
 
     var _backgroundDataContainer; // Container for background data.
+    var _browser = browser;
     
     var _windowLoaded = {
       row1: 0,
@@ -112,7 +113,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
                   className: 'jMatrixBrowse-background-cell',
                   'data-row': i + request.row1,
                   'data-col': j + request.col1,
-                  html: data[i][j]
+                  'data-response': (data[i][j]===undefined)?undefined : JSON.stringify(data[i][j]),
+                  html: _browser.parseResponseToString(data[i][j])
                 });
                 if (_config.getDataReloadStrategy === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
                   _elem.find('.jMatrixBrowse-content').append(backgroundCell);
@@ -229,7 +231,8 @@ var jMatrixBrowseNs = jMatrixBrowseNs || {};
               className: 'jMatrixBrowse-background-cell',
               'data-row': j + currentRequest.row1,
               'data-col': k + currentRequest.col1,
-              html: currentResponse[j][k]
+              'data-response': (currentResponse[j][k]===undefined)?undefined : JSON.stringify(currentResponse[j][k]),
+              html: _browser.parseResponseToString(currentResponse[j][k])
             });
             if (_config.getDataReloadStrategy === jMatrixBrowseNs.Constants.RELOAD_CELL_POSITION) {
               _elem.find('.jMatrixBrowse-content').append(cell);
