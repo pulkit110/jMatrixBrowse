@@ -61,7 +61,7 @@ or download a [zip](https://github.com/pulkit110/jMatrixBrowse/zipball/master).
 	data-deceleration-duration="1000"
 	data-min-velocity-for-animation="0"
   data-animate="true"
-  data-api=http://foo.org/path/to/api>
+  data-api="http://foo.org/path/to/api">
 </div>
 ```
 
